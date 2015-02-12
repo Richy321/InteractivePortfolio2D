@@ -122,6 +122,7 @@ function CollidableObject(spriteImage, pPosX, pPosY, pSizeX, pSizeY, pOffsetX, p
 function drawTarget()
 {
     var origFill = ctx.fillStyle;
+    ctx.fillStyle = 'rgba(255, 0, 0, 255)';
     circle(player.targetX, player.targetY, 5);
     ctx.fillStyle = origFill;
 }

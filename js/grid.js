@@ -1,4 +1,5 @@
-﻿function Tile(pSpriteXOffset, pSpriteYOffset, pSpriteSheetImage) {
+﻿function Tile(pSpriteXOffset, pSpriteYOffset, pSpriteSheetImage)
+{
     this.spriteXOffset = pSpriteXOffset;
     this.spriteYOffset = pSpriteYOffset;
     this.spriteSheet = pSpriteSheetImage;
@@ -105,5 +106,10 @@ function Grid(canvasWidth, canvasHeight) {
             }
         }
         ctx.fillStyle = origFill;
+    }
+
+    this.getTile = function getTile(xCoord, yCoord)
+    {
+        return tiles[(y * (canvasWidth / this.tileWidth)) + x];
     }
 }
