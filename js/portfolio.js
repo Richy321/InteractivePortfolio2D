@@ -40,7 +40,6 @@ window.onload = function()
 {
 }
 
-
 //keyboard input
 function doKeyDown(evt)
 {
@@ -50,6 +49,15 @@ function doKeyDown(evt)
 function doKeyUp(evt)
 {
     keys[evt.keyCode] = false;
+}
+
+function doClick(evt)
+{
+    player.targetX = evt.pageX - canvas.offsetLeft - virtualCameraOffsetX;
+    player.targetY = evt.pageY - canvas.offsetTop - virtualCameraOffsetY;
+    player.hasTarget = true;
+
+
 }
 
 function clearKeyBuffer()
@@ -106,6 +114,14 @@ function CollidableObject(spriteImage, pPosX, pPosY, pSizeX, pSizeY, pOffsetX, p
 
 }
 
+
+function drawTarget()
+{
+    var origFill = ctx.fillStyle;
+    circle(player.targetX, player.targetY, 5);
+    ctx.fillStyle = origFill;
+}
+
 var draw = function ()
 {
     ctx.save();
@@ -116,7 +132,10 @@ var draw = function ()
     rect(0, 0, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
     grid.drawGrid();
     //grid.drawGridOverlay();
-
+    if (player.hasTarget)
+    {
+        drawTarget();
+    }
     for (i = 0; i < collidables.length; i++) {
 
         collidables[i].drawCollidable();
@@ -173,6 +192,11 @@ function init()
 
     document.onkeyup = function (e) {
         doKeyUp(e);
+    }
+
+    document.onclick = function (e) 
+    {
+        doClick(e);
     }
 
     initTown();

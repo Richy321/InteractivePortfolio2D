@@ -7,6 +7,10 @@ function Player(startPosX, startPosY)
     this.deltaY = 6;
     this.circleSize = 10;
 
+    this.targetX = -1;
+    this.targetY = -1;
+    this.hasTarget = false;
+
     //load sprite frames
     this.sprite = new Image();
     this.sprite.src = "./Media/IWDCHAR.png";
@@ -43,88 +47,183 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
         return;
     var oldPositionX = this.positionX;
     var oldPositionY = this.positionY;
+    var oldVirtualCamOffsetX = virtualCameraOffsetX;
+    var oldVirtualCamOffsetY = virtualCameraOffsetY;
+
+    this.curDirection = "None";
 
     if (38 in keys && keys[38]) { //up
-        if (this.positionY - this.deltaY > 0) {
-            if (this.curDirection == "Up" && this.curFrameNo < 2) {
-                this.frameDuration -= deltaTime;
-                if (this.frameDuration <= 0) {
-                    this.curFrameNo++;
-                    this.frameDuration = this.frameDelay;
-                }
-            }
-            else {
-                this.curDirection = "Up";
-                this.curFrameNo = 0;
-            }
-            this.positionY -= this.deltaY;
-            virtualCameraOffsetY += this.deltaY;
-            this.curFrame = this.upFrames[this.curFrameNo];
-
+        if (this.positionY - this.deltaY > 0)
+        {
+            this.curDirection = "Up";
         }
     }
     else if (40 in keys && keys[40]) { //down
         if (this.positionY + this.deltaY < (HEIGHT - this.frameHeight * this.spriteScale)) {
-            if (this.curDirection == "Down" && this.curFrameNo < 2) {
-                this.frameDuration -= deltaTime;
-                if (this.frameDuration <= 0) {
-                    this.curFrameNo++;
-                    this.frameDuration = this.frameDelay;
-                }
-            }
-            else {
-                this.curDirection = "Down";
-                this.curFrameNo = 0;
-            }
-            this.positionY += this.deltaY;
-            virtualCameraOffsetY -= this.deltaY;
-            this.curFrame = this.downFrames[this.curFrameNo];
+            this.curDirection = "Down";
         }
     }
-
     else if (37 in keys && keys[37]) { //left
-        if (this.positionX - this.deltaX > 0) {
-            if (this.curDirection == "Left" && this.curFrameNo < 2) {
-                this.frameDuration -= deltaTime;
-                if (this.frameDuration <= 0) {
-                    this.curFrameNo++;
-                    this.frameDuration = this.frameDelay;
-                }
-            }
-            else {
-                this.curDirection = "Left";
-                this.curFrameNo = 0;
-            }
-            this.positionX -= this.deltaX;
-            virtualCameraOffsetX += this.deltaX;
-            this.curFrame = this.leftFrames[this.curFrameNo];
+        if (this.positionX - this.deltaX > 0)
+        {
+            this.curDirection = "Left";
         }
     }
 
     else if (39 in keys && keys[39]) { //right
         if (this.positionX + this.deltaX < (WIDTH - this.frameWidth * this.spriteScale))
         {
-            if (this.curDirection == "Right" && this.curFrameNo < 2) {
-                this.frameDuration -= deltaTime;
-                if (this.frameDuration <= 0) {
-                    this.curFrameNo++;
-                    this.frameDuration = this.frameDelay;
-                }
-            }
-            else {
-                this.curDirection = "Right";
-                this.curFrameNo = 0;
-            }
-            this.positionX += this.deltaX;
-            virtualCameraOffsetX -= this.deltaX;
-            this.curFrame = this.rightFrames[this.curFrameNo];
+            this.curDirection = "Right";
         }
     }
 
+    if (this.hasTarget)
+    {
+        var centreTargX = this.targetX - (this.frameWidth * this.spriteScale) * 0.5;
+        var centreTargY = this.targetY - (this.frameHeight * this.spriteScale) * 0.5;
+
+        var dirX = centreTargX - this.positionX;
+        var dirDeltaX = this.deltaX;
+        
+        if (dirX < 0) {
+            dirDeltaX = -this.deltaX;
+        }
+
+        if (Math.abs(dirX) < this.deltaX) {
+            //this.positionX += dirDeltaX;
+            // else
+            this.positionX += dirX;
+            this.curDirection = "None";
+        }
+
+        var dirY = centreTargY - this.positionY;
+        var dirDeltaY = this.deltaY;
+
+        if (dirY < 0) {
+            dirDeltaY = -this.deltaY;
+        }
+
+        if (Math.abs(dirY) < this.deltaY) {
+            //this.positionY += dirDeltaY;
+            //else
+            this.positionY += dirY;
+            this.curDirection = "None";
+        }
+
+        if (this.positionX == centreTargX && this.positionY == centreTargY)
+        {
+            this.targetX = -1;
+            this.targetY = -1;
+            this.hasTarget = false;
+        }
+
+        if (Math.abs(dirX) > Math.abs(dirY))
+        {
+            if (dirX > 0)
+                this.curDirection = "Right";
+            else if (dirX < 0)
+                this.curDirection = "Left";
+        }
+        else
+        {
+            if (dirY > 0)
+                this.curDirection = "Down";
+            else if (dirY < 0)
+                this.curDirection = "Up";
+        }
+    }
+
+    if (this.curDirection == "Up")
+    {
+        if (this.curFrameNo < 2)
+        {
+            this.frameDuration -= deltaTime;
+            if (this.frameDuration <= 0)
+            {
+                this.curFrameNo++;
+                this.frameDuration = this.frameDelay;
+            }
+        }
+        else
+        {
+            this.curFrameNo = 0;
+        }
+        if (!collided)
+        {
+            this.positionY -= this.deltaY;
+            virtualCameraOffsetY += this.deltaY;
+        }
+        this.curFrame = this.upFrames[this.curFrameNo];
+    }
+
+
+    if (this.curDirection == "Down")
+    {
+        if (this.curFrameNo < 2) {
+            this.frameDuration -= deltaTime;
+            if (this.frameDuration <= 0) {
+                this.curFrameNo++;
+                this.frameDuration = this.frameDelay;
+            }
+        }
+        else
+        {
+            this.curFrameNo = 0;
+        }
+        if (!collided)
+        {
+            this.positionY += this.deltaY;
+            virtualCameraOffsetY -= this.deltaY;
+        }
+        this.curFrame = this.downFrames[this.curFrameNo];
+    }
+
+    if (this.curDirection == "Left")
+    {
+        if (this.curFrameNo < 2) {
+            this.frameDuration -= deltaTime;
+            if (this.frameDuration <= 0) {
+                this.curFrameNo++;
+                this.frameDuration = this.frameDelay;
+            }
+        }
+        else
+        {
+            this.curFrameNo = 0;
+        }
+        if (!collided)
+        {
+            this.positionX -= this.deltaX;
+            virtualCameraOffsetX += this.deltaX;
+        }
+        this.curFrame = this.leftFrames[this.curFrameNo];
+    }
+
+    if (this.curDirection == "Right")
+    {
+        if (this.curFrameNo < 2) {
+            this.frameDuration -= deltaTime;
+            if (this.frameDuration <= 0) {
+                this.curFrameNo++;
+                this.frameDuration = this.frameDelay;
+            }
+        }
+        else
+        {
+            this.curFrameNo = 0;
+        }
+        if (!collided)
+        {
+            this.positionX += this.deltaX;
+            virtualCameraOffsetX -= this.deltaX;
+        }
+        this.curFrame = this.rightFrames[this.curFrameNo];
+    }
 
     //check collisions
     var playerBnd = this.getBounds();
 
+    var collidedTrigger = false;
     var collided = false;
 
     for (i = 0; i < collidables.length; i++) {
@@ -134,19 +233,22 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
                 if (justFiredTrigger == false) {
                     collidables[i].fireTrigger();
                 }
-                collided = true;
+                collidedTrigger = true;
             }
             else {
                 this.positionX = oldPositionX;
                 this.positionY = oldPositionY;
+                virtualCameraOffsetX = oldVirtualCamOffsetX;
+                virtualCameraOffsetY = oldVirtualCamOffsetY;
                 break;
             }
         }
     }
 
+
     //if not colliding with any triggers reset just fired flag
     //-N.B could be an issue here in future with close/overlapping triggers but ok for now.
-    if (collided == false) {
+    if (collidedTrigger == false) {
         justFiredTrigger = false;
     }
 }
