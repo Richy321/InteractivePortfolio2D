@@ -36,6 +36,10 @@ var assetImage;
 var toonShaderImage;
 var omniShadowImage;
 
+var showGridOverlay = false;
+var debugKeyDown = false;
+
+
 window.onload = function()
 {
 }
@@ -131,7 +135,8 @@ var draw = function ()
     ctx.strokeStyle = "black";
     rect(0, 0, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
     grid.drawGrid();
-    //grid.drawGridOverlay();
+    if (showGridOverlay)
+        grid.drawGridOverlay();
     if (player.hasTarget)
     {
         drawTarget();
@@ -167,6 +172,17 @@ var draw = function ()
 
 var update = function ()
 {
+    if (80 in keys && keys[80])
+    {
+        debugKeyDown = true;
+    }
+    else
+    {
+        if (debugKeyDown == true) //just released key
+            showGridOverlay = !showGridOverlay; 
+        debugKeyDown = false;
+    }
+    
     draw();
 
     player.updatePlayer(timer.getSeconds());
