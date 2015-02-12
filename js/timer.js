@@ -1,8 +1,10 @@
-﻿var FrameTimer = function () {
+﻿var FrameTimer = function ()
+{
     this._lastTick = (new Date()).getTime();
 };
 
-FrameTimer.prototype = {
+FrameTimer.prototype =
+    {
     getSeconds: function () {
         var seconds = this._frameSpacing / 1000;
         if (isNaN(seconds)) {
