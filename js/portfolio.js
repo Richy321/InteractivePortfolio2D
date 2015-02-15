@@ -13,6 +13,7 @@ var bckCtx;
 var player;
 var grid;
 var timer;
+var aStar;
 var teleActive = new Image();
 var teleInactive = new Image();
 
@@ -57,11 +58,8 @@ function doKeyUp(evt)
 
 function doClick(evt)
 {
-    player.targetX = evt.pageX - canvas.offsetLeft - virtualCameraOffsetX;
-    player.targetY = evt.pageY - canvas.offsetTop - virtualCameraOffsetY;
-    player.hasTarget = true;
-
-
+    player.path = aStar.calculatePath(new point(player.positionX, player.positionY), new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY));
+    player.pathIndex = 0;
 }
 
 function clearKeyBuffer()
@@ -122,8 +120,17 @@ function CollidableObject(spriteImage, pPosX, pPosY, pSizeX, pSizeY, pOffsetX, p
 function drawTarget()
 {
     var origFill = ctx.fillStyle;
+
+    for (var i = 0; i < player.path.length; i++)
+    {
+        ctx.fillStyle = 'rgba(255, 255, 0, 255)';
+        circle(player.path[i].x, player.path[i].y, 5);
+
+    }
+
     ctx.fillStyle = 'rgba(255, 0, 0, 255)';
-    circle(player.targetX, player.targetY, 5);
+    circle(player.path[player.path.length - 1].x, player.path[player.path.length - 1].y, 5);
+
     ctx.fillStyle = origFill;
 }
 
@@ -203,6 +210,8 @@ function init()
     player = new Player(WIDTH / 2, HEIGHT / 2);
     grid = new Grid(WIDTH, HEIGHT);
     
+    aStar = new AStar(grid);
+
     document.onkeydown = function (e) {
         doKeyDown(e);
     }

@@ -51,3 +51,9 @@ function rect(x, y, w, h) {
     ctx.fill();
     ctx.stroke();
 }
+
+function point(pX, pY)
+{
+    this.x = pX;
+    this.y = pY;
+}

@@ -10,22 +10,29 @@ function AStartNode(pX, pY, pNumChild)
     this.f = -1; // sum of g and h. Lower value equals better path
 }
 
-function AStar(pGrid, pGridWidth, pGridHeight)
+function AStar(pGrid)
 {
     this.grid = pGrid;
-    this.gridWidth = pWidth;
-    this.gridHeight = pGridHeight;
+    this.gridWidth = pGrid.xTileCount;
+    this.gridHeight = pGrid.yTileCount;
 
-    this.calculatePath = function calculatePath(startTile, targetTile)
+    this.calculatePath = function calculatePath(startPoint, targetPoint)
     {
         this.openList = new Array();
         this.closedList = new Array();
 
         //assign values to starting point.
 
-        startTile.g = 0;
-        startTile.h = 0;
-        startTile.f = g + h;
+        var startTile = grid.GetTileFromPosition(startPoint.x, startPoint.y);
+        var targetTile = grid.GetTileFromPosition(targetPoint.x, targetPoint.y);
+
+        var path = new Array();
+        path.push(new point(targetTile.x * grid.tileWidth - grid.tileWidth * 0.5, targetTile.y * grid.tileWidth - grid.tileWidth * 0.5));
+
+        //push exact point inside target tile
+        path.push(targetPoint);
+
+        return path;
     }
 }
 

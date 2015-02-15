@@ -40,8 +40,6 @@ function initTown() {
     player.positionX = lastScenePosX;
     player.positionY = lastScenePosY;
 
-
-
     var StoneBench1 = new Image();
     StoneBench1.src = "Media/bench.png";
     collidables.push(new CollidableObject(StoneBench1, 50, 450, 117, 60, 0, 0, false));

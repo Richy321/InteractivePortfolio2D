@@ -1,8 +1,10 @@
-﻿function Tile(pSpriteXOffset, pSpriteYOffset, pSpriteSheetImage)
+﻿function Tile(pSpriteXOffset, pSpriteYOffset, pSpriteSheetImage, pX, pY)
 {
     this.spriteXOffset = pSpriteXOffset;
     this.spriteYOffset = pSpriteYOffset;
     this.spriteSheet = pSpriteSheetImage;
+    this.x = pX;
+    this.y = pY;
     this.walkable = true;
 }
 
@@ -15,11 +17,13 @@ function Grid(canvasWidth, canvasHeight) {
     this.flooringSheet.src = "./Media/VILFLR_small.png";
     this.tiles = new Array();
     this.tileWidth = 40;
+    this.yTileCount = Math.floor(canvasHeight / this.tileWidth);
+    this.xTileCount = Math.floor(canvasWidth / this.tileWidth);
 
     //Outdoor Stone Floor
     this.initPaving = function initPaving() {
-        for (y = 0; y < canvasHeight / this.tileWidth; y++) {
-            for (x = 0; x < canvasWidth / this.tileWidth; x++) {
+        for (y = 0; y < this.yTileCount; y++) {
+            for (x = 0; x < this.xTileCount; x++) {
                 var rnd = Math.floor((Math.random() * 4) + 1);
                 var rnd2 = Math.floor((Math.random() * 4) + 1);
 
@@ -27,21 +31,21 @@ function Grid(canvasWidth, canvasHeight) {
                 {
                     switch (rnd) {
                         case 1:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(40, 41, this.pavingSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(40, 41, this.pavingSheet, x, y);
                             break;
                         case 2:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(120, 41, this.pavingSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(120, 41, this.pavingSheet, x, y);
                             break;;
                         case 3:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(200, 41, this.pavingSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(200, 41, this.pavingSheet, x, y);
                             break;
                         case 4:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(280, 41, this.pavingSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(280, 41, this.pavingSheet, x, y);
                             break;
                     }
                 }
                 else {
-                    this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(120, 201, this.pavingSheet);
+                    this.tiles[(y * this.xTileCount) + x] = new Tile(120, 201, this.pavingSheet, x, y);
                 }
             }
         }
@@ -82,9 +86,9 @@ function Grid(canvasWidth, canvasHeight) {
     }
 
     this.drawGrid = function drawGrid() {
-        for (y = 0; y < canvasHeight / this.tileWidth; y++) {
-            for (x = 0; x < canvasWidth / this.tileWidth; x++) {
-                var tile = this.tiles[(y * (canvasWidth / this.tileWidth)) + x];
+        for (y = 0; y < this.yTileCount; y++) {
+            for (x = 0; x < this.xTileCount; x++) {
+                var tile = this.tiles[(y * this.xTileCount) + x];
                 ctx.drawImage(tile.spriteSheet, tile.spriteXOffset, tile.spriteYOffset, this.tileWidth, this.tileWidth, x * this.tileWidth, y * this.tileWidth, this.tileWidth, this.tileWidth);
             }
         }
@@ -110,6 +114,15 @@ function Grid(canvasWidth, canvasHeight) {
 
     this.getTile = function getTile(xCoord, yCoord)
     {
-        return tiles[(y * (canvasWidth / this.tileWidth)) + x];
+        return this.tiles[(yCoord * this.xTileCount) + xCoord];
+    }
+
+    this.GetTileFromPosition = function getTileCoords(posX, posY)
+    {
+        return this.getTile(Math.ceil(posX / this.tileWidth), Math.ceil(posY / this.tileWidth));
+    }
+
+    this.GetGridCoordFromPosition = function getTileCoords(posX, posY) {
+        return [(posX / this.tileWidth), (posY / this.tileWidth)];
     }
 }

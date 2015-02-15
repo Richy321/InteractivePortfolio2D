@@ -40,6 +40,9 @@ function Player(startPosX, startPosY)
     this.frameDelay = 0.20;
     this.frameDuration = this.frameDelay;
     this.spriteScale = 2;
+
+    this.path = [];
+    this.pathIndex = 0;
 }
 Player.prototype.updatePlayer = function updatePlayer(deltaTime) 
 {
@@ -77,6 +80,29 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
         }
     }
 
+
+    //Navigate path
+    if (this.path.length > 0 && this.pathIndex < this.path.length) {
+        this.targetX = this.path[this.pathIndex].x;
+        this.targetY = this.path[this.pathIndex].y;
+        this.hasTarget = true;
+
+        var centreTargX = this.targetX - (this.frameWidth * this.spriteScale) * 0.5;
+        var centreTargY = this.targetY - (this.frameHeight * this.spriteScale) * 0.5;
+
+        if (this.positionX == centreTargX && this.positionY == centreTargY) {
+            this.pathIndex++;
+        }
+    }
+    else
+    {
+        this.hasTarget = false;
+        this.pathIndex = -1;
+        this.targetX = -1;
+        this.targetY = -1;
+        this.path = [];
+    }
+
     if (this.hasTarget)
     {
         var centreTargX = this.targetX - (this.frameWidth * this.spriteScale) * 0.5;
@@ -90,8 +116,6 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
         }
 
         if (Math.abs(dirX) < this.deltaX) {
-            //this.positionX += dirDeltaX;
-            // else
             this.positionX += dirX;
             this.curDirection = "None";
         }
@@ -104,19 +128,11 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
         }
 
         if (Math.abs(dirY) < this.deltaY) {
-            //this.positionY += dirDeltaY;
-            //else
             this.positionY += dirY;
             this.curDirection = "None";
         }
 
-        if (this.positionX == centreTargX && this.positionY == centreTargY)
-        {
-            this.targetX = -1;
-            this.targetY = -1;
-            this.hasTarget = false;
-        }
-
+        
         if (Math.abs(dirX) > Math.abs(dirY))
         {
             if (dirX > 0)
