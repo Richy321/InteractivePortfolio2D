@@ -16,6 +16,7 @@ function initTown() {
 
     //Triggers
     var AboutTrigger = new CollidableObject(teleActive, 150 - 32, 238, 64, 32, 0, 0, true);
+    AboutTrigger.type = "Teleporter";
     AboutTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
         justFiredTrigger = true;
@@ -28,6 +29,7 @@ function initTown() {
     collidables.push(AboutTrigger);
 
     var ProgTrigger = new CollidableObject(teleActive, 600 - 32, 238, 64, 32, 0, 0, true);
+    ProgTrigger.type = "Teleporter";
     ProgTrigger.fireTrigger = function () {
         justFiredTrigger = true;
         lastScenePosX = player.positionX;

@@ -7,6 +7,7 @@ function AStarNode(pParent, pPoint)
     this.parent = pParent;
     this.g = 0; // cost to get from start node to this node
     this.f = 0; // sum of g and h. Lower value equals better path
+    this.h = 99999;
 }
 
 function AStar(pGrid)
@@ -15,23 +16,23 @@ function AStar(pGrid)
     this.gridWidth = pGrid.xTileCount;
     this.gridHeight = pGrid.yTileCount;
 
-    this.ManhattanDistance = function ManhattanDistance(point, target)
+    function ManhattanDistance(point, target)
     {
         return Math.abs(point.x - target.x) + Math.abs(point.y - target.y);
     }
 
-    this.EuclideanDistance = function EuclideanDistance(point, target)
+    function EuclideanDistance(point, target)
     {
         return Math.sqrt(Math.pow(point.x - target.x, 2) + Math.pow(point.y - target.y, 2));
     }
 
-    this.CanWalkhere = function CanWalkhere(x, y)
+    function CanWalkhere(x, y)
     {
         var tile = grid.getTile(x, y);
         return ((tile != null) && tile.walkable == true);
     }
 
-    this.NeighboursNESW = function neighbours(x, y)
+    function NeighboursNESW(x, y)
     {
         var N = y - 1;
         var E = x + 1;
@@ -40,13 +41,13 @@ function AStar(pGrid)
 
         var result = [];
 
-        if (this.CanWalkhere(x, N))
+        if (CanWalkhere(x, N))
             result.push(new point(x, N));
-        if (this.CanWalkhere(E, y))
+        if (CanWalkhere(E, y))
             result.push(new point(E, y));
-        if (this.CanWalkhere(x, S))
+        if (CanWalkhere(x, S))
             result.push(new point(x, S));
-        if (this.CanWalkhere(W, y))
+        if (CanWalkhere(W, y))
             result.push(new point(W, y));
 
         return result;
@@ -56,7 +57,7 @@ function AStar(pGrid)
     {
         var openList = new Array();
         var closedList = new Array();
-        var distanceFunction = this.ManhattanDistance;
+        var distanceFunction = ManhattanDistance;
 
         var startTile = grid.GetTileFromPosition(startPoint.x, startPoint.y);
         var targetTile = grid.GetTileFromPosition(targetPoint.x, targetPoint.y);
@@ -72,6 +73,8 @@ function AStar(pGrid)
         var worldHeight = grid.yTileCount;
         var worldSize =	worldWidth * worldHeight;
         var worldNodes = new Array(worldSize);
+        var closestNode = new AStarNode(null, new point(0,0));
+
         openList.push(startNode);
 
         var length, max, min, i, j;
@@ -107,7 +110,7 @@ function AStar(pGrid)
             else
             {
                 //nope not at target
-                currentNeighbours = this.NeighboursNESW(currentNode.x, currentNode.y);
+                currentNeighbours = NeighboursNESW(currentNode.x, currentNode.y);
 
                 for (var i = 0; i < currentNeighbours.length; i++)
                 {
@@ -116,32 +119,30 @@ function AStar(pGrid)
                     if (!worldNodes[linearArrayPos])
                     {
                         nodePath.g = currentNode.g + distanceFunction(currentNeighbours[i], currentNode);
-
-                        nodePath.f = nodePath.g + distanceFunction(currentNeighbours[i], targetNode);
+                        nodePath.h = distanceFunction(currentNeighbours[i], targetNode);
+                        nodePath.f = nodePath.g + nodePath.h;
 
                         openList.push(nodePath);
+
+                        if (nodePath != null && nodePath.h < closestNode.h) {
+                            closestNode = new AStarNode(null, new point(nodePath.x, nodePath.y));
+                            closestNode.h = nodePath.h;
+                        }
 
                         worldNodes[linearArrayPos] = true;
                     }
                 }
-
                 closedList.push(currentNode);
             }
         }
 
-
+        if (path.length == 0)
+        {
+            var closestPath = calculatePath(startPoint, grid.GetPositionCenterFromCoord(closestNode.x, closestNode.y));
+            for (var l = 0; l < closestPath.length; l++)
+                path.push(closestPath[l]);
+        }
         
-
-        /*
-        //Direct path
-        var startTile = grid.GetTileFromPosition(startPoint.x, startPoint.y);
-        var targetTile = grid.GetTileFromPosition(targetPoint.x, targetPoint.y);
-
-        
-        path.push(new point(targetTile.x * grid.tileWidth - grid.tileWidth * 0.5,
-            targetTile.y * grid.tileWidth - grid.tileWidth * 0.5));
-        */
-
         //push exact point inside target tile
         if(targetTile.walkable == true)
             path.push(targetPoint);

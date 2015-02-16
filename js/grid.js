@@ -6,6 +6,7 @@
     this.x = pX;
     this.y = pY;
     this.walkable = true;
+    this.traversalCost = 1;
     this.overdrawColour = 'rgba(0, 0, 0, 0)';
 }
 
@@ -147,6 +148,11 @@ function Grid(canvasWidth, canvasHeight) {
         return [(posX / this.tileWidth), (posY / this.tileWidth)];
     }
 
+    this.GetPositionCenterFromCoord = function GetPositionFromCoord(x, y)
+    {
+        return new point(x * this.tileWidth + this.tileWidth / 2, y * this.tileWidth + this.tileWidth / 2);
+    }
+
     this.SetWalkableTiles = function SetWalkableTiles(collidables)
     {
         //O(n^2) - can improve 
@@ -159,8 +165,16 @@ function Grid(canvasWidth, canvasHeight) {
                 
                 if (doBoundsIntersect(tileBounds, collidables[i].getBounds()))
                 {
-                    this.tiles[j].walkable = false;
-                    this.tiles[j].overdrawColour = 'rgba(255, 0, 0, 0.3)';
+                    if (collidables[i].type == "Teleporter")
+                    {
+                        this.tiles[j].traversalCost = 100;
+                        this.tiles[j].overdrawColour = 'rgba(255, 255, 0, 0.3)';
+                    }
+                    else
+                    {
+                        this.tiles[j].walkable = false;
+                        this.tiles[j].overdrawColour = 'rgba(255, 0, 0, 0.3)';
+                    }
                 }
             }
         }

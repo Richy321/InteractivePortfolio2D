@@ -73,13 +73,15 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
                 this.disableChangeAnimationDirection == false) {
                 this.disableChangeAnimationDirection = true;
             }
-            else {
+            else
+            {
                 this.disableChangeAnimationDirection = false;
                 //this.savedframeArray = [];
             }
         }
     }
-    else {
+    else
+    {
         this.hasTarget = false;
         this.pathIndex = -1;
         this.targetX = -1;
@@ -232,7 +234,8 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
                 }
                 collidedTrigger = true;
             }
-            else {
+            else
+            {
                 this.positionX = oldPositionX;
                 this.positionY = oldPositionY;
                 virtualCameraOffsetX = oldVirtualCamOffsetX;
@@ -276,6 +279,6 @@ Player.prototype.setPath = function setPath(pPath)
     if (pPath.length > 0)
     {
         this.disableChangeAnimationDirection = true;
-        this.path = pPath;
+        this.path = pPath.slice();
     }
 }

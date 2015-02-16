@@ -8,6 +8,7 @@
     this.disableDraw = false;
     this.offsetX = pOffsetX;
     this.offsetY = pOffsetY;
+    this.type = "Standard";
     //overwrite this if you're a trigger
     this.fireTrigger = function fireTrigger() {
 
