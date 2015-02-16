@@ -6,6 +6,7 @@
     this.x = pX;
     this.y = pY;
     this.walkable = true;
+    this.overdrawColour = 'rgba(0, 0, 0, 0)';
 }
 
 function Grid(canvasWidth, canvasHeight) {
@@ -20,9 +21,13 @@ function Grid(canvasWidth, canvasHeight) {
     this.yTileCount = Math.floor(canvasHeight / this.tileWidth);
     this.xTileCount = Math.floor(canvasWidth / this.tileWidth);
 
+    this.drawOverlayCoordinates = true;
+
     //Outdoor Stone Floor
-    this.initPaving = function initPaving() {
-        for (y = 0; y < this.yTileCount; y++) {
+    this.initPaving = function initPaving()
+    {
+        for (y = 0; y < this.yTileCount; y++)
+        {
             for (x = 0; x < this.xTileCount; x++) {
                 var rnd = Math.floor((Math.random() * 4) + 1);
                 var rnd2 = Math.floor((Math.random() * 4) + 1);
@@ -85,7 +90,8 @@ function Grid(canvasWidth, canvasHeight) {
         }
     }
 
-    this.drawGrid = function drawGrid() {
+    this.drawGrid = function drawGrid()
+    {
         for (y = 0; y < this.yTileCount; y++) {
             for (x = 0; x < this.xTileCount; x++) {
                 var tile = this.tiles[(y * this.xTileCount) + x];
@@ -97,16 +103,25 @@ function Grid(canvasWidth, canvasHeight) {
     this.drawGridOverlay = function drawGridOverlay()
     {
         var origFill = ctx.fillStyle;
-        for (y = 0; y < canvasHeight / this.tileWidth; y++) {
-            for (x = 0; x < canvasWidth / this.tileWidth; x++)
+        for (y = 0; y < this.yTileCount; y++) {
+            for (x = 0; x < this.xTileCount; x++)
             {
+                var tile = this.getTile(x, y);
                 ctx.beginPath();
                 ctx.rect(x * this.tileWidth, y * this.tileWidth, this.tileWidth, this.tileWidth);
                 ctx.closePath();
-                ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                ctx.fillStyle = tile.overdrawColour;
                 ctx.fill();
                 ctx.strokeStyle = 'red';
                 ctx.stroke();
+                if (this.drawOverlayCoordinates)
+                {
+                    ctx.fillStyle = 'white';
+                    ctx.textAlign = "center";
+                    ctx.font = '10px sans-serif';
+                    var coordText = x + "," + y;
+                    wrapText(ctx, coordText, x * this.tileWidth + this.tileWidth * 0.5, y * this.tileWidth + this.tileWidth * 0.5, x * this.tileWidth + this.tileWidth, y * this.tileWidth + this.tileWidth);
+                }
             }
         }
         ctx.fillStyle = origFill;
@@ -114,8 +129,9 @@ function Grid(canvasWidth, canvasHeight) {
 
     this.getTile = function getTile(xCoord, yCoord)
     {
-        if (xCoord > 0 && xCoord < this.xTileCount &&
-            yCoord > 0 && yCoord < this.yTileCount) {
+        if (xCoord >= 0 && xCoord <= this.xTileCount &&
+            yCoord >= 0 && yCoord <= this.yTileCount)
+        {
             return this.tiles[(yCoord * this.xTileCount) + xCoord];
         }
         else
@@ -124,10 +140,29 @@ function Grid(canvasWidth, canvasHeight) {
 
     this.GetTileFromPosition = function getTileCoords(posX, posY)
     {
-        return this.getTile(Math.ceil(posX / this.tileWidth), Math.ceil(posY / this.tileWidth));
+        return this.getTile(Math.floor(posX / this.tileWidth), Math.floor(posY / this.tileWidth));
     }
 
     this.GetGridCoordFromPosition = function getTileCoords(posX, posY) {
         return [(posX / this.tileWidth), (posY / this.tileWidth)];
+    }
+
+    this.SetWalkableTiles = function SetWalkableTiles(collidables)
+    {
+        //O(n^2) - can improve 
+        //check min and max points and set inclusive tiles to walkable false?
+        for (var i = 0; i < collidables.length; i++)
+        {
+            for (var j = 0; j < this.tiles.length; j++)
+            {
+                var tileBounds = new Bounds(this.tiles[j].x * this.tileWidth, this.tiles[j].y * this.tileWidth, this.tiles[j].x * this.tileWidth + this.tileWidth, this.tiles[j].y * this.tileWidth + this.tileWidth);
+                
+                if (doBoundsIntersect(tileBounds, collidables[i].getBounds()))
+                {
+                    this.tiles[j].walkable = false;
+                    this.tiles[j].overdrawColour = 'rgba(255, 0, 0, 0.3)';
+                }
+            }
+        }
     }
 }

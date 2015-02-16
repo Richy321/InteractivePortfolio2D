@@ -75,7 +75,7 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
             }
             else {
                 this.disableChangeAnimationDirection = false;
-                this.savedframeArray = [];
+                //this.savedframeArray = [];
             }
         }
     }
@@ -273,6 +273,9 @@ Player.prototype.getCenterPosition = function getCenterPosition()
 
 Player.prototype.setPath = function setPath(pPath)
 {
-    this.disableChangeAnimationDirection = true;
-    this.path = pPath;
+    if (pPath.length > 0)
+    {
+        this.disableChangeAnimationDirection = true;
+        this.path = pPath;
+    }
 }

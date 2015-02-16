@@ -24,8 +24,8 @@ var keys = new Array(); //input keys
 var collidables = new Array(); //collidable game objects
 
 //starting pos
-var lastScenePosX = VIRTUALCAMWIDTH / 2 - 20;
-var lastScenePosY = VIRTUALCAMHEIGHT / 2 - 40;
+var lastScenePosX = VIRTUALCAMWIDTH / 2;
+var lastScenePosY = VIRTUALCAMHEIGHT / 2;
 
 var virtualCameraOffsetX = 0;
 var virtualCameraOffsetY = 0;
@@ -80,43 +80,6 @@ function SpriteFrame(pSpriteXOffset, pSpriteYOffset, pWidth, pHeight) {
     this.height = pHeight;
 }
 
-function CollidableObject(spriteImage, pPosX, pPosY, pSizeX, pSizeY, pOffsetX, pOffsetY, isTrigger) {
-    this.posY = pPosY;
-    this.posX = pPosX;
-    this.sizeX = pSizeX;
-    this.sizeY = pSizeY;
-    this.sprite = spriteImage;
-    this.isTrigger = isTrigger;
-    this.disableDraw = false;
-    this.offsetX = pOffsetX;
-    this.offsetY = pOffsetY;
-    //overwrite this if you're a trigger
-    this.fireTrigger = function fireTrigger() {
-
-    }
-
-    this.drawCollidable = function drawCollidable() 
-    {
-        //ctx.drawImage(this.sprite, this.posX, this.posY, this.sizeX, this.sizeY);
-        ctx.drawImage(this.sprite, this.offsetX, this.offsetY, 
-            this.sizeX, this.sizeY, 
-            this.posX, this.posY, 
-            this.sizeX, this.sizeY);
-    }
-
-    this.getBounds = function getBounds()
-    {
-        return new Bounds(this.posX, this.posY, this.posX + this.sizeX, this.posY + this.sizeY);
-    }
-
-    this.drawBounds = function drawBounds() {
-        ctx.fillStyle = "rgba(255,0,0,0.3)";
-        rect(this.posX, this.posY, this.sizeX, this.sizeY);
-    }
-
-}
-
-
 function drawTarget()
 {
     var origFill = ctx.fillStyle;
@@ -124,8 +87,8 @@ function drawTarget()
     for (var i = 0; i < player.path.length; i++)
     {
         ctx.fillStyle = 'rgba(255, 255, 0, 255)';
-        circle(player.path[i].x, player.path[i].y, 5);
-
+        if(player.path.length >0)
+            circle(player.path[i].x, player.path[i].y, 5);
     }
 
     ctx.fillStyle = 'rgba(255, 0, 0, 255)';
@@ -143,8 +106,7 @@ var draw = function ()
     ctx.strokeStyle = "black";
     rect(0, 0, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
     grid.drawGrid();
-    if (showGridOverlay)
-        grid.drawGridOverlay();
+
     if (player.hasTarget)
     {
         drawTarget();
@@ -172,6 +134,9 @@ var draw = function ()
             drawAboutText();
             break;
     };
+
+    if (showGridOverlay)
+        grid.drawGridOverlay();
 
     player.drawPlayer();
     //player.drawBounds();

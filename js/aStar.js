@@ -28,7 +28,7 @@ function AStar(pGrid)
     this.CanWalkhere = function CanWalkhere(x, y)
     {
         var tile = grid.getTile(x, y);
-        return ((tile != null) && tile.walkable);
+        return ((tile != null) && tile.walkable == true);
     }
 
     this.NeighboursNESW = function neighbours(x, y)
@@ -96,8 +96,9 @@ function AStar(pGrid)
                 nodePath = closedList[closedList.push(currentNode) - 1];
                 do {
                     //push center of tile to path array
-                    path.push(new point(currentNode.x * grid.tileWidth - grid.tileWidth * 0.5,
-                        currentNode.y * grid.tileWidth - grid.tileWidth * 0.5));
+                    path.push(new point(currentNode.x * grid.tileWidth + grid.tileWidth * 0.5,
+                        currentNode.y * grid.tileWidth + grid.tileWidth * 0.5));
+
                 }
                 while (currentNode = currentNode.parent);
                 openList = closedList = worldNodes = [];
@@ -142,7 +143,8 @@ function AStar(pGrid)
         */
 
         //push exact point inside target tile
-        path.push(targetPoint);
+        if(targetTile.walkable == true)
+            path.push(targetPoint);
         return path;
     }
 }

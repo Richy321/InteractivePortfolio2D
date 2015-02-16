@@ -94,6 +94,7 @@ function initTown() {
     collidables.push(new CollidableObject(bench1, 300, 80, 76, 40, 320, 0, false));
     collidables.push(new CollidableObject(bench1, 400, 80, 76, 40, 320, 0, false));
 
+    grid.SetWalkableTiles(collidables);
 
     loading = false;
 }
@@ -225,9 +226,7 @@ function initProgHouse() {
     };
     collidables.push(omniShadowTrigger);
 
-
-
-
+    grid.SetWalkableTiles(collidables);
 }
 
 function initAboutHouse() {
@@ -277,6 +276,8 @@ function initAboutHouse() {
     var table = new Image();
     table.src = "Media/TableAndChairs.png";
     collidables.push(new CollidableObject(table, 400 - (169 / 2), 270, 169, 60, 0, 0, false));
+
+    grid.SetWalkableTiles(collidables);
 }
 
 function drawTitleTxt() {
