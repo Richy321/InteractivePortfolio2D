@@ -58,7 +58,7 @@ function doKeyUp(evt)
 
 function doClick(evt)
 {
-    player.path = aStar.calculatePath(new point(player.positionX, player.positionY), new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY));
+    player.setPath(aStar.calculatePath(player.getCenterPosition(), new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY)));
     player.pathIndex = 0;
 }
 

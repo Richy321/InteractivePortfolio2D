@@ -114,7 +114,12 @@ function Grid(canvasWidth, canvasHeight) {
 
     this.getTile = function getTile(xCoord, yCoord)
     {
-        return this.tiles[(yCoord * this.xTileCount) + xCoord];
+        if (xCoord > 0 && xCoord < this.xTileCount &&
+            yCoord > 0 && yCoord < this.yTileCount) {
+            return this.tiles[(yCoord * this.xTileCount) + xCoord];
+        }
+        else
+            return null;
     }
 
     this.GetTileFromPosition = function getTileCoords(posX, posY)
