@@ -1,8 +1,7 @@
 ﻿//Player object
 function Player(startPosX, startPosY) 
 {
-    this.positionX = startPosX;
-    this.positionY = startPosY;
+
     this.deltaX = 6;
     this.deltaY = 6;
     this.circleSize = 10;
@@ -40,6 +39,9 @@ function Player(startPosX, startPosY)
     this.frameDelay = 0.20;
     this.frameDuration = this.frameDelay;
     this.spriteScale = 2;
+
+    this.positionX = Math.floor(startPosX + this.frameWidth / 2);
+    this.positionY = Math.floor(startPosY + this.frameHeight / 2);
 
     this.path = [];
     this.pathIndex = 0;
@@ -244,6 +246,9 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
             }
         }
     }
+
+    virtualCameraOffsetX = -player.positionX + Math.floor(VIRTUALCAMWIDTH / 2);
+    virtualCameraOffsetY = -player.positionY + Math.floor(VIRTUALCAMHEIGHT / 2);
 
 
     //if not colliding with any triggers reset just fired flag

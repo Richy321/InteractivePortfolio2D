@@ -5,6 +5,10 @@ var HEIGHT = 768;  //world height
 var VIRTUALCAMWIDTH = 800;
 var VIRTUALCAMHEIGHT = 600;
 
+var newWidth = window.innerWidth;
+var newHeight = window.innerHeight;
+
+
 //shared scene resources
 var canvas;
 var bckCanvas;
@@ -162,21 +166,35 @@ var update = function ()
     timer.tick();
 }
 
+function resizeGame()
+{
+    var newWidth = gameCanvas.clientWidth;
+    var newHeight = gameCanvas.clientHeight;
+
+    VIRTUALCAMWIDTH = newWidth;
+    VIRTUALCAMHEIGHT = newHeight;
+    gameCanvas.width = VIRTUALCAMWIDTH;
+    gameCanvas.height = VIRTUALCAMHEIGHT;
+}
+
+
 //init
 function init() 
 {
     timer = new FrameTimer();
     timer.tick();
-    canvas = document.getElementById('c');
-    ctx = c.getContext('2d');
-    c.width = VIRTUALCAMWIDTH;
-    c.height = VIRTUALCAMHEIGHT;
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d');
 
-    player = new Player(WIDTH / 2, HEIGHT / 2);
+    canvas.width = VIRTUALCAMWIDTH;
+    canvas.height = VIRTUALCAMHEIGHT;
+
     grid = new Grid(WIDTH, HEIGHT);
     
-    aStar = new AStar(grid);
+    var spawnPoint = grid.GetPositionCenterFromCoord(12, 9);
+    player = new Player(spawnPoint.x, spawnPoint.y);
 
+    aStar = new AStar(grid);
     document.onkeydown = function (e) {
         doKeyDown(e);
     }
@@ -191,6 +209,10 @@ function init()
     }
 
     initTown();
+
+    window.addEventListener('resize', resizeGame, false);
+    window.addEventListener('orientationchange', resizeGame, false);
+    resizeGame();
 
     return setInterval(update, 40);
 }

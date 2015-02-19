@@ -24,7 +24,6 @@ function initTown() {
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
         initAboutHouse();
-
     };
     collidables.push(AboutTrigger);
 
@@ -38,9 +37,6 @@ function initTown() {
         initProgHouse();
     };
     collidables.push(ProgTrigger);
-
-    player.positionX = lastScenePosX;
-    player.positionY = lastScenePosY;
 
     var StoneBench1 = new Image();
     StoneBench1.src = "Media/bench.png";
@@ -116,6 +112,8 @@ function initGenericHouse() {
     ToTownTrigger.fireTrigger = function fireTrigger() {
         justFiredTrigger = true;
         initTown();
+        player.positionX = lastScenePosX;
+        player.positionY = lastScenePosY;
     }
     collidables.push(ToTownTrigger);
 
@@ -167,10 +165,10 @@ function initGenericHouse() {
 
 }
 
-function initProgHouse() {
+function initProgHouse()
+{
     curScene = "ProgHouse";
     initGenericHouse();
-
 
     gsImg = new Image();
     gsImg.src = "Media/GraveyardShiftScreenshot2_medium.jpg";
@@ -294,7 +292,6 @@ function drawTitleTxt() {
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textInstructions, WIDTH / 2, HEIGHT / 2 + 105);
 
-
 }
 
 function drawCVHouseTxt() {
@@ -386,10 +383,4 @@ function drawAboutText() {
     var textEmailClipboard = "Copy email to clipboard";
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textEmailClipboard, 500, 500);
-
-
-
-
-
-
 }
