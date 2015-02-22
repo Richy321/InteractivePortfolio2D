@@ -25,8 +25,15 @@ function Grid(canvasWidth, canvasHeight) {
     this.drawOverlayCoordinates = true;
 
     //Outdoor Stone Floor
-    this.initPaving = function initPaving()
+    this.initPaving = function initPaving(pWidth, pHeight)
     {
+        this.tiles = [];
+
+        this.tiles = new Array(this.yTileCount * this.xTileCount);
+
+        this.yTileCount = Math.floor(canvasHeight / this.tileWidth);
+        this.xTileCount = Math.floor(canvasWidth / this.tileWidth);
+
         for (y = 0; y < this.yTileCount; y++)
         {
             for (x = 0; x < this.xTileCount; x++) {
@@ -58,9 +65,17 @@ function Grid(canvasWidth, canvasHeight) {
     }
 
     //Wooden Floor - indoors
-    this.initFlooring = function initFlooring() {
-        for (y = 0; y < canvasHeight / this.tileWidth; y++) {
-            for (x = 0; x < canvasWidth / this.tileWidth; x++) {
+    this.initFlooring = function initFlooring(pWidth, pHeight)
+    {
+        this.tiles = [];
+
+        this.yTileCount = Math.floor(pHeight / this.tileWidth);
+        this.xTileCount = Math.floor(pWidth / this.tileWidth);
+
+        this.tiles = new Array(this.yTileCount * this.xTileCount);
+
+        for (y = 0; y < this.yTileCount; y++) {
+            for (x = 0; x < this.xTileCount; x++) {
                 var rnd = Math.floor((Math.random() * 5) + 1);
                 var rnd2 = Math.floor((Math.random() * 4) + 1);
 
@@ -68,24 +83,24 @@ function Grid(canvasWidth, canvasHeight) {
                 {
                     switch (rnd) {
                         case 1:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(360, 41, this.flooringSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(360, 41, this.flooringSheet, x, y);
                             break;
                         case 2:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(120, 41, this.flooringSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(120, 41, this.flooringSheet, x, y);
                             break;;
                         case 3:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(200, 41, this.flooringSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(200, 41, this.flooringSheet, x, y);
                             break;
                         case 4:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(280, 41, this.flooringSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(280, 41, this.flooringSheet, x, y);
                             break;
                         case 5:
-                            this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(440, 41, this.flooringSheet);
+                            this.tiles[(y * this.xTileCount) + x] = new Tile(440, 41, this.flooringSheet, x, y);
                             break;
                     }
                 }
                 else {
-                    this.tiles[(y * (canvasWidth / this.tileWidth)) + x] = new Tile(40, 41, this.flooringSheet);
+                    this.tiles[(y * this.xTileCount) + x] = new Tile(40, 41, this.flooringSheet, x, y);
                 }
             }
         }
