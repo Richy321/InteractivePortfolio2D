@@ -12,11 +12,6 @@ function initTown()
     clearKeyBuffer();
     curScene = "Town";
 
-    teleActive = new Image();
-    teleInactive = new Image();
-    teleActive.src = "Media/teleporter_active_64.png";
-    teleInactive.src = "Media/teleporter_inactive_128.png";
-
     //Triggers
     var AboutTrigger = new CollidableObject(teleActive, 150 - 32, 238, 64, 32, 0, 0, true);
     AboutTrigger.type = "Teleporter";

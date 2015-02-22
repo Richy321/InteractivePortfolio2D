@@ -1,6 +1,36 @@
 ﻿var HEIGHT_HOUSE = 600;
 var WIDTH_HOUSE = 800;
 
+var bookcaseWidth = 40;
+var bookcaseHeight = 76;
+var xOffsetBookcase = 100;
+var yOffsetBookcase = 20;
+
+var armorSetWidth = 90;
+var armorSetHeight = 57;
+var xOffsetArmorSet = -100;
+var yOffsetArmorSet = 20;
+
+var wallSwordWidth = 87;
+var wallSwordHeight = 22;
+
+var sawBarrelWidth = 45;
+var sawBarrelHeight = 93;
+
+var anvilRWidth = 40;
+var anvilRHeight = 36;
+
+var lavaBucketWidth = 71;
+var lavaBucketHeight = 37;
+
+var forgeWidth = 100;
+var forgeHeight = 161;
+
+var logsWidth = 40;
+var logsHeight = 41;
+
+var houseFont = '17.5px sans-serif';
+
 function initGenericHouse() {
 
     loading = true;
@@ -56,7 +86,6 @@ function initGenericHouse() {
         collidables.push(new CollidableObject(interiorWallSheet, i, HEIGHT_HOUSE - 20, 20, 20, 80, 200, false));
     }
 
-
     var door = new Image();
     door.src = "Media/TOWNDOOR1_40.png";
 
@@ -75,7 +104,7 @@ function initProgHouse() {
 
     gsImg = new Image();
     gsImg.src = "Media/GraveyardShiftScreenshot2_medium.jpg";
-    var gsTrigger = new CollidableObject(teleActive, 32, 190, 64, 32, 0, 0, true);
+    var gsTrigger = new CollidableObject(teleInactive, 32, 190, 64, 32, 0, 0, true);
     gsTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
         justFiredTrigger = true;
@@ -85,7 +114,7 @@ function initProgHouse() {
     collidables.push(gsTrigger);
 
 
-    var gsTriggerDL = new CollidableObject(teleActive, 112, 190, 64, 32, 0, 0, true);
+    var gsTriggerDL = new CollidableObject(teleInactive, 112, 190, 64, 32, 0, 0, true);
     gsTriggerDL.fireTrigger = function fireTrigger() {
         //show CV in popup
         justFiredTrigger = true;
@@ -96,7 +125,7 @@ function initProgHouse() {
 
     assetImage = new Image();
     assetImage.src = "Media/AssetManager.png";
-    var assetTrigger = new CollidableObject(teleActive, 70, 410, 64, 32, 0, 0, true);
+    var assetTrigger = new CollidableObject(teleInactive, 70, 410, 64, 32, 0, 0, true);
     assetTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
         justFiredTrigger = true;
@@ -108,7 +137,7 @@ function initProgHouse() {
 
     toonShaderImage = new Image();
     toonShaderImage.src = "Media/ToonShader.JPG";
-    var toonShaderTrigger = new CollidableObject(teleActive, 500, 210, 64, 32, 0, 0, true);
+    var toonShaderTrigger = new CollidableObject(teleInactive, 500, 210, 64, 32, 0, 0, true);
     toonShaderTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
         justFiredTrigger = true;
@@ -120,7 +149,7 @@ function initProgHouse() {
 
     omniShadowImage = new Image();
     omniShadowImage.src = "Media/ToonShader.JPG";
-    var omniShadowTrigger = new CollidableObject(teleActive, 500, 410, 64, 32, 0, 0, true);
+    var omniShadowTrigger = new CollidableObject(teleInactive, 500, 410, 64, 32, 0, 0, true);
     omniShadowTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
         justFiredTrigger = true;
@@ -170,26 +199,7 @@ function initAboutHouse() {
     curScene = "AboutHouse";
     initGenericHouse();
 
-
-    //Triggers
-    var CVTrigger = new CollidableObject(teleActive, 50, 410, 64, 32, 0, 0, true);
-    CVTrigger.fireTrigger = function fireTrigger() {
-        //show CV in popup
-        justFiredTrigger = true;
-        clearKeyBuffer();
-        window.open("CV_Games2.pdf", "winPopupPDF", 0, false);
-    };
-    collidables.push(CVTrigger);
-
-    var CVDLTrigger = new CollidableObject(teleActive, 50, 510, 64, 32, 0, 0, true);
-    CVDLTrigger.fireTrigger = function fireTrigger() {
-        //show CV in popup
-        justFiredTrigger = true;
-        clearKeyBuffer();
-        window.location.href = "CV_Games2.doc";
-    };
-    collidables.push(CVDLTrigger);
-
+    /*
     var emailTrigger = new CollidableObject(teleActive, 500, 410, 64, 32, 0, 0, true);
     emailTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
@@ -208,17 +218,114 @@ function initAboutHouse() {
         window.prompt("Copy to clipboard: Ctrl+C (Cmd-C on Mac), Enter", "rjfox321@gmail.com");
     };
     collidables.push(emailClipboardTrigger);
+    */
 
 
+    //Education
     var table = new Image();
     table.src = "Media/TableAndChairs.png";
     collidables.push(new CollidableObject(table, 400 - (169 / 2), 270, 169, 60, 0, 0, false));
 
+    var bookcase = new Image();
+    bookcase.src = "Media/bookcaseM.png";
+    collidables.push(new CollidableObject(bookcase, xOffsetBookcase, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
+    collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
+    collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth * 2, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
+    collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth * 3, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
+    var educationTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth + 8, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
+    educationTrigger.fireTrigger = function fireTrigger() {
+        justFiredTrigger = true;
+        clearKeyBuffer();
+        //window.location.href = "CV_Games2.doc";
+    };
+    collidables.push(educationTrigger);
+
+
+    //Skills
+    var armorSet = new Image();
+    armorSet.src = "Media/ArmorSetL.png";
+    collidables.push(new CollidableObject(armorSet, WIDTH_HOUSE + xOffsetArmorSet - armorSetWidth, yOffsetBookcase, armorSetWidth, armorSetHeight, 0, 0, false));
+    var wallSword = new Image();
+    wallSword.src = "Media/wallSwordM.png";
+    collidables.push(new CollidableObject(wallSword, WIDTH_HOUSE + xOffsetArmorSet - armorSetWidth - wallSwordWidth, yOffsetBookcase, wallSwordWidth, wallSwordHeight, 0, 0, false));
+    var sawBarrel = new Image();
+    sawBarrel.src = "Media/sawBarrelM.png";
+    collidables.push(new CollidableObject(sawBarrel, WIDTH_HOUSE - sawBarrelWidth - 30, yOffsetBookcase, sawBarrelWidth, sawBarrelHeight, 0, 0, false));
+
+    collidables.push(new CollidableObject(sawBarrel, WIDTH_HOUSE - sawBarrelWidth - 30, yOffsetBookcase + sawBarrelHeight / 2.5, sawBarrelWidth, sawBarrelHeight, 0, 0, false));
+    var skillsTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE + xOffsetArmorSet - 62, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
+    skillsTrigger.fireTrigger = function fireTrigger() {
+        justFiredTrigger = true;
+        clearKeyBuffer();
+        //window.location.href = "CV_Games2.doc";
+    };
+    collidables.push(skillsTrigger);
+
+
+    //Work Experience
+    var anvilR = new Image();
+    anvilR.src = "Media/anvilR_M.png";
+    collidables.push(new CollidableObject(anvilR, 20 + 15 + lavaBucketWidth, HEIGHT_HOUSE - 20 - anvilRHeight - 5, anvilRWidth, anvilRHeight, 0, 0, false));
+    collidables.push(new CollidableObject(anvilR, 20 + 20 + lavaBucketWidth + anvilRWidth, HEIGHT_HOUSE - 20 - anvilRHeight - 5, anvilRWidth, anvilRHeight, 0, 0, false));
+
+    var lavaBucket = new Image();
+    lavaBucket.src = "Media/lava.png";
+    collidables.push(new CollidableObject(lavaBucket, 20 + 5, HEIGHT_HOUSE - 20 - anvilRHeight - 5, lavaBucketWidth, lavaBucketHeight, 0, 0, false));
+
+    var forge = new Image();
+    forge.src = "Media/forge.png";
+    collidables.push(new CollidableObject(forge, 20 + 25, HEIGHT_HOUSE - 20 - anvilRHeight * 2 - 50 - forgeHeight, forgeWidth, forgeHeight, 0, 0, false));
+
+    var logs = new Image();
+    logs.src = "media/logs.png";
+    collidables.push(new CollidableObject(logs, 20 + 5, HEIGHT_HOUSE - 20 - lavaBucketHeight - 10 - logsHeight, logsWidth, logsHeight, 0, 0, false));
+    collidables.push(new CollidableObject(logs, 20 + 5, HEIGHT_HOUSE - 20 - lavaBucketHeight - 10 - logsHeight*2, logsWidth, logsHeight, 0, 0, false));
+
+    var workExpTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth * 2, HEIGHT_HOUSE - 170, 64, 32, 0, 0, true);
+    workExpTrigger.fireTrigger = function fireTrigger()
+    {
+        //show CV in popup
+        justFiredTrigger = true;
+        clearKeyBuffer();
+        //window.open("CV_Games2.pdf", "winPopupPDF", 0, false);
+    };
+    collidables.push(workExpTrigger);
+
+    //CV & Misc
+    var CVTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE + xOffsetArmorSet - 65, HEIGHT_HOUSE - 170, 64, 32, 0, 0, true);
+    CVTrigger.fireTrigger = function fireTrigger()
+    {
+        //show CV in popup
+        justFiredTrigger = true;
+        clearKeyBuffer();
+        window.open("CV_Games2.pdf", "winPopupPDF", 0, false);
+    };
+    collidables.push(CVTrigger);
+
     grid.SetWalkableTiles(collidables);
 }
 
-function drawAboutText() {
-    ctx.textAlign = "left";
+function drawAboutText()
+{
+    ctx.textAlign = "center";
+
+    var educationText = "Education";
+    ctx.font = houseFont;
+    wrapText(ctx, educationText, xOffsetBookcase + bookcaseWidth*2, yOffsetBookcase + bookcaseHeight + 20, bookcaseWidth * 4, 20);
+
+    var skillsText = "Skills";
+    ctx.font = houseFont;
+    wrapText(ctx, skillsText, WIDTH_HOUSE + xOffsetArmorSet - 30, yOffsetBookcase + bookcaseHeight + 20, bookcaseWidth * 4, 20);
+
+    var workExperienceText = "Work Experience";
+    ctx.font = houseFont;
+    wrapText(ctx, workExperienceText, xOffsetBookcase + bookcaseWidth * 2, HEIGHT_HOUSE - 80, bookcaseWidth * 4, 20);
+
+    var CVText = "CV";
+    ctx.font = houseFont;
+    wrapText(ctx, CVText, WIDTH_HOUSE + xOffsetArmorSet - 30, HEIGHT_HOUSE - 120, bookcaseWidth * 4, 20);
+
+    /*
     var textAbout = "Software Developer with a wide skill base, 4+ years experience and a passion for " +
     "games development. Experienced in mobile games development with a published game on the app store. Additionally " +
     "I have worked on small web based games using GWT/GAE and HTML5 canvas, military training/simulation software, " +
@@ -236,14 +343,14 @@ function drawAboutText() {
     var textCVDL = "Download CV (.doc)";
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textCVDL, 50, 500);
-
+    */
 
     /*
     var textEmailContact = "Email: rjfox321@gmail.com";
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textEmailContact, 500, 400);
     */
-
+    /*
     var textEmailPopup = "Email me (Popup)";
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textEmailPopup, 500, 400);
@@ -251,4 +358,6 @@ function drawAboutText() {
     var textEmailClipboard = "Copy email to clipboard";
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textEmailClipboard, 500, 500);
+    */
+
 }

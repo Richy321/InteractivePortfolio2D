@@ -252,6 +252,9 @@ function init()
 
     grid = new Grid(WIDTH, HEIGHT);
     
+    teleActive.src = "Media/teleporter_active_64.png";
+    teleInactive.src = "Media/teleporter_inactive_64.png";
+
     var spawnPoint = grid.GetPositionCenterFromCoord(12, 9);
     player = new Player(spawnPoint.x, spawnPoint.y);
 
@@ -269,8 +272,9 @@ function init()
         doClick(e);
     }
 
-    initTown();
-
+    //initTown();
+    justFiredTrigger = true
+    initAboutHouse();
     window.addEventListener('resize', resizeGame, false);
     window.addEventListener('orientationchange', resizeGame, false);
     resizeGame();
@@ -278,6 +282,6 @@ function init()
     return setInterval(update, 40);
 }
 
-//--main--]
+//--main--
 init();
 //window.addEventListener('load', eventWindowLoaded, false);

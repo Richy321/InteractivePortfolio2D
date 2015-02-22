@@ -59,8 +59,13 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
     var dirDeltaY = this.deltaY;
     var dirDeltaX = this.deltaX;
 
+    var movementKeyPressed = ((38 in keys && keys[38]) ||
+        (40 in keys && keys[40]) ||
+        (37 in keys && keys[37]) ||
+        (39 in keys && keys[39]));
     //Navigate path
-    if (this.path.length > 0 && this.pathIndex < this.path.length) {
+    if (!movementKeyPressed && this.path.length > 0 && this.pathIndex < this.path.length) 
+    {
         this.targetX = this.path[this.pathIndex].x;
         this.targetY = this.path[this.pathIndex].y;
         this.hasTarget = true;
@@ -111,13 +116,13 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
             dirDeltaX = -dirDeltaX;
         }
     }
-
     else if (39 in keys && keys[39]) { //right
         if (this.positionX + this.deltaX < (WIDTH - this.frameWidth * this.spriteScale))
         {
             this.curDirection = "Right";
         }
     }
+    
 
     if (this.hasTarget)
     {
@@ -249,7 +254,6 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
 
     virtualCameraOffsetX = -player.positionX + Math.floor(VIRTUALCAMWIDTH / 2);
     virtualCameraOffsetY = -player.positionY + Math.floor(VIRTUALCAMHEIGHT / 2);
-
 
     //if not colliding with any triggers reset just fired flag
     //-N.B could be an issue here in future with close/overlapping triggers but ok for now.
