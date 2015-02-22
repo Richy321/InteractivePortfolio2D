@@ -29,6 +29,24 @@ var forgeHeight = 161;
 var logsWidth = 40;
 var logsHeight = 41;
 
+var penInkWidth = 35;
+var penInkHeight = 31;
+
+var teleInactiveWidth = 64;
+var teleInactiveHeight = 32;
+
+var interviewTableWidth = 100;
+var interviewTableHeight = 101;
+
+var interviewChairTopWidth = 30;
+var interviewChairTopHeight = 33;
+
+var interviewChairBottomWidth = 30
+var interviewChairBottomHeight = 33;
+
+var cvScrollWidth = 25;
+var cvScrollHeight = 34;
+
 var houseFont = '17.5px sans-serif';
 
 function initGenericHouse() {
@@ -39,10 +57,10 @@ function initGenericHouse() {
 
     clearKeyBuffer();
 
-
     grid.initFlooring(WIDTH_HOUSE, HEIGHT_HOUSE);
 
     var ToTownTrigger = new CollidableObject(teleActive, WIDTH_HOUSE / 2 - 32, 60, 64, 32, 0, 0, true);
+    ToTownTrigger.type = "Teleporter";
     ToTownTrigger.fireTrigger = function fireTrigger() {
         justFiredTrigger = true;
         initTown();
@@ -90,7 +108,6 @@ function initGenericHouse() {
     door.src = "Media/TOWNDOOR1_40.png";
 
     collidables.push(new CollidableObject(door, ToTownTrigger.posX + 13, 10, 40, 46, 0, 0, false));
-
 
     player.positionX = ToTownTrigger.posX;
     player.positionY = ToTownTrigger.posY;
@@ -194,7 +211,6 @@ function drawProgContents() {
     ctx.drawImage(omniShadowImage, 570, 400, 150, 100);
 }
 
-
 function initAboutHouse() {
     curScene = "AboutHouse";
     initGenericHouse();
@@ -221,11 +237,26 @@ function initAboutHouse() {
     */
 
 
-    //Education
+    //Email me
     var table = new Image();
     table.src = "Media/TableAndChairs.png";
-    collidables.push(new CollidableObject(table, 400 - (169 / 2), 270, 169, 60, 0, 0, false));
+    collidables.push(new CollidableObject(table, WIDTH_HOUSE/2 - 169 / 2, 270, 169, 60, 0, 0, false));
+    var penInk = new Image();
+    penInk.src = "Media/inkPen.png";
+    collidables.push(new CollidableObject(penInk, WIDTH_HOUSE / 2 - penInkWidth/2, 260 + penInkHeight/2, penInkWidth, penInkHeight, 0, 0, false));
+    var emailTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE / 2 - teleInactiveWidth/2, 345, 64, 32, 0, 0, true);
+    emailTrigger.type = "Teleporter";
+    emailTrigger.fireTrigger = function fireTrigger() {
+        //show CV in popup
+        justFiredTrigger = true;
+        clearKeyBuffer();
+        window.open("mailto:rjfox321@gmail.com", 'Mailer');
+        //window.location.href = "mailto:rjfox321@gmail.com";
+    };
+    collidables.push(emailTrigger);
 
+
+    //Education
     var bookcase = new Image();
     bookcase.src = "Media/bookcaseM.png";
     collidables.push(new CollidableObject(bookcase, xOffsetBookcase, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
@@ -233,6 +264,7 @@ function initAboutHouse() {
     collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth * 2, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
     collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth * 3, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
     var educationTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth + 8, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
+    educationTrigger.type = "Teleporter";
     educationTrigger.fireTrigger = function fireTrigger() {
         justFiredTrigger = true;
         clearKeyBuffer();
@@ -253,7 +285,8 @@ function initAboutHouse() {
     collidables.push(new CollidableObject(sawBarrel, WIDTH_HOUSE - sawBarrelWidth - 30, yOffsetBookcase, sawBarrelWidth, sawBarrelHeight, 0, 0, false));
 
     collidables.push(new CollidableObject(sawBarrel, WIDTH_HOUSE - sawBarrelWidth - 30, yOffsetBookcase + sawBarrelHeight / 2.5, sawBarrelWidth, sawBarrelHeight, 0, 0, false));
-    var skillsTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE + xOffsetArmorSet - 62, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
+    var skillsTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE + xOffsetArmorSet - 82, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
+    skillsTrigger.type = "Teleporter";
     skillsTrigger.fireTrigger = function fireTrigger() {
         justFiredTrigger = true;
         clearKeyBuffer();
@@ -281,18 +314,37 @@ function initAboutHouse() {
     collidables.push(new CollidableObject(logs, 20 + 5, HEIGHT_HOUSE - 20 - lavaBucketHeight - 10 - logsHeight, logsWidth, logsHeight, 0, 0, false));
     collidables.push(new CollidableObject(logs, 20 + 5, HEIGHT_HOUSE - 20 - lavaBucketHeight - 10 - logsHeight*2, logsWidth, logsHeight, 0, 0, false));
 
-    var workExpTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth * 2, HEIGHT_HOUSE - 170, 64, 32, 0, 0, true);
+    var workExpTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth * 2, HEIGHT_HOUSE - 140, 64, 32, 0, 0, true);
+    workExpTrigger.type = "Teleporter";
     workExpTrigger.fireTrigger = function fireTrigger()
     {
-        //show CV in popup
         justFiredTrigger = true;
         clearKeyBuffer();
-        //window.open("CV_Games2.pdf", "winPopupPDF", 0, false);
     };
     collidables.push(workExpTrigger);
 
     //CV & Misc
-    var CVTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE + xOffsetArmorSet - 65, HEIGHT_HOUSE - 170, 64, 32, 0, 0, true);
+    var interviewTable = new Image();
+    interviewTable.src = "Media/interviewTable.png";
+    collidables.push(new CollidableObject(interviewTable, WIDTH_HOUSE - 20 - interviewTableWidth - 40, HEIGHT_HOUSE - interviewTableHeight - 20 - 50, interviewTableWidth, interviewTableHeight, 0, 0, false));
+
+    var interviewChairTop = new Image();
+    interviewChairTop.src = "Media/interviewTableChairTop.png";
+    collidables.push(new CollidableObject(interviewChairTop, WIDTH_HOUSE - 20 - interviewTableWidth - 5, HEIGHT_HOUSE - interviewTableHeight - 20 - 80, interviewTableWidth, interviewTableHeight, 0, 0, false));
+
+
+    var interviewChairBottom = new Image();
+    interviewChairBottom.src = "Media/interviewTableChairBottom.png";
+    collidables.push(new CollidableObject(interviewChairBottom, WIDTH_HOUSE - 20 - interviewTableWidth - 5, HEIGHT_HOUSE - interviewTableHeight + interviewChairBottomHeight/2, interviewTableWidth, interviewTableHeight, 0, 0, false));
+
+
+    var cvScroll = new Image();
+    cvScroll.src = "Media/cvScroll.png";
+    collidables.push(new CollidableObject(cvScroll, WIDTH_HOUSE - 20 - interviewTableWidth - 40 + cvScrollWidth + cvScrollWidth / 2, HEIGHT_HOUSE - interviewTableHeight - 20 - 60 + cvScrollHeight, cvScrollWidth, cvScrollHeight, 0, 0, false));
+
+
+    var CVTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE - 20 - interviewTableWidth - 110, HEIGHT_HOUSE - 140, 64, 32, 0, 0, true);
+    CVTrigger.type = "Teleporter";
     CVTrigger.fireTrigger = function fireTrigger()
     {
         //show CV in popup
@@ -315,15 +367,15 @@ function drawAboutText()
 
     var skillsText = "Skills";
     ctx.font = houseFont;
-    wrapText(ctx, skillsText, WIDTH_HOUSE + xOffsetArmorSet - 30, yOffsetBookcase + bookcaseHeight + 20, bookcaseWidth * 4, 20);
+    wrapText(ctx, skillsText, WIDTH_HOUSE + xOffsetArmorSet - 50, yOffsetBookcase + bookcaseHeight + 20, bookcaseWidth * 4, 20);
 
     var workExperienceText = "Work Experience";
     ctx.font = houseFont;
-    wrapText(ctx, workExperienceText, xOffsetBookcase + bookcaseWidth * 2, HEIGHT_HOUSE - 80, bookcaseWidth * 4, 20);
+    wrapText(ctx, workExperienceText, xOffsetBookcase + 117, HEIGHT_HOUSE - 80, bookcaseWidth * 4, 20);
 
     var CVText = "CV";
     ctx.font = houseFont;
-    wrapText(ctx, CVText, WIDTH_HOUSE + xOffsetArmorSet - 30, HEIGHT_HOUSE - 120, bookcaseWidth * 4, 20);
+    wrapText(ctx, CVText, WIDTH_HOUSE - 20 - interviewTableWidth - 75, HEIGHT_HOUSE - 90, bookcaseWidth * 4, 20);
 
     /*
     var textAbout = "Software Developer with a wide skill base, 4+ years experience and a passion for " +
@@ -350,11 +402,11 @@ function drawAboutText()
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textEmailContact, 500, 400);
     */
-    /*
+    
     var textEmailPopup = "Email me (Popup)";
-    ctx.font = 'italic bold 20px sans-serif';
-    ctx.fillText(textEmailPopup, 500, 400);
+    ctx.fillText(textEmailPopup, WIDTH_HOUSE / 2, 345);
 
+    /*
     var textEmailClipboard = "Copy email to clipboard";
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textEmailClipboard, 500, 500);
