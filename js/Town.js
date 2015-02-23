@@ -22,6 +22,7 @@ function initTown()
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
         initAboutHouse();
+        player.clearPath();
     };
     collidables.push(AboutTrigger);
 
@@ -33,6 +34,7 @@ function initTown()
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
         initProgHouse();
+        player.clearPath();
     };
     collidables.push(ProgTrigger);
 
@@ -106,7 +108,6 @@ function drawTitleTxt() {
 
     ctx.font = 'italic bold 20px sans-serif';
     ctx.fillText(textInstructions, WIDTH / 2, HEIGHT / 2 + 105);
-
 }
 
 function drawCVHouseTxt() {

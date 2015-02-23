@@ -47,11 +47,14 @@ function Player(startPosX, startPosY)
     this.pathIndex = 0;
     this.disableChangeAnimationDirection = false;
     this.savedframeArray = [];
+
+    this.disableMovement = false;
 }
 Player.prototype.updatePlayer = function updatePlayer(deltaTime) 
 {
-    if (loading)
+    if (loading || this.disableMovement)
         return;
+
     var oldPositionX = this.positionX;
     var oldPositionY = this.positionY;
     var oldVirtualCamOffsetX = virtualCameraOffsetX;
@@ -83,18 +86,12 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
             else
             {
                 this.disableChangeAnimationDirection = false;
-                //this.savedframeArray = [];
             }
         }
     }
     else
     {
-        this.hasTarget = false;
-        this.pathIndex = -1;
-        this.targetX = -1;
-        this.targetY = -1;
-        this.path = [];
-        this.curDirection = "None";
+        this.clearPath();
     }
 
     if (38 in keys && keys[38]) { //up
@@ -290,4 +287,15 @@ Player.prototype.setPath = function setPath(pPath)
         this.disableChangeAnimationDirection = true;
         this.path = pPath.slice();
     }
+}
+
+Player.prototype.clearPath = function clearPath()
+{
+    this.hasTarget = false;
+    this.pathIndex = -1;
+    this.targetX = -1;
+    this.targetY = -1;
+    this.path = [];
+    this.curDirection = "None";
+    this.disableChangeAnimationDirection = false
 }

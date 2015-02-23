@@ -259,11 +259,13 @@ function init()
     player = new Player(spawnPoint.x, spawnPoint.y);
 
     aStar = new AStar(grid);
-    document.onkeydown = function (e) {
+    document.onkeydown = function (e)
+    {
         doKeyDown(e);
     }
 
-    document.onkeyup = function (e) {
+    document.onkeyup = function (e)
+    {
         doKeyUp(e);
     }
 
@@ -274,7 +276,9 @@ function init()
 
     //initTown();
     justFiredTrigger = true
-    initAboutHouse();
+    //initAboutHouse();
+    initProgHouse();
+
     window.addEventListener('resize', resizeGame, false);
     window.addEventListener('orientationchange', resizeGame, false);
     resizeGame();
