@@ -1,13 +1,14 @@
 ﻿//Player object
 function Player(startPosX, startPosY) 
 {
-
     this.deltaX = 6;
     this.deltaY = 6;
     this.circleSize = 10;
 
     this.targetX = -1;
     this.targetY = -1;
+    this.innerPathTargetX = -1;
+    this.innerPathTargetY = -1;
     this.hasTarget = false;
 
     //load sprite frames
@@ -298,4 +299,15 @@ Player.prototype.clearPath = function clearPath()
     this.path = [];
     this.curDirection = "None";
     this.disableChangeAnimationDirection = false
+}
+
+Player.prototype.setInnerPath = function setInnerPath()
+{
+    if (player.innerPathTargetX != -1 && player.innerPathTargetY != -1) {
+        var innerPath = aStar.calculatePath(player.getCenterPosition(), new point(this.innerPathTargetX, this.innerPathTargetY));
+        player.setPath(innerPath);
+        player.pathIndex = 0;
+        player.innerPathTargetX = -1;
+        player.innerPathTargetY = -1;
+    }
 }

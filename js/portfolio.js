@@ -8,7 +8,6 @@ var VIRTUALCAMHEIGHT = 600;
 var newWidth = window.innerWidth;
 var newHeight = window.innerHeight;
 
-
 //shared scene resources
 var canvas;
 var bckCanvas;
@@ -22,7 +21,6 @@ var teleActive = new Image();
 var teleInactive = new Image();
 var teleInactiveHeight = 32;
 var teleInactiveWidth = 64;
-
 
 var justFiredTrigger = false;
 var curScene = "None";
@@ -53,6 +51,10 @@ var videoDiv;
 var videoHeight = 100;
 var videoWidth = 133;
 
+//Link pathfind positions
+var libraryTeleporterLocation;
+var warehouseTeleportLocation;
+var houseTeleporterLocation;
 
 window.onload = function()
 {
@@ -73,6 +75,21 @@ function doClick(evt)
 {
     player.setPath(aStar.calculatePath(player.getCenterPosition(), new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY)));
     player.pathIndex = 0;
+}
+
+function doLinkClick(pLinkName)
+{
+    switch (pLinkName) {
+
+        case "CV":
+            var townPath = aStar.calculatePath(player.getCenterPosition(), libraryTeleporterLocation);
+            player.setPath(townPath);
+            player.pathIndex = 0;
+            var point = grid.GetPositionCenterFromCoord(14, 11);
+            player.innerPathTargetX = point.x;
+            player.innerPathTargetY = point.y;
+            break;
+    }
 }
 
 function clearKeyBuffer()
@@ -278,14 +295,25 @@ function init()
         doClick(e);
     }
 
+    //3,6 = Library teleporter
+    //14,6 = Warehouse teleporter
+    libraryTeleporterLocation = grid.GetPositionCenterFromCoord(3, 6);
+    warehouseTeleportLocation = grid.GetPositionCenterFromCoord(14, 6);
+    houseTeleporterLocation = grid.GetPositionCenterFromCoord(10, 2);
+
     initTown();
     justFiredTrigger = true
     //initAboutHouse();
     //initProgHouse();
 
+
+
     window.addEventListener('resize', resizeGame, false);
     window.addEventListener('orientationchange', resizeGame, false);
     resizeGame();
+
+
+
 
     return setInterval(update, 40);
 }

@@ -88,7 +88,7 @@ function initProgHouse()
     contentImage1.src = "Media/arena.png";
 
     var signLabels = new Array("Arena", "sign2", "sign3", "sign4", "sign5", "sign6");
-    var signContent = new Array(contentImage1, testImage, testImage, testImage, testImage, testImage);
+    var signContent = new Array(testImage, testImage, testImage, testImage, testImage, testImage);
     var signVideoLinks = new Array(
         "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1", "http://www.youtube.com/embed/3l8MwU0IjMI?autoplay=1",
         "http://www.youtube.com/embed/3l8MwU0IjMI?autoplay=1", "http://www.youtube.com/embed/3l8MwU0IjMI?autoplay=1",

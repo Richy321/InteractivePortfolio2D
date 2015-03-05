@@ -16,6 +16,7 @@
         player.positionX = lastScenePosX;
         player.positionY = lastScenePosY;
         player.clearPath();
+        player.setInnerPath();
     }
     collidables.push(ToTownTrigger);
 

@@ -23,6 +23,7 @@ function initTown()
         ctx.translate(0, 0);
         initAboutHouse();
         player.clearPath();
+        player.setInnerPath();
     };
     collidables.push(AboutTrigger);
 
@@ -35,6 +36,7 @@ function initTown()
         ctx.translate(0, 0);
         initProgHouse();
         player.clearPath();
+        player.setInnerPath();
     };
     collidables.push(ProgTrigger);
 
