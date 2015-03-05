@@ -20,6 +20,9 @@ var timer;
 var aStar;
 var teleActive = new Image();
 var teleInactive = new Image();
+var teleInactiveHeight = 32;
+var teleInactiveWidth = 64;
+
 
 var justFiredTrigger = false;
 var curScene = "None";

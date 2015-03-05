@@ -61,6 +61,8 @@ function AStar(pGrid)
 
         var startTile = grid.GetTileFromPosition(startPoint.x, startPoint.y);
         var targetTile = grid.GetTileFromPosition(targetPoint.x, targetPoint.y);
+        if (startTile == null || targetTile == null)
+            return;
         var startNode = new AStarNode(null, new point(startTile.x, startTile.y));
         var targetNode = new AStarNode(null, new point(targetTile.x, targetTile.y));
 

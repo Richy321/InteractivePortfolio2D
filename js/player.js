@@ -282,7 +282,7 @@ Player.prototype.getCenterPosition = function getCenterPosition()
 
 Player.prototype.setPath = function setPath(pPath)
 {
-    if (pPath.length > 0)
+    if (pPath != null && pPath.length > 0)
     {
         this.disableChangeAnimationDirection = true;
         this.path = pPath.slice();
