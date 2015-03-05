@@ -120,7 +120,8 @@ function eventWindowLoaded()
     videoDiv.setAttribute("style", "display:none;");
 
     var videoType = supportedVideoFormat(videoElement);
-    if (videoType == "") {
+    if (videoType == "") 
+    {
         alert("no video support");
         return;
     }
@@ -277,10 +278,10 @@ function init()
         doClick(e);
     }
 
-    //initTown();
+    initTown();
     justFiredTrigger = true
     //initAboutHouse();
-    initProgHouse();
+    //initProgHouse();
 
     window.addEventListener('resize', resizeGame, false);
     window.addEventListener('orientationchange', resizeGame, false);

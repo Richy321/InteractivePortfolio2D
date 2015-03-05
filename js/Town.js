@@ -51,7 +51,8 @@ function initTown()
         collidables.push(new CollidableObject(wallSheet, 0, i, 40, 56, 0, 123, false));
     }
     //N wall
-    for (i = 40; i < WIDTH - 40; i += 40) {
+    for (i = 40; i < WIDTH - 40; i += 40)
+    {
         collidables.push(new CollidableObject(wallSheet, i, 20, 40, 75, 80, 143, false));
     }
     //E wall
