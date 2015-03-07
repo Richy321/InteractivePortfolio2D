@@ -1,6 +1,6 @@
 ﻿
-var WIDTH = 1024;  //world width
-var HEIGHT = 768;  //world height
+var WIDTH = 1024;  //town width
+var HEIGHT = 768;  //town height
 
 var VIRTUALCAMWIDTH = 800;
 var VIRTUALCAMHEIGHT = 600;
@@ -23,7 +23,6 @@ var teleInactiveHeight = 32;
 var teleInactiveWidth = 64;
 
 var justFiredTrigger = false;
-var curScene = "None";
 
 var keys = new Array(); //input keys
 var collidables = new Array(); //collidable game objects
@@ -56,50 +55,115 @@ var libraryTeleporterLocation;
 var warehouseTeleportLocation;
 var houseTeleporterLocation;
 
-window.onload = function()
-{
+LocationEnum = {
+    TOWN: 0,
+    WAREHOUSE: 1,
+    LIBRARY: 2,
+}
+
+var locationState = LocationEnum.TOWN;
+
+window.onload = function () {
 }
 
 //keyboard input
-function doKeyDown(evt)
-{
+function doKeyDown(evt) {
     keys[evt.keyCode] = true;
 }
 
-function doKeyUp(evt)
-{
+function doKeyUp(evt) {
     keys[evt.keyCode] = false;
 }
 
 function doClick(evt)
 {
-    player.setPath(aStar.calculatePath(player.getCenterPosition(), new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY)));
-    player.pathIndex = 0;
+    var gamePt = new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY);
+    var localPt = new point(evt.pageX - canvas.offsetLeft, evt.pageY - canvas.offsetTop);
+
+    if (localPt.x > 0 && localPt.x < canvas.width && localPt.y > 0 && localPt.y < canvas.height)
+    {
+        if (!player.disableMovement)
+        {
+            player.setPath(aStar.calculatePath(player.getCenterPosition(), gamePt));
+            player.pathIndex = 0;
+        }
+    }
 }
 
 function doLinkClick(pLinkName)
 {
-    switch (pLinkName) {
+    player.clearPath();
+    var libraryLocations = ["CV", "Contact", "WorkExp", "Education", "Skills"];
+    var warehouseLocations = ["Demo1", "Demo2", "Demo3", "Demo4", "Demo5", "Demo6"];
 
-        case "CV":
-            var townPath = aStar.calculatePath(player.getCenterPosition(), libraryTeleporterLocation);
-            player.setPath(townPath);
-            player.pathIndex = 0;
-            var point = grid.GetPositionCenterFromCoord(14, 11);
-            player.innerPathTargetX = point.x;
-            player.innerPathTargetY = point.y;
-            break;
+    if (pLinkName == "Home")
+    {
+        player.pushTargetToStack(grid.GetPositionCenterFromCoord(16, 3));
+
     }
+    if ($.inArray(pLinkName, libraryLocations) > -1) {
+        switch (pLinkName)
+        {
+            case "CV":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(14, 11)); //to cv trigger
+                break;
+            case "Contact":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(10, 9)); //to contact me trigger
+                break;
+            case "WorkExp":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 11)); //to work experience trigger
+                break;
+            case "Education":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(4, 3)); //to education trigger
+                break;
+            case "Skills":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(16, 3)); //to skills trigger
+                break;
+        }
+
+        if (locationState == LocationEnum.TOWN || locationState == LocationEnum.WAREHOUSE)
+            player.pushTargetToStack(libraryTeleporterLocation);
+        if (locationState == LocationEnum.WAREHOUSE)
+            player.pushTargetToStack(houseTeleporterLocation);
+    }
+
+    if ($.inArray(pLinkName, warehouseLocations) > -1) {
+        switch (pLinkName) {
+            case "Demo1":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 5)); //to cv trigger
+                break;
+            case "Demo2":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 10)); //to contact me trigger
+                break;
+            case "Demo3":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 16)); //to work experience trigger
+                break;
+            case "Demo4":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(15, 5)); //to education trigger
+                break;
+            case "Demo5":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(15, 11)); //to skills trigger
+                break;
+            case "Demo6":
+                player.pushTargetToStack(grid.GetPositionCenterFromCoord(15, 16)); //to skills trigger
+                break;
+        }
+
+        if (locationState == LocationEnum.TOWN || locationState == LocationEnum.LIBRARY)
+            player.pushTargetToStack(warehouseTeleportLocation);
+        if (locationState == LocationEnum.LIBRARY)
+            player.pushTargetToStack(houseTeleporterLocation);
+    }
+
+    player.setPathFromTargetStack();
 }
 
-function clearKeyBuffer()
-{
+function clearKeyBuffer() {
     for (i = 0; i < keys.length; i++)
         keys[i] = false;
 }
 
-function clear()
-{
+function clear() {
     ctx.clearRect(-virtualCameraOffsetX, -virtualCameraOffsetY, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
 }
 
@@ -110,14 +174,12 @@ function SpriteFrame(pSpriteXOffset, pSpriteYOffset, pWidth, pHeight) {
     this.height = pHeight;
 }
 
-function drawTarget()
-{
+function drawTarget() {
     var origFill = ctx.fillStyle;
 
-    for (var i = 0; i < player.path.length; i++)
-    {
+    for (var i = 0; i < player.path.length; i++) {
         ctx.fillStyle = 'rgba(255, 255, 0, 255)';
-        if(player.path.length >0)
+        if (player.path.length > 0)
             circle(player.path[i].x, player.path[i].y, 5);
     }
 
@@ -127,8 +189,7 @@ function drawTarget()
     ctx.fillStyle = origFill;
 }
 
-function eventWindowLoaded()
-{
+function eventWindowLoaded() {
     /*
     videoElement = document.createElement("video");
     videoDiv = document.createElement('div');
@@ -147,13 +208,11 @@ function eventWindowLoaded()
     */
 }
 
-function videoLoaded(event)
-{
+function videoLoaded(event) {
     init();
 }
 
-function supportedVideoFormat(video)
-{
+function supportedVideoFormat(video) {
     var returnExtension = "";
     if (video.canPlayType("video/webm") == "probably" ||
         video.canPlayType("video/webm") == "maybe") {
@@ -169,15 +228,12 @@ function supportedVideoFormat(video)
     return returnExtension;
 }
 
-function drawVideo(posX, posY)
-{
-    if(videoElement)
+function drawVideo(posX, posY) {
+    if (videoElement)
         ctx.drawImage(videoElement, posX, posY, videoWidth, videoHeight);
 }
 
-
-var draw = function ()
-{
+var draw = function () {
     ctx.save();
     ctx.translate(virtualCameraOffsetX, virtualCameraOffsetY);
     clear();
@@ -186,8 +242,7 @@ var draw = function ()
     rect(0, 0, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
     grid.drawGrid();
 
-    if (player.hasTarget)
-    {
+    if (player.hasTarget) {
         drawTarget();
     }
     for (i = 0; i < collidables.length; i++) {
@@ -200,16 +255,16 @@ var draw = function ()
 
     //Hack - TODO replace text with collidable images. 
 
-    switch (curScene) {
-        case "Town":
+    switch (locationState) {
+        case LocationEnum.TOWN:
             drawCVHouseTxt();
             drawProgHouseTxt();
             drawTitleTxt();
             break;
-        case "ProgHouse":
+        case LocationEnum.WAREHOUSE:
             drawProgContents();
             break;
-        case "AboutHouse":
+        case LocationEnum.LIBRARY:
             drawAboutText();
             break;
     };
@@ -217,38 +272,34 @@ var draw = function ()
     if (showGridOverlay)
         grid.drawGridOverlay();
 
-    drawVideo(0,0);
+    drawVideo(0, 0);
 
     player.drawPlayer();
     //player.drawBounds();
     ctx.restore();
 }
 
-var update = function ()
-{
-    if (80 in keys && keys[80])
-    {
+var update = function () {
+    if (80 in keys && keys[80]) {
         debugKeyDown = true;
     }
-    else
-    {
+    else {
         if (debugKeyDown == true) //just released key
-            showGridOverlay = !showGridOverlay; 
+            showGridOverlay = !showGridOverlay;
         debugKeyDown = false;
     }
-    
+
     draw();
 
     player.updatePlayer(timer.getSeconds());
 
-    if(videoElement)
+    if (videoElement)
         videoElement.play();
 
     timer.tick();
 }
 
-function resizeGame()
-{
+function resizeGame() {
     var newWidth = gameCanvas.clientWidth;
     var newHeight = gameCanvas.clientHeight;
 
@@ -258,10 +309,8 @@ function resizeGame()
     gameCanvas.height = VIRTUALCAMHEIGHT;
 }
 
-
 //init
-function init() 
-{
+function init() {
     timer = new FrameTimer();
     timer.tick();
     canvas = document.getElementById('gameCanvas');
@@ -272,48 +321,38 @@ function init()
     canvas.style.border = "none";
 
     grid = new Grid(WIDTH, HEIGHT);
-    
-    teleActive.src = "Media/teleporter_active_64.png";
-    teleInactive.src = "Media/teleporter_inactive_64.png";
+
+    teleActive.src = "media/teleporter_active_64.png";
+    teleInactive.src = "media/teleporter_inactive_64.png";
 
     var spawnPoint = grid.GetPositionCenterFromCoord(12, 9);
     player = new Player(spawnPoint.x, spawnPoint.y);
 
     aStar = new AStar(grid);
-    document.onkeydown = function (e)
-    {
+    document.onkeydown = function (e) {
         doKeyDown(e);
     }
 
-    document.onkeyup = function (e)
-    {
+    document.onkeyup = function (e) {
         doKeyUp(e);
     }
 
-    document.onclick = function (e) 
-    {
+    document.onclick = function (e) {
         doClick(e);
     }
 
-    //3,6 = Library teleporter
-    //14,6 = Warehouse teleporter
     libraryTeleporterLocation = grid.GetPositionCenterFromCoord(3, 6);
     warehouseTeleportLocation = grid.GetPositionCenterFromCoord(14, 6);
     houseTeleporterLocation = grid.GetPositionCenterFromCoord(10, 2);
 
     initTown();
-    justFiredTrigger = true
+    justFiredTrigger = true;
     //initAboutHouse();
     //initProgHouse();
-
-
 
     window.addEventListener('resize', resizeGame, false);
     window.addEventListener('orientationchange', resizeGame, false);
     resizeGame();
-
-
-
 
     return setInterval(update, 40);
 }

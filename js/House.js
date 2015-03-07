@@ -1,4 +1,4 @@
-﻿function initGenericHouse(pWidth, pHeight) {
+﻿function initGenericHouse(pWidth, pHeight, worldXY) {
 
     loading = true;
     //clear array
@@ -8,59 +8,60 @@
 
     grid.initFlooring(pWidth, pHeight);
 
-    var ToTownTrigger = new CollidableObject(teleActive, pWidth / 2 - 32, 70, 64, 32, 0, 0, true);
+    var ToTownTrigger = new CollidableObject(teleActive, worldXY.x + pWidth / 2 - 32, worldXY.y + 70, 64, 32, 0, 0, true);
     ToTownTrigger.type = "Teleporter";
     ToTownTrigger.fireTrigger = function fireTrigger() {
         justFiredTrigger = true;
         initTown();
+        locationState = LocationEnum.TOWN;
         player.positionX = lastScenePosX;
         player.positionY = lastScenePosY;
-        player.clearPath();
-        player.setInnerPath();
+        player.popTargetFromStack()
+        player.setPathFromTargetStack();
     }
     collidables.push(ToTownTrigger);
 
-
     //load walls
     var interiorWallSheet = new Image();
-    interiorWallSheet.src = "Media/VILINT_small_320.png";
+    interiorWallSheet.src = "media/VILINT_small_320.png";
 
-    var NWCornerWall = new CollidableObject(interiorWallSheet, 0, 0, 40, 60, 20, 20, false);
+    var NWCornerWall = new CollidableObject(interiorWallSheet, worldXY.x + 0, worldXY.y + 0, 40, 60, 20, 20, false);
     collidables.push(NWCornerWall);
-    var SWCornerWall = new CollidableObject(interiorWallSheet, 0, pHeight - 40, 40, 40, 20, 180, false);
+    var SWCornerWall = new CollidableObject(interiorWallSheet, worldXY.x + 0, worldXY.y + pHeight - 40, 40, 40, 20, 180, false);
     collidables.push(SWCornerWall);
-    var SECornerWall = new CollidableObject(interiorWallSheet, pWidth - 40, pHeight - 40, 40, 40, 160, 180, false);
+    var SECornerWall = new CollidableObject(interiorWallSheet, worldXY.x + pWidth - 40, worldXY.y + pHeight - 40, 40, 40, 160, 180, false);
     collidables.push(SECornerWall);
-    var NECornerWall = new CollidableObject(interiorWallSheet, pWidth - 40, 0, 40, 60, 160, 20, false);
+    var NECornerWall = new CollidableObject(interiorWallSheet, worldXY.x + pWidth - 40, worldXY.y +  0, 40, 60, 160, 20, false);
     collidables.push(NECornerWall);
 
     //W wall
     for (i = 60; i < pHeight - 40; i += 20) {
-        collidables.push(new CollidableObject(interiorWallSheet, 0, i, 20, 20, 20, 100, false));
+        collidables.push(new CollidableObject(interiorWallSheet, worldXY.x + 0, worldXY.y + i, 20, 20, 20, 100, false));
     }
     //E wall
     for (i = 60; i < pHeight - 40; i += 20) {
-        collidables.push(new CollidableObject(interiorWallSheet, pWidth - 20, i, 20, 20, 180, 100, false));
+        collidables.push(new CollidableObject(interiorWallSheet, worldXY.x + pWidth - 20, worldXY.y + i, 20, 20, 180, 100, false));
     }
     //N wall
-    for (i = 40; i < pWidth - 40; i += 20) {
+    for (i = 40; i < pWidth - 40; i += 20)
+    {
         if (i % 40)
-            collidables.push(new CollidableObject(interiorWallSheet, i, 0, 20, 60, 80, 20, false));
+            collidables.push(new CollidableObject(interiorWallSheet, worldXY.x + i, worldXY.y + 0, 20, 60, 80, 20, false));
         else
-            collidables.push(new CollidableObject(interiorWallSheet, i, 0, 20, 60, 120, 20, false));
+            collidables.push(new CollidableObject(interiorWallSheet, worldXY.x + i, worldXY.y + 0, 20, 60, 120, 20, false));
     }
     //S wall
     for (i = 40; i < pWidth - 40; i += 20) {
-        collidables.push(new CollidableObject(interiorWallSheet, i, pHeight - 20, 20, 20, 80, 200, false));
+        collidables.push(new CollidableObject(interiorWallSheet, worldXY.x + i, worldXY.y + pHeight - 20, 20, 20, 80, 200, false));
     }
 
     var door = new Image();
-    door.src = "Media/TOWNDOOR1_40.png";
+    door.src = "media/TOWNDOOR1_40.png";
 
-    collidables.push(new CollidableObject(door, ToTownTrigger.posX + 13, 10, 40, 46, 0, 0, false));
+    collidables.push(new CollidableObject(door, worldXY.x + ToTownTrigger.posX + 13, 10, 40, 46, 0, 0, false));
 
-    player.positionX = ToTownTrigger.posX;
-    player.positionY = ToTownTrigger.posY;
+    player.positionX = worldXY.x + ToTownTrigger.posX;
+    player.positionY = worldXY.y + ToTownTrigger.posY;
     loading = false;
 }
 

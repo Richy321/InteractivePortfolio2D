@@ -15,7 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
-
+    <link href="css/misc.css" rel="stylesheet">
     <!--<style>
         body {
             margin: 0px;
@@ -49,13 +49,23 @@
                 <div class="masthead clearfix">
                     <div class="inner">
                         <h3 class="masthead-brand">RJ Fox Portfolio</h3>
-                        <nav>
+                        <nav >
                             <ul class="nav masthead-nav">
-                                <li class="active"><a href="#">Home</a></li>
-                                <li><a href="#">Games</a></li>
+                                <li><a href="#">Home</a></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Demos<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" onclick="doLinkClick('Demo1')">Arena</a></li>
+                                        <li><a href="#" onclick="doLinkClick('Demo2')">Demo2</a></li>
+                                        <li><a href="#" onclick="doLinkClick('Demo3')">Demo3</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#" onclick="doLinkClick('Demo4')">Demo4</a></li>
+                                        <li><a href="#" onclick="doLinkClick('Demo5')">Demo5</a></li>
+                                        <li><a href="#" onclick="doLinkClick('Demo6')">Demo6</a></li>
+                                    </ul>
                                 <li><a href="#" onclick="doLinkClick('CV')">CV</a></li>
                                 <li><a href="#">Maths</a></li>
-                                <li><a href="#">Contact</a></li>
+                                <li><a href="#" onclick="doLinkClick('Contact')">Contact</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -67,7 +77,7 @@
 
                 <div class="mastfoot">
                     <div class="inner">
-                        <p>Richard Fox - <a href="richard@rjfox.co.uk">richard@rjfox.co.uk</a>.</p>
+                        <p>Richard Fox - <a href="mailo:richard@rjfox.co.uk">richard@rjfox.co.uk</a>.</p>
                     </div>
                 </div>
 

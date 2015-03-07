@@ -1,7 +1,4 @@
-﻿
-
-
-function initTown()
+﻿function initTown()
 {
     loading = true;
     //clear array
@@ -10,7 +7,7 @@ function initTown()
     grid.initPaving();
 
     clearKeyBuffer();
-    curScene = "Town";
+    locationState = LocationEnum.TOWN;
 
     //Triggers
     var AboutTrigger = new CollidableObject(teleActive, 150 - 32, 238, 64, 32, 0, 0, true);
@@ -22,8 +19,9 @@ function initTown()
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
         initAboutHouse();
-        player.clearPath();
-        player.setInnerPath();
+        locationState = LocationEnum.LIBRARY;
+        player.popTargetFromStack();
+        player.setPathFromTargetStack();
     };
     collidables.push(AboutTrigger);
 
@@ -35,21 +33,23 @@ function initTown()
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
         initProgHouse();
-        player.clearPath();
-        player.setInnerPath();
+        locationState = LocationEnum.WAREHOUSE;
+        player.popTargetFromStack();
+        player.setPathFromTargetStack();
     };
     collidables.push(ProgTrigger);
 
     var StoneBench1 = new Image();
-    StoneBench1.src = "Media/bench.png";
+    StoneBench1.src = "media/bench.png";
     collidables.push(new CollidableObject(StoneBench1, 50, 450, 117, 60, 0, 0, false));
 
     var wallSheet = new Image();
-    wallSheet.src = "Media/FENCE_small.png";
+    wallSheet.src = "media/FENCE_small.png";
 
 
     //W wall
-    for (i = 60; i < HEIGHT - 60; i += 40) {
+    for (i = 60; i < HEIGHT - 60; i += 40)
+    {
         collidables.push(new CollidableObject(wallSheet, 0, i, 40, 56, 0, 123, false));
     }
     //N wall
@@ -58,11 +58,13 @@ function initTown()
         collidables.push(new CollidableObject(wallSheet, i, 20, 40, 75, 80, 143, false));
     }
     //E wall
-    for (i = 60; i < HEIGHT - 60; i += 40) {
+    for (i = 60; i < HEIGHT - 60; i += 40)
+    {
         collidables.push(new CollidableObject(wallSheet, WIDTH - 40, i, 40, 56, 0, 123, false));
     }
     //S wall
-    for (i = 40; i < WIDTH - 40; i += 40) {
+    for (i = 40; i < WIDTH - 40; i += 40)
+    {
         if (i % 80)
             collidables.push(new CollidableObject(wallSheet, i, HEIGHT - 75, 40, 75, 80, 143, false));
         else
@@ -83,7 +85,7 @@ function initTown()
 
 
     var house1 = new Image();
-    house1.src = "Media/House1.png";
+    house1.src = "media/House1.png";
     //CV house
     collidables.push(new CollidableObject(house1, 50, 10, 200, 228, 0, 0, false));
     //Prog House
@@ -91,7 +93,7 @@ function initTown()
 
 
     var bench1 = new Image();
-    bench1.src = "Media/bench.png";
+    bench1.src = "media/bench.png";
     collidables.push(new CollidableObject(bench1, 300, 80, 76, 40, 320, 0, false));
     collidables.push(new CollidableObject(bench1, 400, 80, 76, 40, 320, 0, false));
 

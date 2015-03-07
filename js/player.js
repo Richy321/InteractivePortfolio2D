@@ -13,7 +13,7 @@ function Player(startPosX, startPosY)
 
     //load sprite frames
     this.sprite = new Image();
-    this.sprite.src = "./Media/IWDCHAR.png";
+    this.sprite.src = "./media/IWDCHAR.png";
     this.curFrameNo = 0;
     this.frameWidth = 21;
     this.frameHeight = 30;
@@ -44,6 +44,7 @@ function Player(startPosX, startPosY)
     this.positionX = Math.floor(startPosX + this.frameWidth / 2);
     this.positionY = Math.floor(startPosY + this.frameHeight / 2);
 
+    this.targetStack = [];
     this.path = [];
     this.pathIndex = 0;
     this.disableChangeAnimationDirection = false;
@@ -287,6 +288,7 @@ Player.prototype.setPath = function setPath(pPath)
     {
         this.disableChangeAnimationDirection = true;
         this.path = pPath.slice();
+        this.pathIndex = 0;
     }
 }
 
@@ -301,13 +303,32 @@ Player.prototype.clearPath = function clearPath()
     this.disableChangeAnimationDirection = false
 }
 
-Player.prototype.setInnerPath = function setInnerPath()
+Player.prototype.pushTargetToStack = function pushTargetToStack(pTargetPoint)
 {
-    if (player.innerPathTargetX != -1 && player.innerPathTargetY != -1) {
-        var innerPath = aStar.calculatePath(player.getCenterPosition(), new point(this.innerPathTargetX, this.innerPathTargetY));
-        player.setPath(innerPath);
-        player.pathIndex = 0;
-        player.innerPathTargetX = -1;
-        player.innerPathTargetY = -1;
+    if (pTargetPoint != null)
+    {
+        this.targetStack.push(pTargetPoint);
     }
+}
+
+Player.prototype.popTargetFromStack = function popTargetFromStack()
+{
+    if (this.targetStack.length > 0)
+        this.targetStack.pop();
+}
+
+Player.prototype.setPathFromTargetStack = function setPathFromTargetStack()
+{
+    if (this.targetStack.length > 0) {
+        var targetPoint = this.targetStack[this.targetStack.length - 1];
+        var nextPath = aStar.calculatePath(this.getCenterPosition(), new point(targetPoint.x, targetPoint.y));
+        this.setPath(nextPath);
+    }
+    else
+        this.clearPath();
+}
+
+Player.prototype.clearTargetStack = function clearTargetStack()
+{
+     this.targetStack = [];
 }

@@ -12,11 +12,11 @@
 
 function Grid(canvasWidth, canvasHeight) {
     this.terrainSheet = new Image();
-    this.terrainSheet.src = "./Media/GRS2ROC.bmp";
+    this.terrainSheet.src = "./media/GRS2ROC.bmp";
     this.pavingSheet = new Image();
-    this.pavingSheet.src = "./Media/PAVE_small.png";
+    this.pavingSheet.src = "./media/PAVE_small.png";
     this.flooringSheet = new Image();
-    this.flooringSheet.src = "./Media/VILFLR_small.png";
+    this.flooringSheet.src = "./media/VILFLR_small.png";
     this.tiles = new Array();
     this.tileWidth = 40;
     this.yTileCount = Math.floor(canvasHeight / this.tileWidth);
