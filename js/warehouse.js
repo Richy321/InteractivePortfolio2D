@@ -30,11 +30,11 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     var signContentWidth = 90;
     var signContentHeight = 65;
 
-    var triggerYGap = 47;
+    var triggerYGap = 10;
 
     var totalHeight = signHeight + triggerYGap + teleInactiveHeight;
 
-    var rowGap = 0;
+    var rowGap = 40;
     var colGap = 300;
 
     posY = posY + (colIndex * (rowGap + totalHeight));
@@ -43,7 +43,7 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     var signCollidable = new CollidableObject(this.signImage, posX, posY, signWidth, signHeight, 0, 0, false);
     collidables.push(signCollidable);
 
-    var signTrigger = new CollidableObject(teleInactive, posX + signWidth / 2 - teleInactiveWidth / 2, posY + signHeight, teleInactiveWidth, teleInactiveHeight, 0, 0, true);
+    var signTrigger = new CollidableObject(teleInactive, posX + signWidth / 2 - teleInactiveWidth / 2, posY + signHeight + triggerYGap, teleInactiveWidth, teleInactiveHeight, 0, 0, true);
     signTrigger.type = "Teleporter";
     signTrigger.fireTrigger = function fireTrigger() {
         //show youtube in popup
@@ -89,7 +89,7 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     }
 }
 
-function initProgHouse()
+function initWarehouse()
 {
     locationState = LocationEnum.WAREHOUSE;
     
@@ -106,11 +106,10 @@ function initProgHouse()
     var testImage = new Image();
     testImage.src = "media/testContentImage.png";
 
-
     var contentImage1 = new Image();
     contentImage1.src = "media/arena.png";
     signLabels[0] = "Arena";
-    signContentTitle[0] = "Arena - C++, OpenGL, Bullet Physics, XBox Controller                                     Line 2";
+    signContentTitle[0] = "Arena - C++, OpenGL, Bullet Physics, XBox Controller";
     signContent[0] = contentImage1;
     signVideoLinks[0] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
@@ -121,7 +120,7 @@ function initProgHouse()
 
     signLabels[2] = "sign3";
     signContentTitle[2] = "3";
-    signContent[2] = testImage;
+    signContent[2] = contentImage1;
     signVideoLinks[2] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
     signLabels[3] = "sign4";
@@ -131,12 +130,12 @@ function initProgHouse()
 
     signLabels[4] = "sign4";
     signContentTitle[4] = "4";
-    signContent[4] = testImage;
+    signContent[4] = contentImage1;
     signVideoLinks[4] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
     signLabels[5] = "sign5";
     signContentTitle[5] = "5";
-    signContent[5] = testImage;
+    signContent[5] = contentImage1;
     signVideoLinks[5] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
 
@@ -152,7 +151,7 @@ function initProgHouse()
     grid.SetWalkableTiles(collidables);
 }
 
-function drawProgContents()
+function drawWarehouseContents()
 {
     ctx.font = warehouseFont;
     ctx.textAlign = "center";

@@ -18,7 +18,7 @@
         lastScenePosX = player.positionX;
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
-        initAboutHouse();
+        initLibrary();
         locationState = LocationEnum.LIBRARY;
         player.popTargetFromStack();
         player.setPathFromTargetStack();
@@ -32,7 +32,7 @@
         lastScenePosX = player.positionX;
         lastScenePosY = player.positionY;
         ctx.translate(0, 0);
-        initProgHouse();
+        initWarehouse();
         locationState = LocationEnum.WAREHOUSE;
         player.popTargetFromStack();
         player.setPathFromTargetStack();
@@ -115,7 +115,7 @@ function drawTitleTxt() {
     ctx.fillText(textInstructions, WIDTH / 2, HEIGHT / 2 + 105);
 }
 
-function drawCVHouseTxt() {
+function drawLibraryHouseTxt() {
     ctx.textAlign = "center";
     ctx.font = 'italic bold 20px sans-serif';
     var textCV = "Library";
@@ -126,7 +126,7 @@ function drawCVHouseTxt() {
     ctx.fillText(textCV2, 150, 228 / 2 + 5);
 }
 
-function drawProgHouseTxt() {
+function drawWarehouseHouseTxt() {
     ctx.textAlign = "center";
     ctx.font = 'italic bold 20px sans-serif';
     var textProg = "Warehouse";

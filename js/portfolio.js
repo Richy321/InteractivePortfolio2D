@@ -27,9 +27,9 @@ var justFiredTrigger = false;
 var keys = new Array(); //input keys
 var collidables = new Array(); //collidable game objects
 
-//starting pos
-var lastScenePosX = VIRTUALCAMWIDTH / 2;
-var lastScenePosY = VIRTUALCAMHEIGHT / 2;
+var lastScenePosX;
+var lastScenePosY;
+var spawnPoint;
 
 var virtualCameraOffsetX = 0;
 var virtualCameraOffsetY = 0;
@@ -257,15 +257,15 @@ var draw = function () {
 
     switch (locationState) {
         case LocationEnum.TOWN:
-            drawCVHouseTxt();
-            drawProgHouseTxt();
+            drawLibraryHouseTxt();
+            drawWarehouseHouseTxt();
             drawTitleTxt();
             break;
         case LocationEnum.WAREHOUSE:
-            drawProgContents();
+            drawWarehouseContents();
             break;
         case LocationEnum.LIBRARY:
-            drawAboutText();
+            drawLibraryContents();
             break;
     };
 
@@ -325,7 +325,7 @@ function init() {
     teleActive.src = "media/teleporter_active_64.png";
     teleInactive.src = "media/teleporter_inactive_64.png";
 
-    var spawnPoint = grid.GetPositionCenterFromCoord(12, 9);
+    spawnPoint = grid.GetPositionCenterFromCoord(9, 7);
     player = new Player(spawnPoint.x, spawnPoint.y);
 
     aStar = new AStar(grid);
@@ -347,8 +347,8 @@ function init() {
 
     initTown();
     justFiredTrigger = true;
-    //initAboutHouse();
-    //initProgHouse();
+    //initLibrary();
+    //initWarehouse();
 
     window.addEventListener('resize', resizeGame, false);
     window.addEventListener('orientationchange', resizeGame, false);

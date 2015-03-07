@@ -24,7 +24,7 @@ var lavaBucketWidth = 71;
 var lavaBucketHeight = 37;
 
 var forgeWidth = 100;
-var forgeHeight = 161;
+var forgeHeight = 160;
 
 var logsWidth = 40;
 var logsHeight = 41;
@@ -49,7 +49,7 @@ var cvScrollHeight = 34;
 
 var houseFont = '17.5px sans-serif';
 
-function initAboutHouse()
+function initLibrary()
 {
     locationState = LocationEnum.LIBRARY;
 
@@ -202,12 +202,12 @@ function initAboutHouse()
 
     var interviewChairTop = new Image();
     interviewChairTop.src = "media/interviewTableChairTop.png";
-    collidables.push(new CollidableObject(interviewChairTop, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 5, HEIGHT_HOUSE_LIB - interviewTableHeight - 20 - 80, interviewTableWidth, interviewTableHeight, 0, 0, false));
+    collidables.push(new CollidableObject(interviewChairTop, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 5, HEIGHT_HOUSE_LIB - interviewTableHeight - 20 - 80, interviewChairTopWidth, interviewChairTopHeight, 0, 0, false));
 
 
     var interviewChairBottom = new Image();
     interviewChairBottom.src = "media/interviewTableChairBottom.png";
-    collidables.push(new CollidableObject(interviewChairBottom, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 5, HEIGHT_HOUSE_LIB - interviewTableHeight + interviewChairBottomHeight / 2, interviewTableWidth, interviewTableHeight, 0, 0, false));
+    collidables.push(new CollidableObject(interviewChairBottom, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 5, HEIGHT_HOUSE_LIB - interviewTableHeight + interviewChairBottomHeight / 2, interviewChairBottomWidth, interviewChairBottomHeight, 0, 0, false));
 
 
     var cvScroll = new Image();
@@ -246,7 +246,7 @@ function initAboutHouse()
     grid.SetWalkableTiles(collidables);
 }
 
-function drawAboutText() {
+function drawLibraryContents() {
     ctx.textAlign = "center";
 
     var educationText = "Education";

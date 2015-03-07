@@ -14,12 +14,20 @@
 
     }
 
-    this.drawCollidable = function drawCollidable() {
-        //ctx.drawImage(this.sprite, this.posX, this.posY, this.sizeX, this.sizeY);
-        ctx.drawImage(this.sprite, this.offsetX, this.offsetY,
-            this.sizeX, this.sizeY,
-            this.posX, this.posY,
-            this.sizeX, this.sizeY);
+    this.drawCollidable = function drawCollidable()
+    {
+        try {
+            if (this.sprite && this.sizeX >= 0 && this.sizeY >= 0 && this.offsetX >= 0 && this.offsetY >= 0) {
+                ctx.drawImage(this.sprite, this.offsetX, this.offsetY,
+                    this.sizeX, this.sizeY,
+                    this.posX, this.posY,
+                    this.sizeX, this.sizeY);
+            }
+        }
+        catch (e)
+        {
+            throw new UserException("fuck!");
+        }
     }
 
     this.getBounds = function getBounds() {

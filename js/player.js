@@ -41,8 +41,10 @@ function Player(startPosX, startPosY)
     this.frameDuration = this.frameDelay;
     this.spriteScale = 2;
 
-    this.positionX = Math.floor(startPosX + this.frameWidth / 2);
-    this.positionY = Math.floor(startPosY + this.frameHeight / 2);
+    
+
+    this.positionX = Math.floor(startPosX - (this.frameWidth * this.spriteScale) * 0.5);
+    this.positionY = Math.floor(startPosY - (this.frameHeight * this.spriteScale) * 0.5);
 
     this.targetStack = [];
     this.path = [];

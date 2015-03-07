@@ -1,4 +1,5 @@
-﻿function initGenericHouse(pWidth, pHeight, worldXY) {
+﻿function initGenericHouse(pWidth, pHeight, worldXY)
+{
 
     loading = true;
     //clear array
@@ -61,7 +62,7 @@
     collidables.push(new CollidableObject(door, worldXY.x + ToTownTrigger.posX + 13, 10, 40, 46, 0, 0, false));
 
     player.positionX = worldXY.x + ToTownTrigger.posX;
-    player.positionY = worldXY.y + ToTownTrigger.posY;
+    player.positionY = worldXY.y + ToTownTrigger.posY + player.frameHeight;
     loading = false;
 }
 
