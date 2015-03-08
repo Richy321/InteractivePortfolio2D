@@ -12,7 +12,7 @@
 
 function Grid(canvasWidth, canvasHeight) {
     this.terrainSheet = new Image();
-    this.terrainSheet.src = "./media/GRS2ROC.bmp";
+    this.terrainSheet.src = "./media/GRS2ROC.png";
     this.pavingSheet = new Image();
     this.pavingSheet.src = "./media/PAVE_small.png";
     this.flooringSheet = new Image();
