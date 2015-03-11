@@ -102,17 +102,22 @@
     loading = false;
 }
 
-function drawTitleTxt() {
+function drawTitleTxt()
+{
     ctx.textAlign = "center";
     var textTitle = "RJ Fox";
     var textTitle2 = "Games Programmer";
-    var textInstructions = "(use the arrow keys to move)";
-    ctx.font = 'italic bold 35px sans-serif';
-    ctx.fillText(textTitle, WIDTH / 2, HEIGHT / 2 + 50);
-    ctx.fillText(textTitle2, WIDTH / 2, HEIGHT / 2 + 80);
 
-    ctx.font = 'italic bold 20px sans-serif';
-    ctx.fillText(textInstructions, WIDTH / 2, HEIGHT / 2 + 105);
+    var textInstructions = "click or arrow keys to move";
+    var textInstructions2 = "use navigation bar for fast movement";
+    ctx.font = 'italic bold 35px sans-serif';
+     
+    ctx.fillText(textTitle, spawnPoint.x, spawnPoint.y + 50);
+    ctx.fillText(textTitle2, spawnPoint.x, spawnPoint.y + 80);
+
+    ctx.font = 'italic bold 16px sans-serif';
+    ctx.fillText(textInstructions, spawnPoint.x, spawnPoint.y + 115);
+    ctx.fillText(textInstructions2, spawnPoint.x, spawnPoint.y + 145);
 }
 
 function drawLibraryHouseTxt() {

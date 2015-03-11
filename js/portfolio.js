@@ -98,9 +98,12 @@ function doLinkClick(pLinkName)
 
     if (pLinkName == "Home")
     {
-        player.pushTargetToStack(grid.GetPositionCenterFromCoord(16, 3));
+        player.pushTargetToStack(spawnPoint);
 
+        if (locationState == LocationEnum.LIBRARY || locationState == LocationEnum.WAREHOUSE)
+            player.pushTargetToStack(houseTeleporterLocation);
     }
+
     if ($.inArray(pLinkName, libraryLocations) > -1) {
         switch (pLinkName)
         {
@@ -163,7 +166,9 @@ function clearKeyBuffer() {
         keys[i] = false;
 }
 
-function clear() {
+function clear()
+{
+    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
     ctx.clearRect(-virtualCameraOffsetX, -virtualCameraOffsetY, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
 }
 
@@ -250,10 +255,6 @@ var draw = function () {
         collidables[i].drawCollidable();
         //collidables[i].drawBounds();
     }
-
-    //CVTrigger.drawCollidable();
-
-    //Hack - TODO replace text with collidable images. 
 
     switch (locationState) {
         case LocationEnum.TOWN:
