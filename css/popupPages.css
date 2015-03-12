@@ -1,0 +1,12 @@
+﻿body 
+{
+      background-color: #333;
+      color: #fff; /* IE8 proofing */
+      color: rgba(255,255,255,.75);
+}
+
+.title 
+{
+    font-weight: bold;
+    font-size: x-large;
+}
