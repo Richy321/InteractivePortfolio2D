@@ -108,6 +108,8 @@ function Grid(canvasWidth, canvasHeight) {
 
     this.drawGrid = function drawGrid()
     {
+        ctx.draw
+
         for (y = 0; y < this.yTileCount; y++) {
             for (x = 0; x < this.xTileCount; x++) {
                 var tile = this.tiles[(y * this.xTileCount) + x];
