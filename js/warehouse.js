@@ -30,7 +30,7 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     var signContentWidth = 90;
     var signContentHeight = 65;
 
-    var triggerYGap = 10;
+    var triggerYGap = 12;
 
     var totalHeight = signHeight + triggerYGap + teleInactiveHeight;
 
@@ -59,13 +59,15 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
             },
             href: pVideoLink,
             //title: '<div>' + pTitleText + '</div>',
-            //titlePosition: 'outside'
+            titlePosition: 'outside',
             //width: 560,
             //height: 315,
+            title: pTitleText,
             type: 'iframe',
             beforeLoad: function ()
             {
-                this.title = pTitleText;
+                //this.title = pTitleText;
+                //this.title = pTitleText;
             },
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
@@ -106,36 +108,42 @@ function initWarehouse()
     var testImage = new Image();
     testImage.src = "media/testContentImage.png";
 
-    var contentImage1 = new Image();
-    contentImage1.src = "media/arena.png";
+    var contentImage0 = new Image();
+    contentImage0.src = "media/arena.png";
     signLabels[0] = "Arena";
-    signContentTitle[0] = "Arena - C++, OpenGL, Bullet Physics, XBox Controller";
-    signContent[0] = contentImage1;
+    signContentTitle[0] = "<p>Arena</p> - C++, OpenGL, Octet Framework, Bullet Physics, XBox Controller<br/>";
+    signContent[0] = contentImage0;
     signVideoLinks[0] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
-    signLabels[1] = "sign2";
-    signContentTitle[1] = "2";
-    signContent[1] = testImage;
+    var contentImage1 = new Image();
+    contentImage1.src = "media/procterrain.png";
+    signLabels[1] = "Procedural Terrain";
+    signContentTitle[1] = "Procedurally Generated Terrain - C++, OpenGL, Octet Framework, Fractal Brownian Motion(fBm), Perlin Noise, Square-Diamond, Midpoint displacement, Texture blending & interpolation";
+    signContent[1] = contentImage1;
     signVideoLinks[1] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
-    signLabels[2] = "sign3";
-    signContentTitle[2] = "3";
-    signContent[2] = contentImage1;
-    signVideoLinks[2] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
+    var contentImage2 = new Image();
+    contentImage2.src = "media/l-systems.png";
+    signLabels[2] = "L-Systems";
+    signContentTitle[2] = "L-Systems implementation - C++, OpenGL, Octet Framework";
+    signContent[2] = contentImage2;
+    signVideoLinks[2] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
     signLabels[3] = "sign4";
     signContentTitle[3] = "4";
     signContent[3] = testImage;
     signVideoLinks[3] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
-    signLabels[4] = "sign4";
-    signContentTitle[4] = "4";
-    signContent[4] = contentImage1;
-    signVideoLinks[4] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
+    var contentImage4 = new Image();
+    contentImage4.src = "media/l-systems.png";
+    signLabels[4] = "L-Systems";
+    signContentTitle[4] = "L-Systems implementation - C++, OpenGL, Octet Framework";
+    signContent[4] = contentImage2;
+    signVideoLinks[4] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
     signLabels[5] = "sign5";
     signContentTitle[5] = "5";
-    signContent[5] = contentImage1;
+    signContent[5] = testImage;
     signVideoLinks[5] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
 
