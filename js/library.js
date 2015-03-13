@@ -227,7 +227,7 @@ function initLibrary()
         $.fancybox({
             type: 'html',
             autoSize: false,
-            content: '<embed src="' + 'CV_Games2.pdf' + '#nameddest=self&page=1&view=FitH,0&zoom=90,0,0" type="application/pdf" height="99%" width="100%" />',
+            content: '<embed src="' + 'CV_RJFox.pdf' + '#nameddest=self&page=1&view=FitH,0&zoom=80,0,0" type="application/pdf" height="99%" width="100%" />',
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
             },

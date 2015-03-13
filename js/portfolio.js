@@ -75,10 +75,21 @@ function doKeyUp(evt) {
     keys[evt.keyCode] = false;
 }
 
-function doClick(evt)
+function doClick(e)
 {
-    var gamePt = new point(evt.pageX - canvas.offsetLeft - virtualCameraOffsetX, evt.pageY - canvas.offsetTop - virtualCameraOffsetY);
-    var localPt = new point(evt.pageX - canvas.offsetLeft, evt.pageY - canvas.offsetTop);
+    doMove(e.pageX, e.pageY);
+}
+
+function doTouchStart(e)
+{
+    e.preventDefault();
+    doMove(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
+}
+
+function doMove(pageX, pageY)
+{
+    var gamePt = new point(pageX - canvas.offsetLeft - virtualCameraOffsetX, pageY - canvas.offsetTop - virtualCameraOffsetY);
+    var localPt = new point(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
 
     if (localPt.x > 0 && localPt.x < canvas.width && localPt.y > 0 && localPt.y < canvas.height)
     {
@@ -330,17 +341,18 @@ function init() {
     player = new Player(spawnPoint.x, spawnPoint.y);
 
     aStar = new AStar(grid);
-    document.onkeydown = function (e) {
+    document.onkeydown = function (e) 
+    {
         doKeyDown(e);
     }
 
-    document.onkeyup = function (e) {
+    document.onkeyup = function (e) 
+    {
         doKeyUp(e);
     }
 
-    document.onclick = function (e) {
-        doClick(e);
-    }
+    canvas.addEventListener("mousedown", doClick, false);
+    canvas.addEventListener("touchstart", doTouchStart, false);
 
     libraryTeleporterLocation = grid.GetPositionCenterFromCoord(3, 6);
     warehouseTeleportLocation = grid.GetPositionCenterFromCoord(14, 6);
