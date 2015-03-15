@@ -120,7 +120,7 @@ function initWarehouse()
     signLabels[1] = "Procedural Terrain";
     signContentTitle[1] = "Procedurally Generated Terrain - C++, OpenGL, Octet Framework, Fractal Brownian Motion(fBm), Perlin Noise, Square-Diamond, Midpoint displacement, Texture blending & interpolation";
     signContent[1] = contentImage1;
-    signVideoLinks[1] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
+    signVideoLinks[1] = "http://www.youtube.com/embed/y5WiY6jm-0Q?autoplay=1";
 
     var contentImage2 = new Image();
     contentImage2.src = "media/l-systems.png";
@@ -129,10 +129,12 @@ function initWarehouse()
     signContent[2] = contentImage2;
     signVideoLinks[2] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
-    signLabels[3] = "sign4";
-    signContentTitle[3] = "4";
+    var contentImage2 = new Image();
+    contentImage2.src = "media/proceduralCreatures.png";
+    signLabels[3] = "Procedural Creatures";
+    signContentTitle[3] = "Procedural Creatures - C++, Metaballs, Octet Framework, OpenGL, GLSL";
     signContent[3] = testImage;
-    signVideoLinks[3] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
+    signVideoLinks[3] = "http://www.youtube.com/embed/Y_J5FiD9gP8?autoplay=1";
 
     var contentImage4 = new Image();
     contentImage4.src = "media/l-systems.png";
@@ -141,10 +143,12 @@ function initWarehouse()
     signContent[4] = contentImage2;
     signVideoLinks[4] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
-    signLabels[5] = "sign5";
-    signContentTitle[5] = "5";
-    signContent[5] = testImage;
-    signVideoLinks[5] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
+    var contentImage5 = new Image();
+    contentImage5.src = "media/graveyardShift.png";
+    signLabels[5] = "Graveyard Shift";
+    signContentTitle[5] = "Graveyard Shift - C++, DirectX9, XFile animations, ";
+    signContent[5] = contentImage5;
+    signVideoLinks[5] = "http://www.youtube.com/embed/AZj0DsckI0U?autoplay=1";
 
 
     for (var i = 0; i < numCols; i++)
