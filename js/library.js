@@ -81,6 +81,9 @@ function initLibrary()
             afterClose: function () {
                 player.disableMovement = false;
             },
+            onComplete: function () {
+                $.fancybox.update();
+            },
             href: 'pages/contact.html',
             type: 'iframe'
         });
@@ -110,6 +113,9 @@ function initLibrary()
             },
             afterClose: function () {
                 player.disableMovement = false;
+            },
+            onComplete: function () {
+                $.fancybox.update();
             },
             href: 'pages/education.html',
             type: 'iframe'
@@ -145,6 +151,9 @@ function initLibrary()
             },
             afterClose: function () {
                 player.disableMovement = false;
+            },
+            onComplete: function () {
+                $.fancybox.update();
             },
             href: 'pages/skills.html',
             type: 'iframe'
@@ -188,6 +197,9 @@ function initLibrary()
             afterClose: function () {
                 player.disableMovement = false;
             },
+            onComplete: function () {
+                $.fancybox.update();
+            },
             href: 'pages/workExperience.html',
             type: 'iframe'
         });
@@ -225,9 +237,9 @@ function initLibrary()
         player.clearTargetStack();
         clearKeyBuffer();
         $.fancybox({
-            type: 'html',
+            type: 'iframe',
             autoSize: false,
-            content: '<embed src="' + 'CV_RJFox.pdf' + '#nameddest=self&page=1&view=FitH,0&zoom=80,0,0" type="application/pdf" height="99%" width="100%" />',
+            href: 'CV_RJFox.pdf',
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
             },
