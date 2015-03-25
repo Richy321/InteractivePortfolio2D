@@ -58,20 +58,15 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
                 }
             },
             href: pVideoLink,
-            //title: '<div>' + pTitleText + '</div>',
             titlePosition: 'outside',
-            //width: 560,
-            //height: 315,
             title: pTitleText,
             type: 'iframe',
-            beforeLoad: function ()
-            {
-                //this.title = pTitleText;
-                //this.title = pTitleText;
-            },
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
                 player.disableMovement = false;
+            },
+            onComplete: function () {
+                $.fancybox.update();
             },
             helpers: {
                 overlay: {
