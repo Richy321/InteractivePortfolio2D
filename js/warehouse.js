@@ -51,28 +51,17 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
         clearKeyBuffer();
         player.disableMovement = true;
         $.fancybox({
-            helpers: {
-                title: {
-                    type: 'inside',
-                    position: 'top'
-                }
-            },
             href: pVideoLink,
-            titlePosition: 'outside',
             title: pTitleText,
             type: 'iframe',
+            padding : 0,
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
                 player.disableMovement = false;
             },
-            onComplete: function () {
-                $.fancybox.update();
-            },
             helpers: {
-                overlay: {
-                    opacity: 0.3
-                } // overlay
-            } // helpers
+                title: { type: 'outside' },
+            },
         }); // fancybox
     };
     collidables.push(signTrigger);
