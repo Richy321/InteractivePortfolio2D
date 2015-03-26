@@ -74,6 +74,8 @@ function initLibrary()
         player.clearTargetStack();
         clearKeyBuffer();
         $.fancybox.open({
+            href: 'pages/contact.html',
+            type: 'iframe',
             padding: 0,
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
@@ -83,9 +85,7 @@ function initLibrary()
             },
             onComplete: function () {
                 $.fancybox.update();
-            },
-            href: 'pages/contact.html',
-            type: 'iframe'
+            }
         });
     };
     collidables.push(emailTrigger);

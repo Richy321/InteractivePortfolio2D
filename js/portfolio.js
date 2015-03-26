@@ -77,12 +77,14 @@ function doKeyUp(evt) {
 
 function doClick(e)
 {
+    player.SetFastMovement(false);
     doMove(e.pageX, e.pageY);
 }
 
 function doTouchStart(e)
 {
     e.preventDefault();
+    player.SetFastMovement(false);
     doMove(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
 }
 
@@ -107,6 +109,7 @@ function doLinkClick(pLinkName)
     var libraryLocations = ["CV", "Contact", "WorkExp", "Education", "Skills"];
     var warehouseLocations = ["Demo1", "Demo2", "Demo3", "Demo4", "Demo5", "Demo6"];
 
+    player.SetFastMovement(true);
     if (pLinkName == "Home")
     {
         player.pushTargetToStack(spawnPoint);

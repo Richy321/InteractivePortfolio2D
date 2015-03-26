@@ -1,8 +1,14 @@
 ﻿//Player object
 function Player(startPosX, startPosY) 
 {
-    this.deltaX = 6;
-    this.deltaY = 6;
+    this.deltaXBase = 6;
+    this.deltaYBase = 6;
+    this.deltaX = this.deltaXBase;
+    this.deltaY = this.deltaYBase;
+
+    this.deltaXFast = 12;
+    this.deltaYFast = 12;
+
     this.circleSize = 10;
 
     this.targetX = -1;
@@ -37,11 +43,11 @@ function Player(startPosX, startPosY)
     this.curFrame = this.downFrames[0];
     this.curDirection = "None";
     this.curFrameNo = 0;
-    this.frameDelay = 0.20;
+    this.frameDelayBase = 0.20;
+    this.frameDelayFast = 0.10;
+    this.frameDelay = this.frameDelayBase;
     this.frameDuration = this.frameDelay;
     this.spriteScale = 2;
-
-    
 
     this.positionX = Math.floor(startPosX - (this.frameWidth * this.spriteScale) * 0.5);
     this.positionY = Math.floor(startPosY - (this.frameHeight * this.spriteScale) * 0.5);
@@ -53,6 +59,7 @@ function Player(startPosX, startPosY)
     this.savedframeArray = [];
 
     this.disableMovement = false;
+    this.fastMovement = false;
 }
 Player.prototype.updatePlayer = function updatePlayer(deltaTime) 
 {
@@ -70,6 +77,12 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
         (40 in keys && keys[40]) ||
         (37 in keys && keys[37]) ||
         (39 in keys && keys[39]));
+
+    if (movementKeyPressed)
+    {
+        this.SetFastMovement(false);
+    }
+
     //Navigate path
     if (!movementKeyPressed && this.path.length > 0 && this.pathIndex < this.path.length) 
     {
@@ -333,4 +346,20 @@ Player.prototype.setPathFromTargetStack = function setPathFromTargetStack()
 Player.prototype.clearTargetStack = function clearTargetStack()
 {
      this.targetStack = [];
+}
+
+Player.prototype.SetFastMovement = function SetFastMovement(isFast)
+{
+    if (isFast)
+    {
+        this.deltaX = this.deltaXFast;
+        this.deltaY = this.deltaYFast;
+        this.frameDelay = this.frameDelayFast;
+    }
+    else
+    {
+        this.deltaX = this.deltaXBase;
+        this.deltaY = this.deltaYBase;
+        this.frameDelay = this.frameDelayBase;
+    }
 }
