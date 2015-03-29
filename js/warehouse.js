@@ -95,35 +95,73 @@ function initWarehouse()
     var contentImage0 = new Image();
     contentImage0.src = "media/arena.png";
     signLabels[0] = "Arena";
-    signContentTitle[0] = "<p>Arena</p> - C++, OpenGL, Octet Framework, Bullet Physics, XBox Controller<br/>";
+    signContentTitle[0] = "<div>";
+    signContentTitle[0] += "<p>Arena</p>";
+    signContentTitle[0] += "Source: <a href='https://bitbucket.org/richy321/arena'>https://bitbucket.org/richy321/arena</a><br/><br/>";
+    signContentTitle[0] += "<p>"
+    signContentTitle[0] += "A Top down shooter coded in C++ and OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
+    signContentTitle[0] += "This was the project for my first assignment of my MSc in Computer games and entertainment written in C++. Highlights include a templated object pool manager, explode vertex shader, multiple barrel turrets, integrated bullet physics library, controls via xbox controller, basic chase AI. Includes Single Player, Coop and VS modes on the same machine.";
+    signContentTitle[0] += "</p>";
+    signContentTitle[0] += "</div>";
     signContent[0] = contentImage0;
     signVideoLinks[0] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
     var contentImage1 = new Image();
     contentImage1.src = "media/procterrain.png";
     signLabels[1] = "Procedural Terrain";
-    signContentTitle[1] = "Procedurally Generated Terrain - C++, OpenGL, Octet Framework, Fractal Brownian Motion(fBm), Perlin Noise, Square-Diamond, Midpoint displacement, Texture blending & interpolation";
+    signContentTitle[1] = "<div>";
+    signContentTitle[1] += "<p>Procedurally Generated Terrain</p>";
+    signContentTitle[1] += "Source: <a href='https://bitbucket.org/richy321/terrain-generation'>https://bitbucket.org/richy321/terrain-generation</a><br/><br/>";
+    signContentTitle[1] += "<p>"
+    signContentTitle[1] += "Explores technqiues for procedurally generating terrain using fractals. Built using C++ OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
+    signContentTitle[1] += "The algorithms used (in order the same order as shown in the video) are: Mid-point displacement, Diamond Square, Perlin Noise, fractal Brownian Motion (fBm) using Perlin noise. <br/>";
+    signContentTitle[1] += "Perlin noise was implemented from scratched based on the Improved Perlin noise algorithm. The texture mapping linearly interpolates/blends between 5 different textures depending on high value.";
+    signContentTitle[1] += "</p>";
+    signContentTitle[1] += "</div>";
+
     signContent[1] = contentImage1;
     signVideoLinks[1] = "http://www.youtube.com/embed/y5WiY6jm-0Q?autoplay=1";
 
     var contentImage2 = new Image();
     contentImage2.src = "media/l-systems.png";
     signLabels[2] = "L-Systems";
-    signContentTitle[2] = "L-Systems implementation - C++, OpenGL, Octet Framework";
+    signContentTitle[2] = "<div>";
+    signContentTitle[2] += "<p>L-Systems Implementation</p>";
+    signContentTitle[2] += "Source: <a href='https://bitbucket.org/richy321/lsystem'>https://bitbucket.org/richy321/lsystem</a><br/><br/>";
+    signContentTitle[2] += "<p>"
+    signContentTitle[2] += "Implementation of a Lindenmayer system. Built using C++ and OpenGL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
+    signContentTitle[2] += "A Lindenmayer system (L-System) is a recursive self-similar fractal like form that have often been used in the generation of artifical life, especially plants and trees. <br/>";
+    signContentTitle[2] += "This implementation shows 6 different L-Systems including 4 plant like systems and a Sierpinksi triangle and a Dragon curve. <br/>";
+    signContentTitle[2] += "</p>";
+    signContentTitle[2] += "</div>";
     signContent[2] = contentImage2;
     signVideoLinks[2] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
     var contentImage3 = new Image();
     contentImage3.src = "media/proceduralCreatures.png";
     signLabels[3] = "Procedural Creatures";
-    signContentTitle[3] = "Procedural Creatures - C++, Metaballs, Octet Framework, OpenGL, GLSL";
+    //signContentTitle[3] = "Procedural Creatures - C++, Metaballs, Octet Framework, OpenGL, GLSL";
+    signContentTitle[3] = "<div>";
+    signContentTitle[3] += "<p>Procedural Creatures</p>";
+    signContentTitle[3] += "Source: On Visual Studio Online. Available upon request<br/><br/>";
+    signContentTitle[3] += "<p>"
+    signContentTitle[3] += "Group project which generates creatures using fixed skeleton structures with randomised bone lengths/parametric curved muscles with rendering using metaballs. Built using C++ and OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
+    signContentTitle[3] += "For this project I was in charge of the skin generation using the metaballs technique. I used brute force ray marching coupled with sphere weighting based on size and distance to determine the shape(sphere blending) of the skin. Most of the metaball work was implemented within the fragment shader. <br/>";
+    signContentTitle[3] += "</p>";
+    signContentTitle[3] += "</div>";
     signContent[3] = contentImage3;
     signVideoLinks[3] = "http://www.youtube.com/embed/Y_J5FiD9gP8?autoplay=1";
 
     var contentImage4 = new Image();
     contentImage4.src = "media/graveyardShift.png";
     signLabels[4] = "Graveyard Shift";
-    signContentTitle[4] = "Graveyard Shift - C++, DirectX9, XFile animations, ";
+    signContentTitle[4] = "<div>";
+    signContentTitle[4] += "<p>Graveyard Shift</p>";
+    signContentTitle[4] += "<p>"
+    signContentTitle[4] += "A FPS built in C++ and DirectX9 using a small games framework I developed a while ago. Includes loading of hierarchial XFile characters and animations, Quaternion FPS camera, GUI elements and a Scoreboard.<br/>";
+    signContentTitle[4] += "Implements basic collisions and collision response and bullet ray casting.<br/>";
+    signContentTitle[4] += "</p>";
+    signContentTitle[4] += "</div>";
     signContent[4] = contentImage4;
     signVideoLinks[4] = "http://www.youtube.com/embed/AZj0DsckI0U?autoplay=1";
 
