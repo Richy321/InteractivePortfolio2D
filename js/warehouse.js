@@ -96,7 +96,7 @@ function initWarehouse()
     contentImage0.src = "media/arena.png";
     signLabels[0] = "Arena";
     signContentTitle[0] = "<div>";
-    signContentTitle[0] += "<p>Arena</p>";
+    signContentTitle[0] += "<p><b>Arena</b></p>";
     signContentTitle[0] += "Source: <a href='https://bitbucket.org/richy321/arena'>https://bitbucket.org/richy321/arena</a><br/><br/>";
     signContentTitle[0] += "<p>"
     signContentTitle[0] += "A Top down shooter coded in C++ and OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
@@ -110,7 +110,7 @@ function initWarehouse()
     contentImage1.src = "media/procterrain.png";
     signLabels[1] = "Procedural Terrain";
     signContentTitle[1] = "<div>";
-    signContentTitle[1] += "<p>Procedurally Generated Terrain</p>";
+    signContentTitle[1] += "<p><b>Procedurally Generated Terrain</b></p>";
     signContentTitle[1] += "Source: <a href='https://bitbucket.org/richy321/terrain-generation'>https://bitbucket.org/richy321/terrain-generation</a><br/><br/>";
     signContentTitle[1] += "<p>"
     signContentTitle[1] += "Explores technqiues for procedurally generating terrain using fractals. Built using C++ OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
@@ -126,7 +126,7 @@ function initWarehouse()
     contentImage2.src = "media/l-systems.png";
     signLabels[2] = "L-Systems";
     signContentTitle[2] = "<div>";
-    signContentTitle[2] += "<p>L-Systems Implementation</p>";
+    signContentTitle[2] += "<p><b>L-Systems Implementation</b></p>";
     signContentTitle[2] += "Source: <a href='https://bitbucket.org/richy321/lsystem'>https://bitbucket.org/richy321/lsystem</a><br/><br/>";
     signContentTitle[2] += "<p>"
     signContentTitle[2] += "Implementation of a Lindenmayer system. Built using C++ and OpenGL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
@@ -142,7 +142,7 @@ function initWarehouse()
     signLabels[3] = "Procedural Creatures";
     //signContentTitle[3] = "Procedural Creatures - C++, Metaballs, Octet Framework, OpenGL, GLSL";
     signContentTitle[3] = "<div>";
-    signContentTitle[3] += "<p>Procedural Creatures</p>";
+    signContentTitle[3] += "<p><b>Procedural Creatures</b></p>";
     signContentTitle[3] += "Source: On Visual Studio Online. Available upon request<br/><br/>";
     signContentTitle[3] += "<p>"
     signContentTitle[3] += "Group project which generates creatures using fixed skeleton structures with randomised bone lengths/parametric curved muscles with rendering using metaballs. Built using C++ and OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
@@ -156,7 +156,7 @@ function initWarehouse()
     contentImage4.src = "media/graveyardShift.png";
     signLabels[4] = "Graveyard Shift";
     signContentTitle[4] = "<div>";
-    signContentTitle[4] += "<p>Graveyard Shift</p>";
+    signContentTitle[4] += "<p><b>Graveyard Shift</b></p>";
     signContentTitle[4] += "<p>"
     signContentTitle[4] += "A FPS built in C++ and DirectX9 using a small games framework I developed a while ago. Includes loading of hierarchial XFile characters and animations, Quaternion FPS camera, GUI elements and a Scoreboard.<br/>";
     signContentTitle[4] += "Implements basic collisions and collision response and bullet ray casting.<br/>";
