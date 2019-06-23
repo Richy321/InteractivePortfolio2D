@@ -58,10 +58,10 @@ function initLibrary()
 
     //Contact me
     var table = new Image();
-    table.src = "media/TableAndChairs.png";
+    table.src = "./media/TableAndChairs.png";
     collidables.push(new CollidableObject(table, WIDTH_HOUSE_LIB / 2 - 169 / 2, 270, 169, 60, 0, 0, false));
     var penInk = new Image();
-    penInk.src = "media/inkPen.png";
+    penInk.src = "./media/inkPen.png";
     collidables.push(new CollidableObject(penInk, WIDTH_HOUSE_LIB / 2 - penInkWidth / 2, 260 + penInkHeight / 2, penInkWidth, penInkHeight, 0, 0, false));
     var emailTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE_LIB / 2 - teleInactiveWidth / 2, 350, 64, 32, 0, 0, true);
     emailTrigger.type = "Teleporter";
@@ -74,7 +74,7 @@ function initLibrary()
         player.clearTargetStack();
         clearKeyBuffer();
         $.fancybox.open({
-            href: 'pages/contact.html',
+            href: './pages/contact.html',
             type: 'iframe',
             padding: 0,
             beforeClose: function () {
@@ -93,7 +93,7 @@ function initLibrary()
 
     //Education
     var bookcase = new Image();
-    bookcase.src = "media/bookcaseM.png";
+    bookcase.src = "./media/bookcaseM.png";
     collidables.push(new CollidableObject(bookcase, xOffsetBookcase, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
     collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
     collidables.push(new CollidableObject(bookcase, xOffsetBookcase + bookcaseWidth * 2, yOffsetBookcase, bookcaseWidth, bookcaseHeight, 0, 0, false));
@@ -117,7 +117,7 @@ function initLibrary()
             onComplete: function () {
                 $.fancybox.update();
             },
-            href: 'pages/education.html',
+            href: './pages/education.html',
             type: 'iframe'
         });
     };
@@ -126,13 +126,13 @@ function initLibrary()
 
     //Skills
     var armorSet = new Image();
-    armorSet.src = "media/ArmorSetL.png";
+    armorSet.src = "./media/ArmorSetL.png";
     collidables.push(new CollidableObject(armorSet, WIDTH_HOUSE_LIB + xOffsetArmorSet - armorSetWidth, yOffsetBookcase, armorSetWidth, armorSetHeight, 0, 0, false));
     var wallSword = new Image();
-    wallSword.src = "media/wallSwordM.png";
+    wallSword.src = "./media/wallSwordM.png";
     collidables.push(new CollidableObject(wallSword, WIDTH_HOUSE_LIB + xOffsetArmorSet - armorSetWidth - wallSwordWidth, yOffsetBookcase, wallSwordWidth, wallSwordHeight, 0, 0, false));
     var sawBarrel = new Image();
-    sawBarrel.src = "media/sawBarrelM.png";
+    sawBarrel.src = "./media/sawBarrelM.png";
     collidables.push(new CollidableObject(sawBarrel, WIDTH_HOUSE_LIB - sawBarrelWidth - 30, yOffsetBookcase, sawBarrelWidth, sawBarrelHeight, 0, 0, false));
 
     collidables.push(new CollidableObject(sawBarrel, WIDTH_HOUSE_LIB - sawBarrelWidth - 30, yOffsetBookcase + sawBarrelHeight / 2.5, sawBarrelWidth, sawBarrelHeight, 0, 0, false));
@@ -155,7 +155,7 @@ function initLibrary()
             onComplete: function () {
                 $.fancybox.update();
             },
-            href: 'pages/skills.html',
+            href: './pages/skills.html',
             type: 'iframe'
         });
     };
@@ -164,20 +164,20 @@ function initLibrary()
 
     //Work Experience
     var anvilR = new Image();
-    anvilR.src = "media/anvilR_M.png";
+    anvilR.src = "./media/anvilR_M.png";
     collidables.push(new CollidableObject(anvilR, 20 + 15 + lavaBucketWidth, HEIGHT_HOUSE_LIB - 20 - anvilRHeight - 5, anvilRWidth, anvilRHeight, 0, 0, false));
     collidables.push(new CollidableObject(anvilR, 20 + 20 + lavaBucketWidth + anvilRWidth, HEIGHT_HOUSE_LIB - 20 - anvilRHeight - 5, anvilRWidth, anvilRHeight, 0, 0, false));
 
     var lavaBucket = new Image();
-    lavaBucket.src = "media/lava.png";
+    lavaBucket.src = "./media/lava.png";
     collidables.push(new CollidableObject(lavaBucket, 20 + 5, HEIGHT_HOUSE_LIB - 20 - anvilRHeight - 5, lavaBucketWidth, lavaBucketHeight, 0, 0, false));
 
     var forge = new Image();
-    forge.src = "media/forge.png";
+    forge.src = "./media/forge.png";
     collidables.push(new CollidableObject(forge, 20 + 25, HEIGHT_HOUSE_LIB - 20 - anvilRHeight * 2 - 50 - forgeHeight, forgeWidth, forgeHeight, 0, 0, false));
 
     var logs = new Image();
-    logs.src = "media/logs.png";
+    logs.src = "./media/logs.png";
     collidables.push(new CollidableObject(logs, 20 + 5, HEIGHT_HOUSE_LIB - 20 - lavaBucketHeight - 10 - logsHeight, logsWidth, logsHeight, 0, 0, false));
     collidables.push(new CollidableObject(logs, 20 + 5, HEIGHT_HOUSE_LIB - 20 - lavaBucketHeight - 10 - logsHeight * 2, logsWidth, logsHeight, 0, 0, false));
 
@@ -200,7 +200,7 @@ function initLibrary()
             onComplete: function () {
                 $.fancybox.update();
             },
-            href: 'pages/workExperience.html',
+            href: './pages/workExperience.html',
             type: 'iframe'
         });
 
@@ -209,21 +209,21 @@ function initLibrary()
 
     //CV & Misc
     var interviewTable = new Image();
-    interviewTable.src = "media/interviewTable.png";
+    interviewTable.src = "./media/interviewTable.png";
     collidables.push(new CollidableObject(interviewTable, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 40, HEIGHT_HOUSE_LIB - interviewTableHeight - 20 - 50, interviewTableWidth, interviewTableHeight, 0, 0, false));
 
     var interviewChairTop = new Image();
-    interviewChairTop.src = "media/interviewTableChairTop.png";
+    interviewChairTop.src = "./media/interviewTableChairTop.png";
     collidables.push(new CollidableObject(interviewChairTop, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 5, HEIGHT_HOUSE_LIB - interviewTableHeight - 20 - 80, interviewChairTopWidth, interviewChairTopHeight, 0, 0, false));
 
 
     var interviewChairBottom = new Image();
-    interviewChairBottom.src = "media/interviewTableChairBottom.png";
+    interviewChairBottom.src = "./media/interviewTableChairBottom.png";
     collidables.push(new CollidableObject(interviewChairBottom, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 5, HEIGHT_HOUSE_LIB - interviewTableHeight + interviewChairBottomHeight / 2, interviewChairBottomWidth, interviewChairBottomHeight, 0, 0, false));
 
 
     var cvScroll = new Image();
-    cvScroll.src = "media/cvScroll.png";
+    cvScroll.src = "./media/cvScroll.png";
     collidables.push(new CollidableObject(cvScroll, WIDTH_HOUSE_LIB - 20 - interviewTableWidth - 40 + cvScrollWidth + cvScrollWidth / 2, HEIGHT_HOUSE_LIB - interviewTableHeight - 20 - 60 + cvScrollHeight, cvScrollWidth, cvScrollHeight, 0, 0, false));
 
 

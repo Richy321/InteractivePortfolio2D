@@ -337,8 +337,8 @@ function init() {
 
     grid = new Grid(WIDTH, HEIGHT);
 
-    teleActive.src = "media/teleporter_active_64.png";
-    teleInactive.src = "media/teleporter_inactive_64.png";
+    teleActive.src = "./media/teleporter_active_64.png";
+    teleInactive.src = "./media/teleporter_inactive_64.png";
 
     spawnPoint = grid.GetPositionCenterFromCoord(9, 7);
     player = new Player(spawnPoint.x, spawnPoint.y);

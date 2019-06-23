@@ -40,11 +40,11 @@
     collidables.push(ProgTrigger);
 
     var StoneBench1 = new Image();
-    StoneBench1.src = "media/bench.png";
+    StoneBench1.src = "./media/bench.png";
     collidables.push(new CollidableObject(StoneBench1, 50, 450, 117, 60, 0, 0, false));
 
     var wallSheet = new Image();
-    wallSheet.src = "media/FENCE_small.png";
+    wallSheet.src = "./media/FENCE_small.png";
 
 
     //W wall
@@ -85,7 +85,7 @@
 
 
     var house1 = new Image();
-    house1.src = "media/House1.png";
+    house1.src = "./media/House1.png";
     //CV house
     collidables.push(new CollidableObject(house1, 50, 10, 200, 228, 0, 0, false));
     //Prog House
@@ -93,7 +93,7 @@
 
 
     var bench1 = new Image();
-    bench1.src = "media/bench.png";
+    bench1.src = "./media/bench.png";
     collidables.push(new CollidableObject(bench1, 300, 80, 76, 40, 320, 0, false));
     collidables.push(new CollidableObject(bench1, 400, 80, 76, 40, 320, 0, false));
 

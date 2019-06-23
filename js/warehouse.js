@@ -17,7 +17,7 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     this.row = rowIndex;
     this.col = colIndex;
     this.signImage = new Image();
-    this.signImage.src = "media/signM.png";
+    this.signImage.src = "./media/signM.png";
     this.signContentImage = pSignContent;
     this.videoLink = pVideoLink;
 
@@ -90,10 +90,10 @@ function initWarehouse()
     var signVideoLinks = new Array(numCols * numRows);
 
     var testImage = new Image();
-    testImage.src = "media/testContentImage.png";
+    testImage.src = "./media/testContentImage.png";
 
     var contentImage0 = new Image();
-    contentImage0.src = "media/arena.png";
+    contentImage0.src = "./media/arena.png";
     signLabels[0] = "Arena";
     signContentTitle[0] = "<div>";
     signContentTitle[0] += "<p><b>Arena</b></p>";
@@ -107,7 +107,7 @@ function initWarehouse()
     signVideoLinks[0] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
     var contentImage1 = new Image();
-    contentImage1.src = "media/procterrain.png";
+    contentImage1.src = "./media/procterrain.png";
     signLabels[1] = "Procedural Terrain";
     signContentTitle[1] = "<div>";
     signContentTitle[1] += "<p><b>Procedurally Generated Terrain</b></p>";
@@ -123,7 +123,7 @@ function initWarehouse()
     signVideoLinks[1] = "http://www.youtube.com/embed/y5WiY6jm-0Q?autoplay=1";
 
     var contentImage2 = new Image();
-    contentImage2.src = "media/l-systems.png";
+    contentImage2.src = "./media/l-systems.png";
     signLabels[2] = "L-Systems";
     signContentTitle[2] = "<div>";
     signContentTitle[2] += "<p><b>L-Systems Implementation</b></p>";
@@ -138,7 +138,7 @@ function initWarehouse()
     signVideoLinks[2] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
     var contentImage3 = new Image();
-    contentImage3.src = "media/proceduralCreatures.png";
+    contentImage3.src = "./media/proceduralCreatures.png";
     signLabels[3] = "Procedural Creatures";
     //signContentTitle[3] = "Procedural Creatures - C++, Metaballs, Octet Framework, OpenGL, GLSL";
     signContentTitle[3] = "<div>";
@@ -153,7 +153,7 @@ function initWarehouse()
     signVideoLinks[3] = "http://www.youtube.com/embed/Y_J5FiD9gP8?autoplay=1";
 
     var contentImage4 = new Image();
-    contentImage4.src = "media/graveyardShift.png";
+    contentImage4.src = "./media/graveyardShift.png";
     signLabels[4] = "Graveyard Shift";
     signContentTitle[4] = "<div>";
     signContentTitle[4] += "<p><b>Graveyard Shift</b></p>";

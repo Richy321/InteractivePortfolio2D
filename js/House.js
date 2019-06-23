@@ -24,7 +24,7 @@
 
     //load walls
     var interiorWallSheet = new Image();
-    interiorWallSheet.src = "media/VILINT_small_320.png";
+    interiorWallSheet.src = "./media/VILINT_small_320.png";
 
     var NWCornerWall = new CollidableObject(interiorWallSheet, worldXY.x + 0, worldXY.y + 0, 40, 60, 20, 20, false);
     collidables.push(NWCornerWall);
@@ -57,7 +57,7 @@
     }
 
     var door = new Image();
-    door.src = "media/TOWNDOOR1_40.png";
+    door.src = "./media/TOWNDOOR1_40.png";
 
     collidables.push(new CollidableObject(door, worldXY.x + ToTownTrigger.posX + 13, 10, 40, 46, 0, 0, false));
 
