@@ -154,7 +154,7 @@ function initWarehouse()
     {
         label: "Narcos",
         image: signImage(ARTWORK_PENDING),
-        video: null,
+        video: "https://www.youtube.com/embed/BMTgVN4xIeo?autoplay=1",
         description:
             "<div>" +
             "<p><b>Narcos: Rise of the Cartels</b> &ndash; Kuju (Senior Programmer)</p>" +
