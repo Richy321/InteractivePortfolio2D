@@ -131,7 +131,7 @@ function initWarehouse()
     {
         label: "Cast Outs",
         image: signImage(ARTWORK_PENDING),
-        video: null,
+        video: "https://www.youtube.com/embed/If76IrwqxSI?autoplay=1",
         description:
             "<div>" +
             "<p><b>Cast Outs</b> &ndash; Twisted Works (Senior Programmer, contract)</p>" +
