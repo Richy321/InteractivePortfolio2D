@@ -138,7 +138,7 @@ function drawWarehouseHouseTxt() {
     ctx.fillText(textProg, 600, 228 / 2 - 10);
 
     ctx.font = 'italic bold 15px sans-serif';
-    var textProg2 = "(Demos, Code Snippets)";
+    var textProg2 = "(Projects, Videos, Code)";
     ctx.fillText(textProg2, 600, 228 / 2 + 5);
 }
 

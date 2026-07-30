@@ -44,12 +44,6 @@ var omniShadowImage;
 var showGridOverlay = false;
 var debugKeyDown = false;
 
-var videoElement;
-var videoDiv;
-
-var videoHeight = 100;
-var videoWidth = 133;
-
 //Link pathfind positions
 var libraryTeleporterLocation;
 var warehouseTeleportLocation;
@@ -107,7 +101,19 @@ function doLinkClick(pLinkName)
 {
     player.clearPath();
     var libraryLocations = ["CV", "Contact", "WorkExp", "Education", "Skills"];
-    var warehouseLocations = ["Demo1", "Demo2", "Demo3", "Demo4", "Demo5", "Demo6"];
+
+    //Grid coordinate of each sign's trigger, named after the sign rather than
+    //Demo1..Demo6: the numbers said nothing about which board they led to, so
+    //rearranging the signs meant working the mapping out again. The signs fill the
+    //warehouse a column at a time, hence the left wall first then the right.
+    var warehouseTargets = {
+        "Helix":           [5, 5],    //left wall, top
+        "CastOuts":        [5, 10],   //left wall, middle
+        "PlanetOfTheApes": [5, 16],   //left wall, bottom
+        "TerraTechWorlds": [15, 5],   //right wall, top
+        "Narcos":          [15, 11],  //right wall, middle
+        "EarlierWork":     [15, 16]   //right wall, bottom
+    };
 
     player.SetFastMovement(true);
     if (pLinkName == "Home")
@@ -144,27 +150,9 @@ function doLinkClick(pLinkName)
             player.pushTargetToStack(houseTeleporterLocation);
     }
 
-    if ($.inArray(pLinkName, warehouseLocations) > -1) {
-        switch (pLinkName) {
-            case "Demo1":
-                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 5)); //to cv trigger
-                break;
-            case "Demo2":
-                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 10)); //to contact me trigger
-                break;
-            case "Demo3":
-                player.pushTargetToStack(grid.GetPositionCenterFromCoord(5, 16)); //to work experience trigger
-                break;
-            case "Demo4":
-                player.pushTargetToStack(grid.GetPositionCenterFromCoord(15, 5)); //to education trigger
-                break;
-            case "Demo5":
-                player.pushTargetToStack(grid.GetPositionCenterFromCoord(15, 11)); //to skills trigger
-                break;
-            case "Demo6":
-                player.pushTargetToStack(grid.GetPositionCenterFromCoord(15, 16)); //to skills trigger
-                break;
-        }
+    if (warehouseTargets.hasOwnProperty(pLinkName)) {
+        var signTile = warehouseTargets[pLinkName];
+        player.pushTargetToStack(grid.GetPositionCenterFromCoord(signTile[0], signTile[1]));
 
         if (locationState == LocationEnum.TOWN || locationState == LocationEnum.LIBRARY)
             player.pushTargetToStack(warehouseTeleportLocation);
@@ -208,50 +196,6 @@ function drawTarget() {
     ctx.fillStyle = origFill;
 }
 
-function eventWindowLoaded() {
-    /*
-    videoElement = document.createElement("video");
-    videoDiv = document.createElement('div');
-    document.body.appendChild(videoDiv);
-    videoDiv.appendChild(videoElement);
-    videoDiv.setAttribute("style", "display:none;");
-
-    var videoType = supportedVideoFormat(videoElement);
-    if (videoType == "") 
-    {
-        alert("no video support");
-        return;
-    }
-    videoElement.addEventListener("canplaythrough", videoLoaded, false);
-    videoElement.setAttribute("src", "video/video." + videoType);
-    */
-}
-
-function videoLoaded(event) {
-    init();
-}
-
-function supportedVideoFormat(video) {
-    var returnExtension = "";
-    if (video.canPlayType("video/webm") == "probably" ||
-        video.canPlayType("video/webm") == "maybe") {
-        returnExtension = "webm";
-    } else if (video.canPlayType("video/mp4") == "probably" ||
-        video.canPlayType("video/mp4") == "maybe") {
-        returnExtension = "mp4";
-    } else if (video.canPlayType("video/ogg") == "probably" ||
-        video.canPlayType("video/ogg") == "maybe") {
-        returnExtension = "ogg";
-    }
-
-    return returnExtension;
-}
-
-function drawVideo(posX, posY) {
-    if (videoElement)
-        ctx.drawImage(videoElement, posX, posY, videoWidth, videoHeight);
-}
-
 var draw = function () {
     ctx.save();
     ctx.translate(virtualCameraOffsetX, virtualCameraOffsetY);
@@ -290,8 +234,6 @@ var draw = function () {
     if (showGridOverlay)
         grid.drawGridOverlay();
 
-    drawVideo(0, 0);
-
     player.drawPlayer();
     //player.drawBounds();
     ctx.restore();
@@ -310,9 +252,6 @@ var update = function () {
     draw();
 
     player.updatePlayer(timer.getSeconds());
-
-    if (videoElement)
-        videoElement.play();
 
     timer.tick();
 }
@@ -378,4 +317,3 @@ function init() {
 
 //--main--
 init();
-//window.addEventListener('load', eventWindowLoaded, false);

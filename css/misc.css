@@ -1,12 +1,36 @@
-﻿.fancyBoxCustomTitle {background-color: #fff; padding: 5px;}
-.fancyBoxCustomTitle p {line-height: 16px; font-size: 12px; padding: 0; margin: 0;}
-/* if you want the title stick to the image in fancybox */
+﻿/* if you want the title stick to the image in fancybox */
 .fancybox-title-inside-wrap  {margin-top: 0 !important;}
 
 .videoTitleBackground
 {
 background-color: black;
 }
+
+/* Project write-up shown on its own, where a sign has no video to embed. */
+.signPopup
+{
+    background-color: #333;
+    color: rgba(255,255,255,.85);
+    padding: 22px 26px;
+    max-width: 620px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    /* The page centres its text for the game canvas; prose needs ranging left. */
+    text-align: left;
+    /* Centred, because under a video the container is as wide as the player. */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signPopup p:first-child {text-align: center;}
+
+.signPopup a {color: #8ab4f8;}
+.signPopup p {margin: 0 0 12px 0;}
+.signPopup p:last-child {margin-bottom: 0;}
+.signPopup ul {margin: 0; padding-left: 20px;}
+.signPopup li {margin-bottom: 10px;}
+.signPopup li:last-child {margin-bottom: 0;}
 
 /* CV popup: the Google Docs frame takes the available height, with the
    fallback link pinned underneath it. */
