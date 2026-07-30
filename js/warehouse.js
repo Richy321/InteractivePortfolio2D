@@ -119,7 +119,7 @@ function initWarehouse()
     {
         label: "HELIX",
         image: signImage(ARTWORK_PENDING),
-        video: null,
+        video: "https://www.youtube.com/embed/nwywfZuhHH4?autoplay=1",
         description:
             "<div>" +
             "<p><b>HELIX</b> &ndash; Hypersonic Laboratories (Lead Software Engineer)</p>" +
