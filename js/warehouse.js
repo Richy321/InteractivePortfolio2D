@@ -46,23 +46,36 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     var signTrigger = new CollidableObject(teleInactive, posX + signWidth / 2 - teleInactiveWidth / 2, posY + signHeight + triggerYGap, teleInactiveWidth, teleInactiveHeight, 0, 0, true);
     signTrigger.type = "Teleporter";
     signTrigger.fireTrigger = function fireTrigger() {
-        //show youtube in popup
         justFiredTrigger = true;
         clearKeyBuffer();
         player.disableMovement = true;
-        $.fancybox({
-            href: pVideoLink,
-            title: pTitleText,
-            type: 'iframe',
-            padding : 0,
+
+        var options = {
+            padding: 0,
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
                 player.disableMovement = false;
-            },
-            helpers: {
-                title: { type: 'outside' },
-            },
-        }); // fancybox
+            }
+        };
+
+        if (pVideoLink)
+        {
+            //Video, with the write-up underneath it.
+            options.href = pVideoLink;
+            options.type = 'iframe';
+            options.title = pTitleText;
+            options.helpers = { title: { type: 'outside' } };
+        }
+        else
+        {
+            //Nothing public to embed for this one, so show the write-up on its own
+            //rather than an empty player.
+            options.content = '<div class="signPopup">' + pTitleText + '</div>';
+            options.type = 'html';
+            options.autoSize = true;
+        }
+
+        $.fancybox(options); // fancybox
     };
     collidables.push(signTrigger);
 
@@ -71,7 +84,9 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
 
     this.render = function render()
     {
-        ctx.fillText(this.label, posX + signWidth / 2, posY + signHeight * 0.85);
+        //Wrapped to the sign, the same way the house labels are: a title longer
+        //than the board ran off the side when drawn as a single line.
+        wrapText(ctx, this.label, posX + signWidth / 2, posY + signHeight * 0.85, signWidth, 20);
     }
 }
 
@@ -84,105 +99,118 @@ function initWarehouse()
     var numCols = 2;
     var numRows = 3;
 
-    var signLabels = new Array(numCols* numRows);
-    var signContent = new Array(numCols * numRows);
-    var signContentTitle = new Array(numCols * numRows);
-    var signVideoLinks = new Array(numCols * numRows);
+    //A real screenshot per title still needs dropping into media/. This is a
+    //plain panel standing in so the signs render until then - swap each
+    //signImage(ARTWORK_PENDING) below for the actual artwork.
+    var ARTWORK_PENDING = "./media/screenshotPending.png";
 
-    var testImage = new Image();
-    testImage.src = "./media/testContentImage.png";
-
-    var contentImage0 = new Image();
-    contentImage0.src = "./media/arena.png";
-    signLabels[0] = "Arena";
-    signContentTitle[0] = "<div>";
-    signContentTitle[0] += "<p><b>Arena</b></p>";
-    signContentTitle[0] += "Source: <a href='https://bitbucket.org/richy321/arena'>https://bitbucket.org/richy321/arena</a><br/><br/>";
-    signContentTitle[0] += "<p>"
-    signContentTitle[0] += "A Top down shooter coded in C++ and OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
-    signContentTitle[0] += "This was the project for my first assignment of my MSc in Computer games and entertainment written in C++. Highlights include a templated object pool manager, explode vertex shader, multiple barrel turrets, integrated bullet physics library, controls via xbox controller, basic chase AI. Includes Single Player, Coop and VS modes on the same machine.";
-    signContentTitle[0] += "</p>";
-    signContentTitle[0] += "</div>";
-    signContent[0] = contentImage0;
-    signVideoLinks[0] = "https://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
-
-    var contentImage1 = new Image();
-    contentImage1.src = "./media/procterrain.png";
-    signLabels[1] = "Procedural Terrain";
-    signContentTitle[1] = "<div>";
-    signContentTitle[1] += "<p><b>Procedurally Generated Terrain</b></p>";
-    signContentTitle[1] += "Source: <a href='https://bitbucket.org/richy321/terrain-generation'>https://bitbucket.org/richy321/terrain-generation</a><br/><br/>";
-    signContentTitle[1] += "<p>"
-    signContentTitle[1] += "Explores technqiues for procedurally generating terrain using fractals. Built using C++ OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
-    signContentTitle[1] += "The algorithms used (in order the same order as shown in the video) are: Mid-point displacement, Diamond Square, Perlin Noise, fractal Brownian Motion (fBm) using Perlin noise. <br/>";
-    signContentTitle[1] += "Perlin noise was implemented from scratched based on the Improved Perlin noise algorithm. The texture mapping linearly interpolates/blends between 5 different textures depending on high value.";
-    signContentTitle[1] += "</p>";
-    signContentTitle[1] += "</div>";
-
-    signContent[1] = contentImage1;
-    signVideoLinks[1] = "https://www.youtube.com/embed/y5WiY6jm-0Q?autoplay=1";
-
-    var contentImage2 = new Image();
-    contentImage2.src = "./media/l-systems.png";
-    signLabels[2] = "L-Systems";
-    signContentTitle[2] = "<div>";
-    signContentTitle[2] += "<p><b>L-Systems Implementation</b></p>";
-    signContentTitle[2] += "Source: <a href='https://bitbucket.org/richy321/lsystem'>https://bitbucket.org/richy321/lsystem</a><br/><br/>";
-    signContentTitle[2] += "<p>"
-    signContentTitle[2] += "Implementation of a Lindenmayer system. Built using C++ and OpenGL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
-    signContentTitle[2] += "A Lindenmayer system (L-System) is a recursive self-similar fractal like form that have often been used in the generation of artifical life, especially plants and trees. <br/>";
-    signContentTitle[2] += "This implementation shows 6 different L-Systems including 4 plant like systems and a Sierpinksi triangle and a Dragon curve. <br/>";
-    signContentTitle[2] += "</p>";
-    signContentTitle[2] += "</div>";
-    signContent[2] = contentImage2;
-    signVideoLinks[2] = "https://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
-
-    var contentImage3 = new Image();
-    contentImage3.src = "./media/proceduralCreatures.png";
-    signLabels[3] = "Procedural Creatures";
-    //signContentTitle[3] = "Procedural Creatures - C++, Metaballs, Octet Framework, OpenGL, GLSL";
-    signContentTitle[3] = "<div>";
-    signContentTitle[3] += "<p><b>Procedural Creatures</b></p>";
-    signContentTitle[3] += "Source: On Visual Studio Online. Available upon request<br/><br/>";
-    signContentTitle[3] += "<p>"
-    signContentTitle[3] += "Group project which generates creatures using fixed skeleton structures with randomised bone lengths/parametric curved muscles with rendering using metaballs. Built using C++ and OpenGL/GLSL on the octet framework (found <a href='http://sourceforge.net/projects/octetframework/'>here</a>)<br/>";
-    signContentTitle[3] += "For this project I was in charge of the skin generation using the metaballs technique. I used brute force ray marching coupled with sphere weighting based on size and distance to determine the shape(sphere blending) of the skin. Most of the metaball work was implemented within the fragment shader. <br/>";
-    signContentTitle[3] += "</p>";
-    signContentTitle[3] += "</div>";
-    signContent[3] = contentImage3;
-    signVideoLinks[3] = "https://www.youtube.com/embed/Y_J5FiD9gP8?autoplay=1";
-
-    var contentImage4 = new Image();
-    contentImage4.src = "./media/graveyardShift.png";
-    signLabels[4] = "Graveyard Shift";
-    signContentTitle[4] = "<div>";
-    signContentTitle[4] += "<p><b>Graveyard Shift</b></p>";
-    signContentTitle[4] += "<p>"
-    signContentTitle[4] += "A FPS built in C++ and DirectX9 using a small games framework I developed a while ago. Includes loading of hierarchial XFile characters and animations, Quaternion FPS camera, GUI elements and a Scoreboard.<br/>";
-    signContentTitle[4] += "Implements basic collisions and collision response and bullet ray casting.<br/>";
-    signContentTitle[4] += "</p>";
-    signContentTitle[4] += "</div>";
-    signContent[4] = contentImage4;
-    signVideoLinks[4] = "https://www.youtube.com/embed/AZj0DsckI0U?autoplay=1";
-
-    var contentImage5 = new Image();
-    //contentImage5.src = "media/l-systems.png";
-    //signLabels[5] = "Networking Library (coming soon)";
-    //signContentTitle[5] = "L-Systems implementation - C++, OpenGL, Octet Framework";
-    signContent[5] = null;//contentImage5;
-    //signVideoLinks[5] = "https://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
-
-
-
-    for (var i = 0; i < numCols; i++)
+    function signImage(source)
     {
-        for (var j = 0; j < numRows; j++)
+        var image = new Image();
+        image.src = source;
+        return image;
+    }
+
+    //One entry per sign. video is the YouTube embed URL for the popup, or null
+    //where there is no publicly released footage to show - the popup then shows
+    //the write-up on its own rather than an empty player. Array order fills the
+    //grid a column at a time: 0-2 down the left wall, 3-5 down the right.
+    var projects = [
+    {
+        label: "HELIX",
+        image: signImage(ARTWORK_PENDING),
+        video: null,
+        description:
+            "<div>" +
+            "<p><b>HELIX</b> &ndash; Hypersonic Laboratories (Lead Software Engineer)</p>" +
+            "<p>User generated content games platform built on Unreal Engine 5.</p>" +
+            "<p>Leading international engineering teams delivering HELIX: a custom engine build, plugin architecture, Chaos Vehicles, Iris Networking, Gameplay Ability System, Lua scripting integration and ModKit/modding support.</p>" +
+            "<p>Own technical direction, system architecture and release management across an engineering team of 10&ndash;15 split into three sub-teams, and direct the DevOps and LiveOps infrastructure spanning Jenkins, Perforce, BuildGraph, Docker, cloud and dedicated servers.</p>" +
+            "</div>"
+    },
+    {
+        label: "Cast Outs",
+        image: signImage(ARTWORK_PENDING),
+        video: null,
+        description:
+            "<div>" +
+            "<p><b>Cast Outs</b> &ndash; Twisted Works (Senior Programmer, contract)</p>" +
+            "<p>Released on Steam.</p>" +
+            "<p>Prototyped UE5 multiplayer mechanics and Gameplay Ability System features, alongside optimisation and bug fixing. Set up the Azure cloud CI and build infrastructure using Jenkins and Perforce.</p>" +
+            "</div>"
+    },
+    {
+        label: "TerraTech Worlds",
+        image: signImage(ARTWORK_PENDING),
+        video: null,
+        description:
+            "<div>" +
+            "<p><b>TerraTech Worlds</b> and <b>TerraTech</b> &ndash; Payload Studios (Senior Programmer)</p>" +
+            "<p><b>TerraTech Worlds</b> (Steam, UE5): implemented core gameplay systems &ndash; block building, crafting and automation, and multiplayer &ndash; using ECS. Backend integration with PlayFab and AWS, spatial UI in UMG, and ownership of the build pipeline and system optimisation through BuildGraph.</p>" +
+            "<p><b>TerraTech</b> (PS4, Xbox One, Nintendo Switch, PC/Steam, Unity): new features, bug fixes and live maintenance for the existing release across four platforms.</p>" +
+            "<p>Managed and mentored junior programmers, including aspiring programmers moving across from QA.</p>" +
+            "</div>"
+    },
+    {
+        label: "Narcos",
+        image: signImage(ARTWORK_PENDING),
+        video: null,
+        description:
+            "<div>" +
+            "<p><b>Narcos: Rise of the Cartels</b> &ndash; Kuju (Senior Programmer)</p>" +
+            "<p>PS4, Xbox One, Nintendo Switch and PC/Steam.</p>" +
+            "<p>Delivered core mechanics, combat and data driven skills systems for a full-cycle UE4 turn-based strategy title, shipped across four platforms in around a year with a small team. Console development, async tasks, optimisation and submission/patching.</p>" +
+            "</div>"
+    },
+    {
+        label: "Planet of the Apes",
+        image: signImage(ARTWORK_PENDING),
+        video: null,
+        description:
+            "<div>" +
+            "<p><b>Planet of the Apes: Last Frontier</b> &ndash; Imaginati Studios (Senior Programmer)</p>" +
+            "<p>PS4, Xbox One and PC/Steam.</p>" +
+            "<p>Built a full-cycle narrative UE4 title from vertical slice to release, including level streaming, local multiplayer and a dynamic audio sequencer plugin. Integrated PlayStation PlayLink, Wi-Fi hotspot multiplayer, Microsoft Mixer and Steam, and delivered console submission, TRC compliance and post-launch patches.</p>" +
+            "</div>"
+    },
+    {
+        label: "Earlier work",
+        image: signImage("./media/proceduralCreatures.png"),
+        video: null,
+        description:
+            "<div>" +
+            "<p><b>Earlier and academic work</b></p>" +
+            "<p>Graphics and procedural generation projects from an MSc in Computer Games &amp; Entertainment at Goldsmiths, plus earlier personal engine work. C++ with OpenGL/GLSL and DirectX.</p>" +
+            "<ul>" +
+            "<li><b>Arena</b> &ndash; top down shooter in C++ and OpenGL/GLSL. Templated object pool, explode vertex shader, multiple barrel turrets, bullet physics, chase AI, and single player, co-op and versus modes. " +
+            "<a href='https://www.youtube.com/watch?v=l7MGzSWvdks' target='_blank' rel='noopener'>video</a>, " +
+            "<a href='https://bitbucket.org/richy321/arena' target='_blank' rel='noopener'>source</a></li>" +
+            "<li><b>Procedural Terrain</b> &ndash; fractal terrain generation in C++ and OpenGL/GLSL. " +
+            "<a href='https://www.youtube.com/watch?v=y5WiY6jm-0Q' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>L-Systems</b> &ndash; Lindenmayer system implementation in C++ and OpenGL. " +
+            "<a href='https://www.youtube.com/watch?v=ojJABvs-_s0' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Procedural Creatures</b> &ndash; group project generating creatures from fixed skeletons with randomised bone lengths and parametric curved muscles, rendered with metaballs. " +
+            "<a href='https://www.youtube.com/watch?v=Y_J5FiD9gP8' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Graveyard Shift</b> &ndash; FPS in C++ and DirectX 9 on a personal framework: hierarchical XFile characters and animation, quaternion FPS camera, GUI and scoreboard. " +
+            "<a href='https://www.youtube.com/watch?v=AZj0DsckI0U' target='_blank' rel='noopener'>video</a></li>" +
+            "</ul>" +
+            "</div>"
+    }];
+
+    //Rebuilt every time the warehouse is entered. Without this the signs from the
+    //previous visit stayed in the collection and were drawn again on top.
+    signCollection.length = 0;
+
+    for (var col = 0; col < numCols; col++)
+    {
+        for (var row = 0; row < numRows; row++)
         {
-            if (signContent[i * numRows + j] != null)
-            {
-                var newSign = new Sign(signLabels[i * numRows + j], signContent[i * numRows + j], signVideoLinks[i * numRows + j], signContentTitle[i * numRows + j], i, j);
-                signCollection.push(newSign);
-            }
+            var project = projects[col * numRows + row];
+
+            if (project == null || project.image == null)
+                continue;
+
+            signCollection.push(new Sign(project.label, project.image, project.video, project.description, col, row));
         }
     }
 
