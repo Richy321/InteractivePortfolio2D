@@ -113,8 +113,8 @@ function initWarehouse()
     var numCols = 2;
     var numRows = 3;
 
-    //Each sign has its own image file in media/, currently a plain 16:9 placeholder
-    //panel. Overwrite the file to give a sign its artwork - no code change needed.
+    //Each sign has its own 16:9 image in media/. Overwrite the file to change a
+    //sign's artwork; Sign.render scales whatever it is into the board.
     function signImage(source)
     {
         var image = new Image();
@@ -129,7 +129,7 @@ function initWarehouse()
     var projects = [
     {
         label: "HELIX",
-        image: signImage("./media/helix.png"),
+        image: signImage("./media/helix.jpg"),
         video: "https://www.youtube.com/embed/nwywfZuhHH4?autoplay=1",
         description:
             "<div>" +
@@ -141,7 +141,7 @@ function initWarehouse()
     },
     {
         label: "Cast Outs",
-        image: signImage("./media/castOuts.png"),
+        image: signImage("./media/castOuts.jpg"),
         video: "https://www.youtube.com/embed/If76IrwqxSI?autoplay=1",
         description:
             "<div>" +
@@ -152,7 +152,7 @@ function initWarehouse()
     },
     {
         label: "Planet of the Apes",
-        image: signImage("./media/planetOfTheApes.png"),
+        image: signImage("./media/planetOfTheApes.jpg"),
         video: "https://www.youtube.com/embed/J5P9wd9wNpY?autoplay=1",
         description:
             "<div>" +
@@ -163,7 +163,7 @@ function initWarehouse()
     },
     {
         label: "TerraTech Worlds",
-        image: signImage("./media/terraTechWorlds.png"),
+        image: signImage("./media/terraTechWorlds.jpg"),
         video: "https://www.youtube.com/embed/BPdgAEFk-CA?autoplay=1",
         description:
             "<div>" +
@@ -175,7 +175,7 @@ function initWarehouse()
     },
     {
         label: "Narcos",
-        image: signImage("./media/narcos.png"),
+        image: signImage("./media/narcos.jpg"),
         video: "https://www.youtube.com/embed/BMTgVN4xIeo?autoplay=1",
         description:
             "<div>" +
@@ -186,7 +186,7 @@ function initWarehouse()
     },
     {
         label: "Earlier work",
-        image: signImage("./media/proceduralCreatures.png"),
+        image: signImage("./media/earlierWork.png"),
         video: null,
         description:
             "<div>" +
