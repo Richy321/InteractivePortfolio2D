@@ -3,7 +3,38 @@
 /* if you want the title stick to the image in fancybox */
 .fancybox-title-inside-wrap  {margin-top: 0 !important;}
 
-.videoTitleBackground 
+.videoTitleBackground
 {
 background-color: black;
 }
+
+/* CV popup: the Google Docs frame takes the available height, with the
+   fallback link pinned underneath it. */
+.cvPopup
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+
+.cvPopupFrame
+{
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    border: 0 none;
+}
+
+.cvPopupLink
+{
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 8px;
+    text-align: center;
+    background-color: #333;
+    font-size: 13px;
+}
+
+.cvPopupLink a {color: #8ab4f8;}

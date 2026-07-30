@@ -1,6 +1,13 @@
 ﻿var HEIGHT_HOUSE_LIB = 600;
 var WIDTH_HOUSE_LIB = 800;
 
+//CV lives in Google Docs. /preview is the embeddable view - the /edit and
+///view URLs refuse to be framed by another site - and the link below the frame
+//is there for anyone the frame does not load for.
+var CV_DOC_ID = "1jDQfO-rIBQy1ZPN2pMS5IqHvFXI0KG4SUkS6_TdJ5LU";
+var CV_EMBED_URL = "https://docs.google.com/document/d/" + CV_DOC_ID + "/preview";
+var CV_OPEN_URL = "https://docs.google.com/document/d/" + CV_DOC_ID + "/view";
+
 var bookcaseWidth = 40;
 var bookcaseHeight = 76;
 var xOffsetBookcase = 100;
@@ -237,9 +244,15 @@ function initLibrary()
         player.clearTargetStack();
         clearKeyBuffer();
         $.fancybox({
-            type: 'iframe',
+            type: 'html',
+            content: '<div class="cvPopup">' +
+                         '<iframe class="cvPopupFrame" src="' + CV_EMBED_URL + '" title="CV"></iframe>' +
+                         '<p class="cvPopupLink"><a href="' + CV_OPEN_URL + '" target="_blank" rel="noopener">Open CV in Google Docs</a></p>' +
+                     '</div>',
             autoSize: false,
-            href: 'CV_RJFox.pdf',
+            fitToView: false,
+            width: '80%',
+            height: '90%',
             beforeClose: function () {
                 $(".fancybox-inner").unwrap();
             },
