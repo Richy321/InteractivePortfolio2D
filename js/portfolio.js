@@ -193,17 +193,17 @@ function SpriteFrame(pSpriteXOffset, pSpriteYOffset, pWidth, pHeight) {
     this.height = pHeight;
 }
 
+//Just where the player is headed. The intermediate waypoints used to be marked
+//too, which only showed the shape of the route rather than the destination.
 function drawTarget() {
+    if (player.path.length == 0)
+        return;
+
     var origFill = ctx.fillStyle;
+    var destination = player.path[player.path.length - 1];
 
-    for (var i = 0; i < player.path.length; i++) {
-        ctx.fillStyle = 'rgba(255, 255, 0, 255)';
-        if (player.path.length > 0)
-            circle(player.path[i].x, player.path[i].y, 5);
-    }
-
-    ctx.fillStyle = 'rgba(255, 0, 0, 255)';
-    circle(player.path[player.path.length - 1].x, player.path[player.path.length - 1].y, 5);
+    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    circle(destination.x, destination.y, 5);
 
     ctx.fillStyle = origFill;
 }
