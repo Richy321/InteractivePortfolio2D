@@ -191,17 +191,24 @@ function initWarehouse()
         description:
             "<div>" +
             "<p><b>Earlier and academic work</b></p>" +
-            "<p>Graphics and procedural generation projects from an MSc in Computer Games &amp; Entertainment at Goldsmiths, plus earlier personal engine work. C++ with OpenGL/GLSL and DirectX.</p>" +
+            "<p>Graphics, simulation and procedural generation projects, most of them from an MSc in Computer Games &amp; Entertainment at Goldsmiths. C++ with OpenGL/GLSL and DirectX, plus some Unity.</p>" +
             "<ul>" +
-            "<li><b>Arena</b> &ndash; top down shooter in C++ and OpenGL/GLSL. Templated object pool, explode vertex shader, multiple barrel turrets, bullet physics, chase AI, and single player, co-op and versus modes. " +
-            "<a href='https://www.youtube.com/watch?v=l7MGzSWvdks' target='_blank' rel='noopener'>video</a>, " +
-            "<a href='https://bitbucket.org/richy321/arena' target='_blank' rel='noopener'>source</a></li>" +
-            "<li><b>Procedural Terrain</b> &ndash; fractal terrain generation in C++ and OpenGL/GLSL. " +
-            "<a href='https://www.youtube.com/watch?v=y5WiY6jm-0Q' target='_blank' rel='noopener'>video</a></li>" +
-            "<li><b>L-Systems</b> &ndash; Lindenmayer system implementation in C++ and OpenGL. " +
-            "<a href='https://www.youtube.com/watch?v=ojJABvs-_s0' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>OpenGL / C++ game engine</b> &ndash; component based engine written to work through engine fundamentals: rendering, physics, input and networking. " +
+            "<a href='https://github.com/Richy321/Engine' target='_blank' rel='noopener'>source</a></li>" +
             "<li><b>Procedural Creatures</b> &ndash; group project generating creatures from fixed skeletons with randomised bone lengths and parametric curved muscles, rendered with metaballs. " +
             "<a href='https://www.youtube.com/watch?v=Y_J5FiD9gP8' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Procedural Terrain</b> &ndash; fractal terrain generation in C++ and OpenGL/GLSL. " +
+            "<a href='https://www.youtube.com/watch?v=y5WiY6jm-0Q' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Water shader</b> &ndash; water surface shaders in C++ and OpenGL. " +
+            "<a href='https://www.youtube.com/watch?v=e2Xc5Iy-oCM' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Cloth simulation</b> &ndash; cloth simulation in C++. " +
+            "<a href='https://www.youtube.com/watch?v=_wEjtAT4QMo' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>L-Systems</b> &ndash; Lindenmayer system implementation in C++ and OpenGL. " +
+            "<a href='https://www.youtube.com/watch?v=ojJABvs-_s0' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Tower Defense solver</b> &ndash; finds the strongest tower placement for a given tower defense map using genetic algorithms, built in Unity. " +
+            "<a href='https://www.youtube.com/watch?v=NPtcnKLCMXA' target='_blank' rel='noopener'>video</a></li>" +
+            "<li><b>Arena</b> &ndash; top down shooter in C++ and OpenGL/GLSL. Templated object pool, explode vertex shader, multiple barrel turrets, bullet physics, chase AI, and single player, co-op and versus modes. " +
+            "<a href='https://www.youtube.com/watch?v=l7MGzSWvdks' target='_blank' rel='noopener'>video</a>, <a href='https://bitbucket.org/richy321/arena' target='_blank' rel='noopener'>source</a></li>" +
             "<li><b>Graveyard Shift</b> &ndash; FPS in C++ and DirectX 9 on a personal framework: hierarchical XFile characters and animation, quaternion FPS camera, GUI and scoreboard. " +
             "<a href='https://www.youtube.com/watch?v=AZj0DsckI0U' target='_blank' rel='noopener'>video</a></li>" +
             "</ul>" +
