@@ -162,9 +162,24 @@ body {
   }
 }
 
-#gameCanvas 
+#gameCanvas
 {
+  /* block, not the default inline: an inline canvas sits on a text baseline and
+     adds a descender gap below itself, which counted towards page height */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
-  height: 100%;
+  /* Height comes from this ratio rather than from the canvas element's own
+     width/height attributes. resizeGame() writes the rendered size back into
+     those attributes, so a height clamped by max-height below would otherwise
+     become the canvas's new intrinsic size and it could never grow back. */
+  aspect-ratio: 4 / 3;
+  height: auto;
+  /* Keep the game inside the window so the page never scrolls. This only bites
+     on short windows - a laptop where the navbar, canvas and footer together
+     came to more than the viewport - and never enlarges the canvas beyond the
+     size it already had. The subtraction covers the navbar and footer. */
+  max-height: calc(100vh - 84px);
   overflow: hidden
 }
