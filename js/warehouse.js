@@ -140,6 +140,17 @@ function initWarehouse()
             "</div>"
     },
     {
+        label: "Planet of the Apes",
+        image: signImage(ARTWORK_PENDING),
+        video: "https://www.youtube.com/embed/J5P9wd9wNpY?autoplay=1",
+        description:
+            "<div>" +
+            "<p><b>Planet of the Apes: Last Frontier</b> &ndash; Imaginati Studios (Senior Programmer)</p>" +
+            "<p>PS4, Xbox One and PC/Steam.</p>" +
+            "<p>Built a full-cycle narrative UE4 title from vertical slice to release, including level streaming, local multiplayer and a dynamic audio sequencer plugin. Integrated PlayStation PlayLink, Wi-Fi hotspot multiplayer, Microsoft Mixer and Steam, and delivered console submission, TRC compliance and post-launch patches.</p>" +
+            "</div>"
+    },
+    {
         label: "TerraTech Worlds",
         image: signImage(ARTWORK_PENDING),
         video: "https://www.youtube.com/embed/BPdgAEFk-CA?autoplay=1",
@@ -160,17 +171,6 @@ function initWarehouse()
             "<p><b>Narcos: Rise of the Cartels</b> &ndash; Kuju (Senior Programmer)</p>" +
             "<p>PS4, Xbox One, Nintendo Switch and PC/Steam.</p>" +
             "<p>Delivered core mechanics, combat and data driven skills systems for a full-cycle UE4 turn-based strategy title, shipped across four platforms in around a year with a small team. Console development, async tasks, optimisation and submission/patching.</p>" +
-            "</div>"
-    },
-    {
-        label: "Planet of the Apes",
-        image: signImage(ARTWORK_PENDING),
-        video: "https://www.youtube.com/embed/J5P9wd9wNpY?autoplay=1",
-        description:
-            "<div>" +
-            "<p><b>Planet of the Apes: Last Frontier</b> &ndash; Imaginati Studios (Senior Programmer)</p>" +
-            "<p>PS4, Xbox One and PC/Steam.</p>" +
-            "<p>Built a full-cycle narrative UE4 title from vertical slice to release, including level streaming, local multiplayer and a dynamic audio sequencer plugin. Integrated PlayStation PlayLink, Wi-Fi hotspot multiplayer, Microsoft Mixer and Steam, and delivered console submission, TRC compliance and post-launch patches.</p>" +
             "</div>"
     },
     {
