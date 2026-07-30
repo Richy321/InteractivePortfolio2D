@@ -44,12 +44,6 @@ var omniShadowImage;
 var showGridOverlay = false;
 var debugKeyDown = false;
 
-var videoElement;
-var videoDiv;
-
-var videoHeight = 100;
-var videoWidth = 133;
-
 //Link pathfind positions
 var libraryTeleporterLocation;
 var warehouseTeleportLocation;
@@ -208,50 +202,6 @@ function drawTarget() {
     ctx.fillStyle = origFill;
 }
 
-function eventWindowLoaded() {
-    /*
-    videoElement = document.createElement("video");
-    videoDiv = document.createElement('div');
-    document.body.appendChild(videoDiv);
-    videoDiv.appendChild(videoElement);
-    videoDiv.setAttribute("style", "display:none;");
-
-    var videoType = supportedVideoFormat(videoElement);
-    if (videoType == "") 
-    {
-        alert("no video support");
-        return;
-    }
-    videoElement.addEventListener("canplaythrough", videoLoaded, false);
-    videoElement.setAttribute("src", "video/video." + videoType);
-    */
-}
-
-function videoLoaded(event) {
-    init();
-}
-
-function supportedVideoFormat(video) {
-    var returnExtension = "";
-    if (video.canPlayType("video/webm") == "probably" ||
-        video.canPlayType("video/webm") == "maybe") {
-        returnExtension = "webm";
-    } else if (video.canPlayType("video/mp4") == "probably" ||
-        video.canPlayType("video/mp4") == "maybe") {
-        returnExtension = "mp4";
-    } else if (video.canPlayType("video/ogg") == "probably" ||
-        video.canPlayType("video/ogg") == "maybe") {
-        returnExtension = "ogg";
-    }
-
-    return returnExtension;
-}
-
-function drawVideo(posX, posY) {
-    if (videoElement)
-        ctx.drawImage(videoElement, posX, posY, videoWidth, videoHeight);
-}
-
 var draw = function () {
     ctx.save();
     ctx.translate(virtualCameraOffsetX, virtualCameraOffsetY);
@@ -290,8 +240,6 @@ var draw = function () {
     if (showGridOverlay)
         grid.drawGridOverlay();
 
-    drawVideo(0, 0);
-
     player.drawPlayer();
     //player.drawBounds();
     ctx.restore();
@@ -310,9 +258,6 @@ var update = function () {
     draw();
 
     player.updatePlayer(timer.getSeconds());
-
-    if (videoElement)
-        videoElement.play();
 
     timer.tick();
 }
@@ -378,4 +323,3 @@ function init() {
 
 //--main--
 init();
-//window.addEventListener('load', eventWindowLoaded, false);
