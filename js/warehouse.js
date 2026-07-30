@@ -104,7 +104,7 @@ function initWarehouse()
     signContentTitle[0] += "</p>";
     signContentTitle[0] += "</div>";
     signContent[0] = contentImage0;
-    signVideoLinks[0] = "http://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
+    signVideoLinks[0] = "https://www.youtube.com/embed/l7MGzSWvdks?autoplay=1";
 
     var contentImage1 = new Image();
     contentImage1.src = "./media/procterrain.png";
@@ -120,7 +120,7 @@ function initWarehouse()
     signContentTitle[1] += "</div>";
 
     signContent[1] = contentImage1;
-    signVideoLinks[1] = "http://www.youtube.com/embed/y5WiY6jm-0Q?autoplay=1";
+    signVideoLinks[1] = "https://www.youtube.com/embed/y5WiY6jm-0Q?autoplay=1";
 
     var contentImage2 = new Image();
     contentImage2.src = "./media/l-systems.png";
@@ -135,7 +135,7 @@ function initWarehouse()
     signContentTitle[2] += "</p>";
     signContentTitle[2] += "</div>";
     signContent[2] = contentImage2;
-    signVideoLinks[2] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
+    signVideoLinks[2] = "https://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
     var contentImage3 = new Image();
     contentImage3.src = "./media/proceduralCreatures.png";
@@ -150,7 +150,7 @@ function initWarehouse()
     signContentTitle[3] += "</p>";
     signContentTitle[3] += "</div>";
     signContent[3] = contentImage3;
-    signVideoLinks[3] = "http://www.youtube.com/embed/Y_J5FiD9gP8?autoplay=1";
+    signVideoLinks[3] = "https://www.youtube.com/embed/Y_J5FiD9gP8?autoplay=1";
 
     var contentImage4 = new Image();
     contentImage4.src = "./media/graveyardShift.png";
@@ -163,14 +163,14 @@ function initWarehouse()
     signContentTitle[4] += "</p>";
     signContentTitle[4] += "</div>";
     signContent[4] = contentImage4;
-    signVideoLinks[4] = "http://www.youtube.com/embed/AZj0DsckI0U?autoplay=1";
+    signVideoLinks[4] = "https://www.youtube.com/embed/AZj0DsckI0U?autoplay=1";
 
     var contentImage5 = new Image();
     //contentImage5.src = "media/l-systems.png";
     //signLabels[5] = "Networking Library (coming soon)";
     //signContentTitle[5] = "L-Systems implementation - C++, OpenGL, Octet Framework";
     signContent[5] = null;//contentImage5;
-    //signVideoLinks[5] = "http://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
+    //signVideoLinks[5] = "https://www.youtube.com/embed/ojJABvs-_s0?autoplay=1";
 
 
 
