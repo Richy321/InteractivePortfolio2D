@@ -63,10 +63,12 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
 
         if (pVideoLink)
         {
-            //Video, with the write-up underneath it.
+            //Video, with the write-up underneath it. Wrapped in the same class the
+            //text-only popup uses: fancybox's outside title has no background of
+            //its own, so the words sat straight on top of the page behind them.
             options.href = pVideoLink;
             options.type = 'iframe';
-            options.title = pTitleText;
+            options.title = '<div class="signPopup">' + pTitleText + '</div>';
             options.helpers = { title: { type: 'outside' } };
         }
         else
