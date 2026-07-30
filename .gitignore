@@ -1,3 +1,6 @@
 /*.suo
-/.vs/InteractivePorfolioSite/v15/.suo
-/.vs/InteractivePortfolioSite_vs2017/v15/.suo
+
+# Visual Studio local state: per-machine IIS Express config, caches and user
+# settings. VS regenerates it on open, so it should not be committed. This
+# supersedes the two .vs/**/.suo entries that used to be listed here.
+.vs/

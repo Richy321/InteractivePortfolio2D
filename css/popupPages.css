@@ -1,8 +1,20 @@
-﻿body 
+﻿body
 {
       background-color: #333;
       color: #fff; /* IE8 proofing */
       color: rgba(255,255,255,.75);
+      /* Padding rather than the UA default margin: a margin box is measured
+         inconsistently when fancybox sizes the iframe, which left the frame
+         short of the content and produced a scrollbar over empty space. */
+      margin: 0;
+      padding: 10px 14px;
+}
+
+/* The last block's bottom margin escapes the body box and is not counted when
+   the frame is sized, which is the remaining source of that phantom scrollbar. */
+body > *:last-child
+{
+    margin-bottom: 0;
 }
 
 .title 

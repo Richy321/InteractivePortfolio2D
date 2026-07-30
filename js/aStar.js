@@ -10,6 +10,14 @@ function AStarNode(pParent, pPoint)
     this.h = 99999;
 }
 
+//The player's collision footprint, matching Player.getBounds: a box the sprite's
+//width, covering the feet. Line of sight is tested with this rather than a bare
+//point so a shortcut is only taken where the character can actually fit. Half
+//width is a pixel under the real 21 so that standing centred on a walkable tile
+//is never itself judged blocked.
+var PATH_FOOTPRINT_HALF_WIDTH = 20;
+var PATH_FOOTPRINT_HEIGHT = 12;
+
 function AStar(pGrid)
 {
     this.grid = pGrid;
@@ -53,7 +61,95 @@ function AStar(pGrid)
         return result;
     }
 
+    function CanWalkAtPosition(x, y)
+    {
+        var tile = grid.GetTileFromPosition(x, y);
+        return ((tile != null) && tile.walkable == true);
+    }
+
+    //The footprint spans at most two tiles on each axis, so its corners between
+    //them cover every tile it can touch.
+    function IsFootprintWalkable(centreX, centreY)
+    {
+        var left = centreX - PATH_FOOTPRINT_HALF_WIDTH;
+        var right = centreX + PATH_FOOTPRINT_HALF_WIDTH;
+        var top = centreY;
+        var bottom = centreY + PATH_FOOTPRINT_HEIGHT;
+
+        return CanWalkAtPosition(left, top) && CanWalkAtPosition(right, top) &&
+               CanWalkAtPosition(left, bottom) && CanWalkAtPosition(right, bottom);
+    }
+
+    function HasClearLine(from, to)
+    {
+        var deltaX = to.x - from.x;
+        var deltaY = to.y - from.y;
+        var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance == 0)
+            return true;
+
+        //A quarter tile apart: close enough that the footprint cannot straddle a
+        //wall without one of the samples landing on it.
+        var steps = Math.ceil(distance / (grid.tileWidth * 0.25));
+
+        for (var step = 1; step <= steps; step++)
+        {
+            var along = step / steps;
+
+            if (!IsFootprintWalkable(from.x + deltaX * along, from.y + deltaY * along))
+                return false;
+        }
+
+        return true;
+    }
+
+    //String pulling. The search can only step N/E/S/W, so it returns a staircase
+    //of tile centres, which is what made following a path feel like steps rather
+    //than walking. Keep only the waypoints that are needed: if the character can
+    //see a later waypoint in a straight line, everything between is dropped.
+    //Anchoring the first segment on the player's real position also removes the
+    //backwards step onto the centre of the tile they are already standing on.
+    function SmoothPath(startPoint, path)
+    {
+        if (path == null || path.length < 2)
+            return path;
+
+        var smoothed = new Array();
+        var anchor = new point(startPoint.x, startPoint.y);
+        var index = 0;
+
+        while (index < path.length)
+        {
+            var furthest = index;
+
+            for (var candidate = path.length - 1; candidate > index; candidate--)
+            {
+                if (HasClearLine(anchor, path[candidate]))
+                {
+                    furthest = candidate;
+                    break;
+                }
+            }
+
+            smoothed.push(path[furthest]);
+            anchor = path[furthest];
+
+            if (furthest == path.length - 1)
+                break;
+
+            index = furthest + 1;
+        }
+
+        return smoothed;
+    }
+
     this.calculatePath = function calculatePath(startPoint, targetPoint)
+    {
+        return SmoothPath(startPoint, calculateRawPath(startPoint, targetPoint));
+    }
+
+    function calculateRawPath(startPoint, targetPoint)
     {
         var openList = new Array();
         var closedList = new Array();
@@ -140,7 +236,7 @@ function AStar(pGrid)
 
         if (path.length == 0)
         {
-            var closestPath = calculatePath(startPoint, grid.GetPositionCenterFromCoord(closestNode.x, closestNode.y));
+            var closestPath = calculateRawPath(startPoint, grid.GetPositionCenterFromCoord(closestNode.x, closestNode.y));
             for (var l = 0; l < closestPath.length; l++)
                 path.push(closestPath[l]);
         }
