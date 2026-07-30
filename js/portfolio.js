@@ -261,13 +261,16 @@ var draw = function () {
     rect(0, 0, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
     grid.drawGrid();
 
-    if (player.hasTarget) {
-        drawTarget();
-    }
     for (i = 0; i < collidables.length; i++) {
 
         collidables[i].drawCollidable();
         //collidables[i].drawBounds();
+    }
+
+    //After the collidables, so the markers are not painted over by whatever they
+    //sit on - the teleporter discs in particular are drawn as collidables.
+    if (player.hasTarget) {
+        drawTarget();
     }
 
     switch (locationState) {
