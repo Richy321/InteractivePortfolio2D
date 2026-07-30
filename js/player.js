@@ -55,23 +55,91 @@ function Player(startPosX, startPosY)
     this.targetStack = [];
     this.path = [];
     this.pathIndex = 0;
-    this.disableChangeAnimationDirection = false;
-    this.savedframeArray = [];
+
+    //Close enough to count as having reached a waypoint. Moving diagonally the
+    //player rarely lands on one exactly, and the exact comparison this replaces
+    //made it stall on the spot waiting to.
+    this.waypointArriveRadius = 2;
+    //Movement smaller than this says nothing about where the character is headed,
+    //so it must not be allowed to change the facing.
+    this.facingDeadzone = 2;
+    //How far the other axis has to win by before the sprite turns. Stops a run
+    //that is nearly diagonal flickering between two facings.
+    this.facingTurnBias = 1.4;
 
     this.disableMovement = false;
     this.fastMovement = false;
+}
+
+//Which way the sprite faces. Deliberately separate from movement: the old code
+//derived it from whichever axis was moving, so arriving at a waypoint - where the
+//remaining delta shrinks to a pixel or two - could leave the character facing an
+//arbitrary direction.
+Player.prototype.updateFacing = function updateFacing(deltaX, deltaY)
+{
+    if (Math.abs(deltaX) < this.facingDeadzone && Math.abs(deltaY) < this.facingDeadzone)
+        return;
+
+    var absX = Math.abs(deltaX);
+    var absY = Math.abs(deltaY);
+    var faceHorizontally;
+
+    //Hysteresis: the axis already faced has to be clearly beaten before turning.
+    if (this.curDirection == "Left" || this.curDirection == "Right")
+        faceHorizontally = !(absY > absX * this.facingTurnBias);
+    else if (this.curDirection == "Up" || this.curDirection == "Down")
+        faceHorizontally = (absX > absY * this.facingTurnBias);
+    else
+        faceHorizontally = (absX > absY);
+
+    if (faceHorizontally)
+        this.curDirection = (deltaX > 0) ? "Right" : "Left";
+    else
+        this.curDirection = (deltaY > 0) ? "Down" : "Up";
+}
+
+Player.prototype.framesForDirection = function framesForDirection()
+{
+    if (this.curDirection == "Up")
+        return this.upFrames;
+    if (this.curDirection == "Left")
+        return this.leftFrames;
+    if (this.curDirection == "Right")
+        return this.rightFrames;
+
+    return this.downFrames;
+}
+
+Player.prototype.distanceToWaypoint = function distanceToWaypoint(index)
+{
+    var waypoint = this.path[index];
+    var deltaX = (waypoint.x - (this.frameWidth * this.spriteScale) * 0.5) - this.positionX;
+    var deltaY = (waypoint.y - (this.frameHeight * this.spriteScale) * 0.5) - this.positionY;
+
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+}
+
+Player.prototype.isBlockedAt = function isBlockedAt(x, y)
+{
+    var bounds = this.getBoundsAt(x, y);
+
+    for (var i = 0; i < collidables.length; i++)
+    {
+        if (!collidables[i].isTrigger && doBoundsIntersect(bounds, collidables[i].getBounds()))
+            return true;
+    }
+
+    return false;
 }
 Player.prototype.updatePlayer = function updatePlayer(deltaTime) 
 {
     if (loading || this.disableMovement)
         return;
 
-    var oldPositionX = this.positionX;
-    var oldPositionY = this.positionY;
-    var oldVirtualCamOffsetX = virtualCameraOffsetX;
-    var oldVirtualCamOffsetY = virtualCameraOffsetY;
-    var dirDeltaY = this.deltaY;
-    var dirDeltaX = this.deltaX;
+    var spriteWidth = this.frameWidth * this.spriteScale;
+    var spriteHeight = this.frameHeight * this.spriteScale;
+    var moveX = 0;
+    var moveY = 0;
 
     var movementKeyPressed = ((38 in keys && keys[38]) ||
         (40 in keys && keys[40]) ||
@@ -84,26 +152,24 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
     }
 
     //Navigate path
-    if (!movementKeyPressed && this.path.length > 0 && this.pathIndex < this.path.length) 
+    if (!movementKeyPressed && this.path.length > 0 && this.pathIndex < this.path.length)
     {
-        this.targetX = this.path[this.pathIndex].x;
-        this.targetY = this.path[this.pathIndex].y;
-        this.hasTarget = true;
-
-        var centreTargX = this.targetX - (this.frameWidth * this.spriteScale) * 0.5;
-        var centreTargY = this.targetY - (this.frameHeight * this.spriteScale) * 0.5;
-
-        if (this.positionX == centreTargX && this.positionY == centreTargY) {
+        //Step past any waypoints already reached.
+        while (this.pathIndex < this.path.length &&
+               this.distanceToWaypoint(this.pathIndex) <= this.waypointArriveRadius)
+        {
             this.pathIndex++;
+        }
 
-            if ((this.pathIndex == 0 || this.pathIndex == this.path.length - 1) &&
-                this.disableChangeAnimationDirection == false) {
-                this.disableChangeAnimationDirection = true;
-            }
-            else
-            {
-                this.disableChangeAnimationDirection = false;
-            }
+        if (this.pathIndex >= this.path.length)
+        {
+            this.clearPath();
+        }
+        else
+        {
+            this.targetX = this.path[this.pathIndex].x;
+            this.targetY = this.path[this.pathIndex].y;
+            this.hasTarget = true;
         }
     }
     else
@@ -111,163 +177,97 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
         this.clearPath();
     }
 
-    if (38 in keys && keys[38]) { //up
-        if (this.positionY - this.deltaY > 0)
-        {
-            this.curDirection = "Up";
-            dirDeltaY = -dirDeltaY;
-        }
-    }
-    else if (40 in keys && keys[40]) { //down
-        if (this.positionY + this.deltaY < (HEIGHT - this.frameHeight * this.spriteScale)) {
-            this.curDirection = "Down";
-        }
-    }
-    else if (37 in keys && keys[37]) { //left
-        if (this.positionX - this.deltaX > 0)
-        {
-            this.curDirection = "Left";
-            dirDeltaX = -dirDeltaX;
-        }
-    }
-    else if (39 in keys && keys[39]) { //right
-        if (this.positionX + this.deltaX < (WIDTH - this.frameWidth * this.spriteScale))
-        {
-            this.curDirection = "Right";
-        }
-    }
-    
-
-    if (this.hasTarget)
+    if (movementKeyPressed)
     {
-        var centreTargX = this.targetX - (this.frameWidth * this.spriteScale) * 0.5;
-        var centreTargY = this.targetY - (this.frameHeight * this.spriteScale) * 0.5;
-
-        var dirX = centreTargX - this.positionX;
-        
-        if (dirX < 0) {
-            dirDeltaX = -dirDeltaX;
+        if (38 in keys && keys[38]) { //up
+            if (this.positionY - this.deltaY > 0)
+                moveY = -this.deltaY;
+        }
+        else if (40 in keys && keys[40]) { //down
+            if (this.positionY + this.deltaY < (HEIGHT - spriteHeight))
+                moveY = this.deltaY;
+        }
+        else if (37 in keys && keys[37]) { //left
+            if (this.positionX - this.deltaX > 0)
+                moveX = -this.deltaX;
+        }
+        else if (39 in keys && keys[39]) { //right
+            if (this.positionX + this.deltaX < (WIDTH - spriteWidth))
+                moveX = this.deltaX;
         }
 
-        if (Math.abs(dirX) < this.deltaX) {
-            dirDeltaX = dirX;
-        }
+        this.updateFacing(moveX, moveY);
+    }
+    else if (this.hasTarget)
+    {
+        var toTargetX = (this.targetX - spriteWidth * 0.5) - this.positionX;
+        var toTargetY = (this.targetY - spriteHeight * 0.5) - this.positionY;
+        var distance = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
 
-        var dirY = centreTargY - this.positionY;
-
-        if (dirY < 0)
+        if (distance > 0)
         {
-            dirDeltaY = -dirDeltaY;
+            //Travel straight at the waypoint instead of one axis at a time, which
+            //is what made even a straight run look like a staircase.
+            var step = Math.min(this.deltaX, distance);
+            moveX = (toTargetX / distance) * step;
+            moveY = (toTargetY / distance) * step;
         }
 
-        if (Math.abs(dirY) < this.deltaY)
-        {
-            dirDeltaY = dirY;
-        }
-
-        if (Math.abs(dirX) > Math.abs(dirY)) {
-            if (dirX > 0)
-                this.curDirection = "Right";
-            else if (dirX < 0)
-                this.curDirection = "Left";
-        }
-        else {
-            if (dirY > 0)
-                this.curDirection = "Down";
-            else if (dirY < 0)
-                this.curDirection = "Up";
-        }
+        this.updateFacing(toTargetX, toTargetY);
     }
 
-    if (this.curFrameNo < 2)
+    if (moveX != 0 || moveY != 0)
     {
+        //Slide along anything solid rather than stopping dead against it.
+        if (!this.isBlockedAt(this.positionX + moveX, this.positionY + moveY))
+        {
+            this.positionX += moveX;
+            this.positionY += moveY;
+        }
+        else if (moveX != 0 && !this.isBlockedAt(this.positionX + moveX, this.positionY))
+        {
+            this.positionX += moveX;
+        }
+        else if (moveY != 0 && !this.isBlockedAt(this.positionX, this.positionY + moveY))
+        {
+            this.positionY += moveY;
+        }
+
         this.frameDuration -= deltaTime;
-        if (this.frameDuration <= 0) {
-            this.curFrameNo++;
+        if (this.frameDuration <= 0)
+        {
+            this.curFrameNo = (this.curFrameNo + 1) % this.frameCount;
             this.frameDuration = this.frameDelay;
         }
     }
     else
     {
+        //Standing still, so stand rather than freeze mid-stride.
         this.curFrameNo = 0;
     }
 
-    if (this.curDirection == "Up" || this.curDirection == "Down")
-    {
-        if (!collided)
-        {
-            this.positionY += dirDeltaY;
-            virtualCameraOffsetY -= dirDeltaY;
-        }
+    this.curFrame = this.framesForDirection()[this.curFrameNo];
 
-        if (!this.disableChangeAnimationDirection)
-        {
-            if (this.curDirection == "Down")
-                this.curFrame = this.downFrames[this.curFrameNo];
-            else
-                this.curFrame = this.upFrames[this.curFrameNo];
-        }
-    }
-
-    if (this.curDirection == "Left" || this.curDirection == "Right")
-    {
-        if (!collided)
-        {
-            this.positionX += dirDeltaX;
-            virtualCameraOffsetX -= dirDeltaX;
-        }
-
-        if (!this.disableChangeAnimationDirection)
-        {
-            if (this.curDirection == "Right")
-                this.curFrame = this.rightFrames[this.curFrameNo];
-            else
-                this.curFrame = this.leftFrames[this.curFrameNo];
-        }
-    }
-
-    if (this.disableChangeAnimationDirection) {
-        if (this.savedframeArray.length == 0) {
-            if (this.curDirection == "Down")
-                this.savedframeArray = this.downFrames.slice();
-            else if (this.curDirection == "Up")
-                this.savedframeArray = this.upFrames.slice();
-            else if (this.curDirection == "Left")
-                this.savedframeArray = this.leftFrames.slice();
-            else if (this.curDirection == "Right")
-                this.savedframeArray = this.rightFrames.slice();
-        }
-        this.curFrame = this.savedframeArray[this.curFrameNo];
-    }
-
-    //check collisions
+    //fire any triggers now standing on
     var playerBnd = this.getBounds();
-
     var collidedTrigger = false;
-    var collided = false;
 
     for (i = 0; i < collidables.length; i++) {
-        var bnd = collidables[i].getBounds();
-        if (doBoundsIntersect(playerBnd, bnd)) {
-            if (collidables[i].isTrigger) {
-                if (justFiredTrigger == false) {
-                    collidables[i].fireTrigger();
-                }
-                collidedTrigger = true;
+        if (!collidables[i].isTrigger)
+            continue;
+
+        if (doBoundsIntersect(playerBnd, collidables[i].getBounds())) {
+            if (justFiredTrigger == false) {
+                collidables[i].fireTrigger();
             }
-            else
-            {
-                this.positionX = oldPositionX;
-                this.positionY = oldPositionY;
-                virtualCameraOffsetX = oldVirtualCamOffsetX;
-                virtualCameraOffsetY = oldVirtualCamOffsetY;
-                break;
-            }
+            collidedTrigger = true;
         }
     }
 
-    virtualCameraOffsetX = -player.positionX + Math.floor(VIRTUALCAMWIDTH / 2);
-    virtualCameraOffsetY = -player.positionY + Math.floor(VIRTUALCAMHEIGHT / 2);
+    //Rounded: the position is fractional now that movement is not axis-aligned,
+    //and a fractional camera offset would blur every tile in the scene.
+    virtualCameraOffsetX = -Math.round(player.positionX) + Math.floor(VIRTUALCAMWIDTH / 2);
+    virtualCameraOffsetY = -Math.round(player.positionY) + Math.floor(VIRTUALCAMHEIGHT / 2);
 
     //if not colliding with any triggers reset just fired flag
     //-N.B could be an issue here in future with close/overlapping triggers but ok for now.
@@ -278,7 +278,9 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
 
 Player.prototype.drawPlayer = function drawPlayer()
 {
-    ctx.drawImage(this.sprite, this.curFrame.spriteXOffset, this.curFrame.spriteYOffset, this.frameWidth, this.frameHeight, this.positionX, this.positionY, this.frameWidth * this.spriteScale, this.frameHeight * this.spriteScale);
+    //Drawn on whole pixels: the position is fractional now that movement runs
+    //diagonally, and a fractional destination resamples the sprite and blurs it.
+    ctx.drawImage(this.sprite, this.curFrame.spriteXOffset, this.curFrame.spriteYOffset, this.frameWidth, this.frameHeight, Math.round(this.positionX), Math.round(this.positionY), this.frameWidth * this.spriteScale, this.frameHeight * this.spriteScale);
 }
 
 Player.prototype.drawBounds = function drawBounds() 
@@ -287,9 +289,14 @@ Player.prototype.drawBounds = function drawBounds()
     rect(this.positionX, this.positionY + (this.frameHeight * this.spriteScale) / 2, this.frameWidth * this.spriteScale, this.frameHeight / 2 * this.spriteScale);
 }
 
-Player.prototype.getBounds = function getBounds() 
+Player.prototype.getBoundsAt = function getBoundsAt(x, y)
 {
-    return new Bounds(this.positionX, this.positionY + (this.frameHeight * this.spriteScale) / 2, this.positionX + this.frameWidth * this.spriteScale, this.positionY + this.frameWidth * this.spriteScale);
+    return new Bounds(x, y + (this.frameHeight * this.spriteScale) / 2, x + this.frameWidth * this.spriteScale, y + this.frameWidth * this.spriteScale);
+}
+
+Player.prototype.getBounds = function getBounds()
+{
+    return this.getBoundsAt(this.positionX, this.positionY);
 }
 
 Player.prototype.getCenterPosition = function getCenterPosition()
@@ -301,7 +308,6 @@ Player.prototype.setPath = function setPath(pPath)
 {
     if (pPath != null && pPath.length > 0)
     {
-        this.disableChangeAnimationDirection = true;
         this.path = pPath.slice();
         this.pathIndex = 0;
     }
@@ -314,8 +320,8 @@ Player.prototype.clearPath = function clearPath()
     this.targetX = -1;
     this.targetY = -1;
     this.path = [];
-    this.curDirection = "None";
-    this.disableChangeAnimationDirection = false
+    //curDirection is deliberately left alone. Resetting it to "None" here meant
+    //the character snapped to a default facing the instant a path finished.
 }
 
 Player.prototype.pushTargetToStack = function pushTargetToStack(pTargetPoint)
