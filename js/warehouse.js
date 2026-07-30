@@ -165,7 +165,7 @@ function initWarehouse()
     {
         label: "Planet of the Apes",
         image: signImage(ARTWORK_PENDING),
-        video: null,
+        video: "https://www.youtube.com/embed/J5P9wd9wNpY?autoplay=1",
         description:
             "<div>" +
             "<p><b>Planet of the Apes: Last Frontier</b> &ndash; Imaginati Studios (Senior Programmer)</p>" +
