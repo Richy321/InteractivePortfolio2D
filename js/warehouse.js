@@ -142,7 +142,7 @@ function initWarehouse()
     {
         label: "TerraTech Worlds",
         image: signImage(ARTWORK_PENDING),
-        video: null,
+        video: "https://www.youtube.com/embed/BPdgAEFk-CA?autoplay=1",
         description:
             "<div>" +
             "<p><b>TerraTech Worlds</b> and <b>TerraTech</b> &ndash; Payload Studios (Senior Programmer)</p>" +
