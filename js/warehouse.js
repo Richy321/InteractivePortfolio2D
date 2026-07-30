@@ -22,13 +22,16 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     this.videoLink = pVideoLink;
 
     var signContentOffsetX = 25;
-    var signContentOffsetY = 30;
+    //Centred in the board's opening now that the artwork is shorter than it was.
+    var signContentOffsetY = 37;
 
     var posX = warehouseWorldXY.x + 128;
     var posY = warehouseWorldXY.y + 25;
 
+    //16:9, so a video thumbnail drops straight in. The old 90x65 opening squashed
+    //one vertically by nearly a third.
     var signContentWidth = 90;
-    var signContentHeight = 65;
+    var signContentHeight = 51;
 
     var triggerYGap = 14;
 
@@ -79,11 +82,22 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
     };
     collidables.push(signTrigger);
 
-    var signContent = new CollidableObject(this.signContentImage, posX + signContentOffsetX, posY + signContentOffsetY, signContentWidth, signContentHeight, 0, 0, false);
-    collidables.push(signContent);
-
+    //The artwork is drawn here rather than pushed as a collidable, because
+    //CollidableObject passes its size as both the source and destination rect: it
+    //crops that many pixels out of the top left instead of scaling, which is why
+    //every original sign image had to be exactly 90x65. Scaling the whole image
+    //means artwork of any size can be dropped in. The board already covers this
+    //area for collision purposes, so nothing is lost by not being a collidable.
     this.render = function render()
     {
+        var artwork = this.signContentImage;
+
+        if (artwork && artwork.complete && artwork.naturalWidth > 0)
+        {
+            ctx.drawImage(artwork, posX + signContentOffsetX, posY + signContentOffsetY,
+                signContentWidth, signContentHeight);
+        }
+
         //Wrapped to the sign, the same way the house labels are: a title longer
         //than the board ran off the side when drawn as a single line.
         wrapText(ctx, this.label, posX + signWidth / 2, posY + signHeight * 0.85, signWidth, 20);
@@ -99,11 +113,8 @@ function initWarehouse()
     var numCols = 2;
     var numRows = 3;
 
-    //A real screenshot per title still needs dropping into media/. This is a
-    //plain panel standing in so the signs render until then - swap each
-    //signImage(ARTWORK_PENDING) below for the actual artwork.
-    var ARTWORK_PENDING = "./media/screenshotPending.png";
-
+    //Each sign has its own image file in media/, currently a plain 16:9 placeholder
+    //panel. Overwrite the file to give a sign its artwork - no code change needed.
     function signImage(source)
     {
         var image = new Image();
@@ -118,7 +129,7 @@ function initWarehouse()
     var projects = [
     {
         label: "HELIX",
-        image: signImage(ARTWORK_PENDING),
+        image: signImage("./media/helix.png"),
         video: "https://www.youtube.com/embed/nwywfZuhHH4?autoplay=1",
         description:
             "<div>" +
@@ -130,7 +141,7 @@ function initWarehouse()
     },
     {
         label: "Cast Outs",
-        image: signImage(ARTWORK_PENDING),
+        image: signImage("./media/castOuts.png"),
         video: "https://www.youtube.com/embed/If76IrwqxSI?autoplay=1",
         description:
             "<div>" +
@@ -141,7 +152,7 @@ function initWarehouse()
     },
     {
         label: "Planet of the Apes",
-        image: signImage(ARTWORK_PENDING),
+        image: signImage("./media/planetOfTheApes.png"),
         video: "https://www.youtube.com/embed/J5P9wd9wNpY?autoplay=1",
         description:
             "<div>" +
@@ -152,7 +163,7 @@ function initWarehouse()
     },
     {
         label: "TerraTech Worlds",
-        image: signImage(ARTWORK_PENDING),
+        image: signImage("./media/terraTechWorlds.png"),
         video: "https://www.youtube.com/embed/BPdgAEFk-CA?autoplay=1",
         description:
             "<div>" +
@@ -164,7 +175,7 @@ function initWarehouse()
     },
     {
         label: "Narcos",
-        image: signImage(ARTWORK_PENDING),
+        image: signImage("./media/narcos.png"),
         video: "https://www.youtube.com/embed/BMTgVN4xIeo?autoplay=1",
         description:
             "<div>" +
