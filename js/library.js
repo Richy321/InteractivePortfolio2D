@@ -8,6 +8,51 @@ var CV_DOC_ID = "1jDQfO-rIBQy1ZPN2pMS5IqHvFXI0KG4SUkS6_TdJ5LU";
 var CV_EMBED_URL = "https://docs.google.com/document/d/" + CV_DOC_ID + "/preview";
 var CV_OPEN_URL = "https://docs.google.com/document/d/" + CV_DOC_ID + "/view";
 
+//A shortfall up to this many pixels is treated as the frame being sized short
+//of what the browser renders. Anything larger is genuinely long content that
+//should scroll. Comfortably above a rewrapped line or two, well below the
+//~880px by which the work experience page really does overflow.
+var POPUP_FIT_TOLERANCE = 60;
+
+//fancybox sizes an iframe popup before its document has finished laying out, so
+//the frame can end up a few pixels short and show a scrollbar over empty space.
+//The pages used to pass onComplete to ask for a re-measure, but that is a
+//fancybox 1.x callback name and never fired under 2.1.5. Measure the loaded
+//document in the visitor's own browser instead, which is the only place the
+//real font metrics and scrollbar width are known.
+function fitPopupToContent()
+{
+    var iframe = $(".fancybox-iframe");
+
+    if (iframe.length === 0)
+        return;
+
+    var doc;
+    try
+    {
+        doc = iframe[0].contentDocument;
+    }
+    catch (e)
+    {
+        return; //cross origin, nothing to measure
+    }
+
+    if (!doc || !doc.body)
+        return;
+
+    var needed = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
+    var shortfall = needed - iframe.height();
+
+    if (shortfall > 0 && shortfall <= POPUP_FIT_TOLERANCE)
+    {
+        //A couple of pixels of slack: once a scrollbar shows it takes width off
+        //the page, which can rewrap text taller still and keep it on screen.
+        iframe.height(needed + 2);
+        $(".fancybox-inner").height(needed + 2);
+        $.fancybox.reposition();
+    }
+}
+
 var bookcaseWidth = 40;
 var bookcaseHeight = 76;
 var xOffsetBookcase = 100;
@@ -90,9 +135,7 @@ function initLibrary()
             afterClose: function () {
                 player.disableMovement = false;
             },
-            onComplete: function () {
-                $.fancybox.update();
-            }
+            afterShow: fitPopupToContent
         });
     };
     collidables.push(emailTrigger);
@@ -121,9 +164,7 @@ function initLibrary()
             afterClose: function () {
                 player.disableMovement = false;
             },
-            onComplete: function () {
-                $.fancybox.update();
-            },
+            afterShow: fitPopupToContent,
             href: './pages/education.html',
             type: 'iframe'
         });
@@ -159,9 +200,7 @@ function initLibrary()
             afterClose: function () {
                 player.disableMovement = false;
             },
-            onComplete: function () {
-                $.fancybox.update();
-            },
+            afterShow: fitPopupToContent,
             href: './pages/skills.html',
             type: 'iframe'
         });
@@ -204,9 +243,7 @@ function initLibrary()
             afterClose: function () {
                 player.disableMovement = false;
             },
-            onComplete: function () {
-                $.fancybox.update();
-            },
+            afterShow: fitPopupToContent,
             href: './pages/workExperience.html',
             type: 'iframe'
         });
