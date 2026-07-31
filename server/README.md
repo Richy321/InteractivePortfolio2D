@@ -64,3 +64,9 @@ scene matches their own.
 
 Limits: 32 players in the room (further connections are closed with code 4001), and
 20 messages per second per socket before a client's traffic is ignored.
+
+A browser that closes cleanly is announced as gone immediately. One that vanishes -
+lid shut, signal lost, process killed - never sends a close frame, so an alarm sweeps
+the room every 10s and evicts anything silent for 30s, closing it with code 4002.
+That code is retryable, so a client that is somehow still alive reconnects and is
+announced again. The client's 2s keepalive is what the sweep measures.

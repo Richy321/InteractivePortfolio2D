@@ -12,6 +12,18 @@ const MAX_PLAYERS = 32;
 // client treats this one as "give up quietly" rather than "retry".
 const CLOSE_ROOM_FULL = 4001;
 
+// Nothing heard from the socket for too long. Unlike the room being full this is
+// worth retrying, so the client reconnects normally when it sees it.
+const CLOSE_STALE = 4002;
+
+// A browser that goes away cleanly closes its socket and the room hears about it
+// immediately. One that vanishes - lid shut, signal lost, process killed - never
+// sends a close frame, and without this its character would stand in the world as a
+// ghost until the edge eventually tears the connection down. The client already
+// sends a keepalive every 2s, so silence for this long means it is gone.
+const STALE_TIMEOUT_MS = 30000;
+const SWEEP_INTERVAL_MS = 10000;
+
 // Messages per second a single socket is allowed before it is ignored. The client
 // sends at 10Hz, so this is generous enough to never trip on a real browser.
 const MAX_MESSAGES_PER_SECOND = 20;
@@ -77,7 +89,10 @@ export class PortfolioRoom {
 			state: null,
 			windowStart: 0,
 			windowCount: 0,
+			lastSeen: Date.now(),
 		});
+
+		await this.ensureSweepScheduled();
 
 		const peers = [];
 		for (const other of sockets) {
@@ -103,9 +118,13 @@ export class PortfolioRoom {
 		if (!attachment)
 			return;
 
+		// Any message at all counts as proof of life, including one that turns out to
+		// be malformed or rate limited - the point is that something is still there.
+		const now = Date.now();
+		attachment.lastSeen = now;
+
 		// Fixed one-second window. Cheap, and it only has to stop a runaway client
 		// from fanning its traffic out to everyone else in the room.
-		const now = Date.now();
 		if (now - attachment.windowStart >= 1000) {
 			attachment.windowStart = now;
 			attachment.windowCount = 0;
@@ -153,6 +172,45 @@ export class PortfolioRoom {
 		const attachment = readAttachment(ws);
 		if (attachment)
 			this.broadcast({ t: "leave", id: attachment.id }, ws);
+	}
+
+	// Evicts anyone who stopped talking. Runs off an alarm rather than a timer so it
+	// still fires while the room is hibernating, which is the whole point - a room
+	// full of ghosts is exactly the case where nobody is sending anything to wake it.
+	async alarm() {
+		const now = Date.now();
+
+		for (const socket of this.state.getWebSockets()) {
+			const attachment = readAttachment(socket);
+			if (!attachment)
+				continue;
+
+			if (now - attachment.lastSeen <= STALE_TIMEOUT_MS)
+				continue;
+
+			// Announced before closing rather than relying on webSocketClose, which is
+			// for the client hanging up: this end is the one hanging up here. A client
+			// that is somehow still alive will reconnect and be announced again.
+			this.broadcast({ t: "leave", id: attachment.id }, socket);
+
+			try {
+				socket.close(CLOSE_STALE, "No keepalive");
+			} catch (err) {
+				// Already gone, which is the outcome we wanted anyway.
+			}
+		}
+
+		// Only keep sweeping while there is somebody to sweep, so an empty room costs
+		// nothing at all.
+		if (this.state.getWebSockets().length > 0)
+			await this.state.storage.setAlarm(Date.now() + SWEEP_INTERVAL_MS);
+	}
+
+	async ensureSweepScheduled() {
+		const existing = await this.state.storage.getAlarm();
+
+		if (existing == null)
+			await this.state.storage.setAlarm(Date.now() + SWEEP_INTERVAL_MS);
 	}
 
 	broadcast(message, except) {
