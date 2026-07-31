@@ -7,10 +7,9 @@
 //take the portfolio down with it.
 
 var NET_CONFIG = {
-    //Set this to the worker's address after `wrangler deploy` in ./server, e.g.
-    //"wss://portfolio-multiplayer.<subdomain>.workers.dev/ws". Left empty,
-    //multiplayer stays switched off and nothing connects.
-    url: "",
+    //The relay deployed from ./server. Empty this string to switch multiplayer off
+    //entirely - nothing connects and the site runs exactly as it does single player.
+    url: "wss://portfolio-multiplayer.portfolio-multiplayer.workers.dev/ws",
     enabled: true
 };
 
