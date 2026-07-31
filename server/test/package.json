@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-multiplayer-tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tests for the multiplayer relay and its browser client",
+  "scripts": {
+    "test:browser": "node browser.mjs",
+    "test:protocol": "node protocol.mjs",
+    "test:stale": "node stale.mjs",
+    "test": "node protocol.mjs && node browser.mjs && node stale.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.50.0",
+    "ws": "^8.18.0"
+  }
+}

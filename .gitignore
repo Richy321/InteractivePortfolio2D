@@ -5,8 +5,10 @@
 # supersedes the two .vs/**/.suo entries that used to be listed here.
 .vs/
 
-# Multiplayer worker: dependencies and wrangler's local build/state cache.
-server/node_modules/
+# Multiplayer worker and its tests: dependencies and wrangler's local build/state
+# cache. Unanchored, since there is a package.json under both server/ and
+# server/test/.
+node_modules/
 
 # Unanchored, because wrangler writes this wherever it is invoked from rather
 # than only beside its config. The cache holds the Cloudflare account id and

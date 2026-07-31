@@ -130,9 +130,9 @@ a room where nobody is sending anything to wake it.
 
 | What | How | Result |
 | --- | --- | --- |
-| Browser client, against a local worker | Two real Chromium browsers via Playwright | 17/17 |
-| Deployed worker protocol | Real WebSocket clients over the network | 11/11 |
-| Ghost eviction | Silent client vs keepalive client, live worker | 5/5 |
+| Browser client, against a local worker | `server/test/browser.mjs` | 18/18 |
+| Relay protocol, local and deployed | `server/test/protocol.mjs` | 11/11 |
+| Ghost eviction, local and deployed | `server/test/stale.mjs` | 5/5 |
 | Site intact after the ASP.NET cleanup | Page load + play | pass |
 
 **The one untested link: a real browser against the live worker.** Every piece either
@@ -149,9 +149,9 @@ Two environment quirks worth not rediscovering:
   `__test` cookie and reloads). Browsers pass it invisibly; `curl` cannot see past it,
   so the live InfinityFree copy cannot be checked from a script.
 
-The test scripts themselves were written in a temporary directory and are **not** in
-the repo. They are straightforward to rewrite: Playwright driving two browser contexts
-for the client, and the `ws` package for the server.
+The suites live in `server/test/` - see the README there. Three of them: the relay's
+protocol, the browser client, and ghost eviction. The protocol and eviction suites
+take a relay URL, so they run against the deployed worker unchanged.
 
 ## Outstanding
 
@@ -176,7 +176,7 @@ None of these are needed; they are the obvious directions if the feature grows.
 - **Interpolate remote characters through the walk animation more cheaply** by
   deriving `moving` from interpolated velocity instead of a wire flag, if bandwidth
   ever matters. It does not currently.
-- **Commit the test scripts** so they survive into the next session.
+- **Cover the browser-against-deployed-relay path**, which no suite can reach.
 
 ## Commit history
 
