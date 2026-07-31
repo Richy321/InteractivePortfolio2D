@@ -4,3 +4,7 @@
 # settings. VS regenerates it on open, so it should not be committed. This
 # supersedes the two .vs/**/.suo entries that used to be listed here.
 .vs/
+
+# Multiplayer worker: dependencies and wrangler's local build/state cache.
+server/node_modules/
+server/.wrangler/
