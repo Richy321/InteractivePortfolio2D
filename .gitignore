@@ -7,4 +7,8 @@
 
 # Multiplayer worker: dependencies and wrangler's local build/state cache.
 server/node_modules/
-server/.wrangler/
+
+# Unanchored, because wrangler writes this wherever it is invoked from rather
+# than only beside its config. The cache holds the Cloudflare account id and
+# account name, which have no business in a public repository.
+.wrangler/
