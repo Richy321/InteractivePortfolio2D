@@ -174,13 +174,6 @@ function clear()
     ctx.clearRect(-virtualCameraOffsetX, -virtualCameraOffsetY, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
 }
 
-function SpriteFrame(pSpriteXOffset, pSpriteYOffset, pWidth, pHeight) {
-    this.spriteXOffset = pSpriteXOffset;
-    this.spriteYOffset = pSpriteYOffset;
-    this.width = pWidth;
-    this.height = pHeight;
-}
-
 //Just where the player is headed. The intermediate waypoints used to be marked
 //too, which only showed the shape of the route rather than the destination.
 function drawTarget() {
@@ -234,6 +227,11 @@ var draw = function () {
     if (showGridOverlay)
         grid.drawGridOverlay();
 
+    //Other visitors first, so the character you are actually controlling is never
+    //hidden underneath somebody standing on the same tile.
+    if (typeof net != "undefined" && net != null)
+        net.draw();
+
     player.drawPlayer();
     //player.drawBounds();
     ctx.restore();
@@ -252,6 +250,9 @@ var update = function () {
     draw();
 
     player.updatePlayer(timer.getSeconds());
+
+    if (typeof net != "undefined" && net != null)
+        net.update(timer.getSeconds());
 
     timer.tick();
 }
@@ -286,6 +287,12 @@ function init() {
     player = new Player(spawnPoint.x, spawnPoint.y);
 
     aStar = new AStar(grid);
+
+    //Presence is entirely optional: with no relay configured, or an unreachable one,
+    //this connects to nothing and the game runs exactly as it does single player.
+    net = new NetClient();
+    net.connect();
+
     document.onkeydown = function (e) 
     {
         doKeyDown(e);

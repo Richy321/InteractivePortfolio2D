@@ -19,27 +19,17 @@ function Player(startPosX, startPosY)
 
     //load sprite frames
     this.sprite = new Image();
-    this.sprite.src = "./media/IWDCHAR.png";
+    this.sprite.src = CHARACTER_SPRITE_SRC;
     this.curFrameNo = 0;
-    this.frameWidth = 21;
-    this.frameHeight = 30;
-    this.frameCount = 3;
-    this.upFrames = new Array();
-    this.upFrames[0] = new SpriteFrame(0, 0, this.frameWidth, this.frameHeight);
-    this.upFrames[1] = new SpriteFrame(24, 0, this.frameWidth, this.frameHeight);
-    this.upFrames[2] = new SpriteFrame(48, 0, this.frameWidth, this.frameHeight);
-    this.rightFrames = new Array();
-    this.rightFrames[0] = new SpriteFrame(2, 32, this.frameWidth, this.frameHeight);
-    this.rightFrames[1] = new SpriteFrame(25, 32, this.frameWidth, this.frameHeight);
-    this.rightFrames[2] = new SpriteFrame(48, 32, this.frameWidth, this.frameHeight);
-    this.downFrames = new Array();
-    this.downFrames[0] = new SpriteFrame(2, 64, this.frameWidth, this.frameHeight);
-    this.downFrames[1] = new SpriteFrame(25, 64, this.frameWidth, this.frameHeight);
-    this.downFrames[2] = new SpriteFrame(49, 64, this.frameWidth, this.frameHeight);
-    this.leftFrames = new Array();
-    this.leftFrames[0] = new SpriteFrame(0, 95, this.frameWidth, this.frameHeight);
-    this.leftFrames[1] = new SpriteFrame(24, 95, this.frameWidth, this.frameHeight);
-    this.leftFrames[2] = new SpriteFrame(48, 95, this.frameWidth, this.frameHeight);
+    this.frameWidth = CHARACTER_FRAME_WIDTH;
+    this.frameHeight = CHARACTER_FRAME_HEIGHT;
+    this.frameCount = CHARACTER_FRAME_COUNT;
+
+    var frames = createCharacterFrames();
+    this.upFrames = frames.up;
+    this.rightFrames = frames.right;
+    this.downFrames = frames.down;
+    this.leftFrames = frames.left;
     this.curFrame = this.downFrames[0];
     this.curDirection = "None";
     this.curFrameNo = 0;
@@ -47,7 +37,7 @@ function Player(startPosX, startPosY)
     this.frameDelayFast = 0.10;
     this.frameDelay = this.frameDelayBase;
     this.frameDuration = this.frameDelay;
-    this.spriteScale = 2;
+    this.spriteScale = CHARACTER_SPRITE_SCALE;
 
     this.positionX = Math.floor(startPosX - (this.frameWidth * this.spriteScale) * 0.5);
     this.positionY = Math.floor(startPosY - (this.frameHeight * this.spriteScale) * 0.5);

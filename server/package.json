@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-multiplayer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WebSocket presence relay for the InteractivePortfolio2D site",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
