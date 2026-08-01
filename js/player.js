@@ -238,11 +238,20 @@ Player.prototype.updatePlayer = function updatePlayer(deltaTime)
 
     this.curFrame = this.framesForDirection()[this.curFrameNo];
 
-    //fire any triggers now standing on
+    //fire any triggers now standing on.
+    //
+    //The counter must be scoped. A teleporter's fireTrigger() calls initTown() or
+    //initLibrary(), which empty and rebuild collidables - and those functions used
+    //to run their own loops over the same implicit global counter this loop used, so
+    //both the index and the array it was walking were replaced underneath it. It
+    //never misbehaved only because the scene-init loops left the counter in the
+    //hundreds, which overshot the rebuilt array and ended this loop early. That was
+    //luck rather than design, and it would have stopped being lucky the moment a
+    //scene gained enough collidables to still be in range.
     var playerBnd = this.getBounds();
     var collidedTrigger = false;
 
-    for (i = 0; i < collidables.length; i++) {
+    for (var i = 0; i < collidables.length; i++) {
         if (!collidables[i].isTrigger)
             continue;
 

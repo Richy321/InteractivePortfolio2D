@@ -27,7 +27,8 @@ tells everyone when somebody joins or leaves.
 
 Clients send their own position at 10Hz and draw everybody else 150ms in the past,
 interpolating between the two snapshots either side of that moment. That delay is
-what makes a 25fps game loop look smooth over 10Hz updates. The walk cycle is
+what makes the game look smooth over 10Hz updates - and it is why `net.update()` runs
+once per rendered frame rather than once per simulation step. The walk cycle is
 animated locally from a `moving` boolean rather than shipping frame numbers.
 
 ## Files

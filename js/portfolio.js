@@ -87,7 +87,11 @@ function doMove(pageX, pageY)
     var gamePt = new point(pageX - canvas.offsetLeft - virtualCameraOffsetX, pageY - canvas.offsetTop - virtualCameraOffsetY);
     var localPt = new point(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
 
-    if (localPt.x > 0 && localPt.x < canvas.width && localPt.y > 0 && localPt.y < canvas.height)
+    //Compared against the camera size, not canvas.width: since the canvas is scaled by
+    //devicePixelRatio its width attribute is in device pixels, while a click arrives in
+    //CSS pixels. On a 2x display that comparison would accept clicks well past the
+    //right-hand edge of the game.
+    if (localPt.x > 0 && localPt.x < VIRTUALCAMWIDTH && localPt.y > 0 && localPt.y < VIRTUALCAMHEIGHT)
     {
         if (!player.disableMovement)
         {
@@ -164,7 +168,7 @@ function doLinkClick(pLinkName)
 }
 
 function clearKeyBuffer() {
-    for (i = 0; i < keys.length; i++)
+    for (var i = 0; i < keys.length; i++)
         keys[i] = false;
 }
 
@@ -198,7 +202,7 @@ var draw = function () {
     rect(0, 0, VIRTUALCAMWIDTH, VIRTUALCAMHEIGHT);
     grid.drawGrid();
 
-    for (i = 0; i < collidables.length; i++) {
+    for (var i = 0; i < collidables.length; i++) {
 
         collidables[i].drawCollidable();
         //collidables[i].drawBounds();
@@ -237,6 +241,19 @@ var draw = function () {
     ctx.restore();
 }
 
+//One step of the simulation. Movement is expressed per step - the character moves
+//deltaX pixels each time this runs, not deltaX pixels per second - so the step has to
+//stay at the 40ms the old setInterval used or the whole game changes speed.
+var SIMULATION_STEP_MS = 40;
+var SIMULATION_STEP_SECONDS = SIMULATION_STEP_MS / 1000;
+
+//The most catching-up one frame may do. A tab that was hidden for a minute comes back
+//with an enormous elapsed time, and without this the loop would try to simulate the
+//whole minute in one go and lock the page up.
+var MAX_CATCHUP_MS = 200;
+
+var simulationAccumulator = 0;
+
 var update = function () {
     if (80 in keys && keys[80]) {
         debugKeyDown = true;
@@ -247,24 +264,61 @@ var update = function () {
         debugKeyDown = false;
     }
 
-    draw();
+    player.updatePlayer(SIMULATION_STEP_SECONDS);
+}
 
-    player.updatePlayer(timer.getSeconds());
-
-    if (typeof net != "undefined" && net != null)
-        net.update(timer.getSeconds());
+//Driven by requestAnimationFrame rather than a 25fps setInterval, so drawing lines up
+//with the display's refresh instead of fighting it, and stops altogether while the tab
+//is hidden. The simulation still advances in fixed 40ms steps, which is what keeps
+//movement speed identical to before; only the redraw got faster.
+var frame = function () {
+    window.requestAnimationFrame(frame);
 
     timer.tick();
+
+    var elapsedMs = Math.min(timer.getSeconds() * 1000, MAX_CATCHUP_MS);
+    simulationAccumulator += elapsedMs;
+
+    while (simulationAccumulator >= SIMULATION_STEP_MS) {
+        update();
+        simulationAccumulator -= SIMULATION_STEP_MS;
+    }
+
+    //Once per frame rather than per step: the other players are interpolated against
+    //the wall clock, so the more often this runs the smoother they move.
+    if (typeof net != "undefined" && net != null)
+        net.update(elapsedMs / 1000);
+
+    //After the simulation rather than before it, so a frame shows the state that was
+    //just computed instead of the previous one.
+    draw();
 }
 
 function resizeGame() {
-    var newWidth = gameCanvas.clientWidth;
-    var newHeight = gameCanvas.clientHeight;
+    var displayWidth = gameCanvas.clientWidth;
+    var displayHeight = gameCanvas.clientHeight;
 
-    VIRTUALCAMWIDTH = newWidth;
-    VIRTUALCAMHEIGHT = newHeight;
-    gameCanvas.width = VIRTUALCAMWIDTH;
-    gameCanvas.height = VIRTUALCAMHEIGHT;
+    //The game continues to work entirely in CSS pixels - VIRTUALCAM* and every world
+    //coordinate are unchanged. Only the backing store gains the extra resolution, and
+    //the context is scaled once here so no drawing code has to know about it.
+    //Without this the canvas renders at CSS resolution and is soft on any screen with
+    //a devicePixelRatio above 1, which is most of them now.
+    var pixelRatio = window.devicePixelRatio || 1;
+
+    VIRTUALCAMWIDTH = displayWidth;
+    VIRTUALCAMHEIGHT = displayHeight;
+
+    gameCanvas.width = Math.round(displayWidth * pixelRatio);
+    gameCanvas.height = Math.round(displayHeight * pixelRatio);
+
+    if (ctx)
+    {
+        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+        //This is pixel art drawn at 2x. Smoothing it turns every hard edge to mush.
+        //Resizing a canvas resets the context, so it has to be set again here.
+        ctx.imageSmoothingEnabled = false;
+    }
 }
 
 //init
@@ -274,6 +328,8 @@ function init() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
 
+    //Only a starting size; resizeGame() at the end of init sets the real one, scaled
+    //for the display's pixel ratio.
     canvas.width = VIRTUALCAMWIDTH;
     canvas.height = VIRTUALCAMHEIGHT;
     canvas.style.border = "none";
@@ -319,7 +375,13 @@ function init() {
     window.addEventListener('orientationchange', resizeGame, false);
     resizeGame();
 
-    return setInterval(update, 40);
+    //Reset here rather than at declaration: the timer was constructed at the top of
+    //init and everything since then - image loads, scene building - counts as elapsed
+    //time it should not try to catch up on.
+    timer.tick();
+    simulationAccumulator = 0;
+
+    return window.requestAnimationFrame(frame);
 }
 
 //--main--

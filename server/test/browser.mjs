@@ -141,11 +141,15 @@ const drawn = await B.evaluate(() => {
 	const w = p.frameWidth * p.spriteScale, h = p.frameHeight * p.spriteScale;
 	const x = Math.round(p.renderX + virtualCameraOffsetX), y = Math.round(p.renderY + virtualCameraOffsetY);
 
-	if (x < 0 || y < 0 || x + w > canvas.width || y + h > canvas.height)
+	if (x < 0 || y < 0 || x + w > VIRTUALCAMWIDTH || y + h > VIRTUALCAMHEIGHT)
 		return { skipped: 'peer off screen' };
 
+	// getImageData works in device pixels and ignores the context transform, so the
+	// CSS-pixel coordinates above have to be scaled by the same ratio resizeGame used.
+	const ratio = window.devicePixelRatio || 1;
+
 	const sample = () => {
-		const d = ctx.getImageData(x, y, w, h).data;
+		const d = ctx.getImageData(x * ratio, y * ratio, w * ratio, h * ratio).data;
 		let sum = 0;
 		for (let i = 0; i < d.length; i++) sum += d[i];
 		return sum;

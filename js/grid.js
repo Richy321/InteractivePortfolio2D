@@ -34,9 +34,9 @@ function Grid(canvasWidth, canvasHeight) {
         this.yTileCount = Math.floor(canvasHeight / this.tileWidth);
         this.xTileCount = Math.floor(canvasWidth / this.tileWidth);
 
-        for (y = 0; y < this.yTileCount; y++)
+        for (var y = 0; y < this.yTileCount; y++)
         {
-            for (x = 0; x < this.xTileCount; x++) {
+            for (var x = 0; x < this.xTileCount; x++) {
                 var rnd = Math.floor((Math.random() * 4) + 1);
                 var rnd2 = Math.floor((Math.random() * 4) + 1);
 
@@ -74,8 +74,8 @@ function Grid(canvasWidth, canvasHeight) {
 
         this.tiles = new Array(this.yTileCount * this.xTileCount);
 
-        for (y = 0; y < this.yTileCount; y++) {
-            for (x = 0; x < this.xTileCount; x++) {
+        for (var y = 0; y < this.yTileCount; y++) {
+            for (var x = 0; x < this.xTileCount; x++) {
                 var rnd = Math.floor((Math.random() * 5) + 1);
                 var rnd2 = Math.floor((Math.random() * 4) + 1);
 
@@ -110,8 +110,8 @@ function Grid(canvasWidth, canvasHeight) {
     {
         ctx.draw
 
-        for (y = 0; y < this.yTileCount; y++) {
-            for (x = 0; x < this.xTileCount; x++) {
+        for (var y = 0; y < this.yTileCount; y++) {
+            for (var x = 0; x < this.xTileCount; x++) {
                 var tile = this.tiles[(y * this.xTileCount) + x];
                 ctx.drawImage(tile.spriteSheet, tile.spriteXOffset, tile.spriteYOffset, this.tileWidth, this.tileWidth, x * this.tileWidth, y * this.tileWidth, this.tileWidth, this.tileWidth);
             }
@@ -121,8 +121,8 @@ function Grid(canvasWidth, canvasHeight) {
     this.drawGridOverlay = function drawGridOverlay()
     {
         var origFill = ctx.fillStyle;
-        for (y = 0; y < this.yTileCount; y++) {
-            for (x = 0; x < this.xTileCount; x++)
+        for (var y = 0; y < this.yTileCount; y++) {
+            for (var x = 0; x < this.xTileCount; x++)
             {
                 var tile = this.getTile(x, y);
                 ctx.beginPath();

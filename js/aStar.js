@@ -181,7 +181,7 @@ function AStar(pGrid)
         {
             max = worldSize;
             min = -1;
-            for (i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 if (openList[i].f < max)
                 {

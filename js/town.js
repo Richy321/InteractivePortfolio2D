@@ -48,22 +48,22 @@
 
 
     //W wall
-    for (i = 60; i < HEIGHT - 60; i += 40)
+    for (var i = 60; i < HEIGHT - 60; i += 40)
     {
         collidables.push(new CollidableObject(wallSheet, 0, i, 40, 56, 0, 123, false));
     }
     //N wall
-    for (i = 40; i < WIDTH - 40; i += 40)
+    for (var i = 40; i < WIDTH - 40; i += 40)
     {
         collidables.push(new CollidableObject(wallSheet, i, 20, 40, 75, 80, 143, false));
     }
     //E wall
-    for (i = 60; i < HEIGHT - 60; i += 40)
+    for (var i = 60; i < HEIGHT - 60; i += 40)
     {
         collidables.push(new CollidableObject(wallSheet, WIDTH - 40, i, 40, 56, 0, 123, false));
     }
     //S wall
-    for (i = 40; i < WIDTH - 40; i += 40)
+    for (var i = 40; i < WIDTH - 40; i += 40)
     {
         if (i % 80)
             collidables.push(new CollidableObject(wallSheet, i, HEIGHT - 75, 40, 75, 80, 143, false));
