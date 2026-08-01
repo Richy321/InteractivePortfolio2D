@@ -21,6 +21,13 @@
 {
     position: relative;
     line-height: 0; /* no descender gap under a framed page or video */
+    /* Scrolls rather than being clipped. A video with its write-up underneath came
+       to more than a short window could show - an older laptop, or any screen with
+       display scaling turned up - and the text below the player was simply cut off
+       at the bottom of the screen with no way to reach it. */
+    max-height: 92vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sitePopupClose
@@ -29,6 +36,12 @@
     top: 4px;
     right: 4px;
     z-index: 2;
+    /* Flex centring rather than a line-height matching the height. That centres the
+       line box, and the cross does not sit in the middle of its own line box, so the
+       glyph rode high in the circle. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 28px;
     height: 28px;
     padding: 0;
@@ -36,8 +49,8 @@
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.65);
     color: #fff;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 22px;
+    line-height: 1;
     cursor: pointer;
 }
 
@@ -63,8 +76,11 @@
 {
     display: block;
     border: 0 none;
-    width: 880px;
-    max-width: 92vw;
+    /* Bounded by the window's height as well as its width, via the 16:9 ratio:
+       92vh of width is roughly 52vh of height, which leaves room for the write-up
+       underneath on a short screen. Capping the width rather than the height keeps
+       the ratio exact, so the player never letterboxes itself. */
+    width: min(880px, 92vw, 92vh);
     aspect-ratio: 16 / 9;
     background-color: #000;
 }

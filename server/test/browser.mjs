@@ -8,7 +8,7 @@
 // suite drives a locally served copy of the site, not a deployed one.
 
 import { chromium } from 'playwright';
-import { check, summarise, waitFor, launchOptions, isCdnError, SITE_URL, RELAY_URL, SCREENSHOT_DIR } from './harness.mjs';
+import { check, summarise, waitFor, launchOptions, SITE_URL, RELAY_URL, SCREENSHOT_DIR } from './harness.mjs';
 
 const site = SITE_URL + '?mp=' + encodeURIComponent(RELAY_URL);
 const viewport = { width: 900, height: 700 };
@@ -23,8 +23,8 @@ const A = await ctxA.newPage();
 const B = await ctxB.newPage();
 
 const errorsA = [], errorsB = [];
-A.on('pageerror', e => { if (!isCdnError(e)) errorsA.push(String(e)); });
-B.on('pageerror', e => { if (!isCdnError(e)) errorsB.push(String(e)); });
+A.on('pageerror', e => errorsA.push(String(e)));
+B.on('pageerror', e => errorsB.push(String(e)));
 
 await A.goto(site);
 await B.goto(site);
@@ -182,7 +182,7 @@ check('no uncaught errors in either page', errorsA.length === 0 && errorsB.lengt
 
 const C = await (await browser.newContext({ viewport })).newPage();
 const errorsC = [];
-C.on('pageerror', e => { if (!isCdnError(e)) errorsC.push(String(e)); });
+C.on('pageerror', e => errorsC.push(String(e)));
 await C.goto(SITE_URL + '?mp=' + encodeURIComponent('ws://localhost:9/ws')); // nothing listens on 9
 await C.waitForTimeout(2500);
 
@@ -197,7 +197,7 @@ check('game still playable with an unreachable relay', movedC > 20 && errorsC.le
 
 const D = await (await browser.newContext({ viewport })).newPage();
 const errorsD = [];
-D.on('pageerror', e => { if (!isCdnError(e)) errorsD.push(String(e)); });
+D.on('pageerror', e => errorsD.push(String(e)));
 await D.goto(SITE_URL);
 await D.waitForTimeout(1200);
 

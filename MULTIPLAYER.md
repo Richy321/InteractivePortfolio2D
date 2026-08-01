@@ -143,9 +143,11 @@ let alone the worker. Confirming it takes one person opening the site in two win
 
 Two environment quirks worth not rediscovering:
 
-- The jQuery and Bootstrap CDNs were unreachable there, so every page load threw
-  `jQuery is not defined`. Pristine `master` throws the identical set - it is the
-  network, not the code.
+- The Bootstrap CDN was unreachable there, so the navbar's collapse and dropdown do
+  nothing in that environment. The tests serve the CDN files from disk through
+  Playwright's request interception rather than working around it. (Earlier notes
+  here described `jQuery is not defined` errors; jQuery has since been removed
+  entirely, so those no longer occur.)
 - InfinityFree serves an anti-bot challenge (a 503 carrying JavaScript that sets a
   `__test` cookie and reloads). Browsers pass it invisibly; `curl` cannot see past it,
   so the live InfinityFree copy cannot be checked from a script.

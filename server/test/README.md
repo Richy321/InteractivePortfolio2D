@@ -59,10 +59,9 @@ of this covers.
 
 ## Notes
 
-- The browser suite ignores `jQuery is not defined` errors. The site loads jQuery and
-  Bootstrap from CDNs, and somewhere without access to them every page throws those,
-  on this code and on a pristine checkout alike - so they say nothing, and letting
-  them through would mask real errors.
+- The site loads Bootstrap's CSS and JS from a CDN. Somewhere without access to it the
+  navbar's collapse and dropdown will not work, though nothing throws - the page has no
+  other third-party script, and the game does not depend on Bootstrap at all.
 - The walk-cycle check samples across a long walk on purpose. Sampling after a short
   hop is flaky: the walk can finish before the first sample and every frame reads 0.
 - `stale.mjs` simulates a vanished client with a socket that stays open and says

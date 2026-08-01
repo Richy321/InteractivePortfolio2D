@@ -39,11 +39,6 @@ export function launchOptions() {
 	return process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {};
 }
 
-// The site loads jQuery and Bootstrap from CDNs. Somewhere without access to them
-// every page throws the same two errors, on this code and on a pristine checkout
-// alike, so they are not evidence of anything and would otherwise mask real ones.
-export const isCdnError = e => /jQuery is not defined|\$ is not defined/.test(String(e));
-
 // Only needed where outbound TLS goes through a proxy. Absent, this returns nothing
 // and the sockets connect directly.
 export async function wsOptions(url) {
