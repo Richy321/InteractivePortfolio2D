@@ -3,9 +3,10 @@
       background-color: #333;
       color: #fff; /* IE8 proofing */
       color: rgba(255,255,255,.75);
-      /* Padding rather than the UA default margin: a margin box is measured
-         inconsistently when fancybox sizes the iframe, which left the frame
-         short of the content and produced a scrollbar over empty space. */
+      /* Padding rather than the UA default margin: these pages are measured from
+         outside the frame to size the popup, and a margin box is measured
+         inconsistently, leaving the frame short of the content and producing a
+         scrollbar over empty space. */
       margin: 0;
       padding: 10px 14px;
 }

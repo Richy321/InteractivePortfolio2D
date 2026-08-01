@@ -53,34 +53,21 @@ function Sign(pLabel, pSignContent, pVideoLink, pTitleText, rowIndex, colIndex)
         clearKeyBuffer();
         player.disableMovement = true;
 
-        var options = {
-            padding: 0,
-            beforeClose: function () {
-                $(".fancybox-inner").unwrap();
-                player.disableMovement = false;
-            }
-        };
+        var writeUp = '<div class="signPopup">' + pTitleText + '</div>';
+        var release = function () { player.disableMovement = false; };
 
         if (pVideoLink)
         {
-            //Video, with the write-up underneath it. Wrapped in the same class the
-            //text-only popup uses: fancybox's outside title has no background of
-            //its own, so the words sat straight on top of the page behind them.
-            options.href = pVideoLink;
-            options.type = 'iframe';
-            options.title = '<div class="signPopup">' + pTitleText + '</div>';
-            options.helpers = { title: { type: 'outside' } };
+            //Video, with the write-up underneath it. It carries its own background:
+            //under a player the words otherwise sit straight on whatever is behind.
+            openVideoPopup(pVideoLink, writeUp, release);
         }
         else
         {
             //Nothing public to embed for this one, so show the write-up on its own
             //rather than an empty player.
-            options.content = '<div class="signPopup">' + pTitleText + '</div>';
-            options.type = 'html';
-            options.autoSize = true;
+            openHtmlPopup(writeUp, null, release);
         }
-
-        $.fancybox(options); // fancybox
     };
     collidables.push(signTrigger);
 

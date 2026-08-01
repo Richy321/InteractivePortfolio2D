@@ -128,7 +128,7 @@ function doLinkClick(pLinkName)
             player.pushTargetToStack(houseTeleporterLocation);
     }
 
-    if ($.inArray(pLinkName, libraryLocations) > -1) {
+    if (libraryLocations.indexOf(pLinkName) > -1) {
         switch (pLinkName)
         {
             case "CV":

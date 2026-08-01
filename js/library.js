@@ -8,49 +8,21 @@ var CV_DOC_ID = "1jDQfO-rIBQy1ZPN2pMS5IqHvFXI0KG4SUkS6_TdJ5LU";
 var CV_EMBED_URL = "https://docs.google.com/document/d/" + CV_DOC_ID + "/preview";
 var CV_OPEN_URL = "https://docs.google.com/document/d/" + CV_DOC_ID + "/view";
 
-//A shortfall up to this many pixels is treated as the frame being sized short
-//of what the browser renders. Anything larger is genuinely long content that
-//should scroll. Comfortably above a rewrapped line or two, well below the
-//~880px by which the work experience page really does overflow.
-var POPUP_FIT_TOLERANCE = 60;
-
-//fancybox sizes an iframe popup before its document has finished laying out, so
-//the frame can end up a few pixels short and show a scrollbar over empty space.
-//The pages used to pass onComplete to ask for a re-measure, but that is a
-//fancybox 1.x callback name and never fired under 2.1.5. Measure the loaded
-//document in the visitor's own browser instead, which is the only place the
-//real font metrics and scrollbar width are known.
-function fitPopupToContent()
+//Walking onto a trigger opens a popup, and the character must not keep walking while
+//it is up. Shared because all five triggers in here need exactly the same handling,
+//and the release half has to run however the popup was dismissed.
+function popupTriggerPressed()
 {
-    var iframe = $(".fancybox-iframe");
+    justFiredTrigger = true;
+    player.disableMovement = true;
+    player.clearPath();
+    player.clearTargetStack();
+    clearKeyBuffer();
+}
 
-    if (iframe.length === 0)
-        return;
-
-    var doc;
-    try
-    {
-        doc = iframe[0].contentDocument;
-    }
-    catch (e)
-    {
-        return; //cross origin, nothing to measure
-    }
-
-    if (!doc || !doc.body)
-        return;
-
-    var needed = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
-    var shortfall = needed - iframe.height();
-
-    if (shortfall > 0 && shortfall <= POPUP_FIT_TOLERANCE)
-    {
-        //A couple of pixels of slack: once a scrollbar shows it takes width off
-        //the page, which can rewrap text taller still and keep it on screen.
-        iframe.height(needed + 2);
-        $(".fancybox-inner").height(needed + 2);
-        $.fancybox.reposition();
-    }
+function popupTriggerReleased()
+{
+    player.disableMovement = false;
 }
 
 var bookcaseWidth = 40;
@@ -120,23 +92,8 @@ function initLibrary()
 
     emailTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
-        justFiredTrigger = true;
-        player.disableMovement = true;
-        player.clearPath();
-        player.clearTargetStack();
-        clearKeyBuffer();
-        $.fancybox.open({
-            href: './pages/contact.html',
-            type: 'iframe',
-            padding: 0,
-            beforeClose: function () {
-                $(".fancybox-inner").unwrap();
-            },
-            afterClose: function () {
-                player.disableMovement = false;
-            },
-            afterShow: fitPopupToContent
-        });
+        popupTriggerPressed();
+        openPagePopup('./pages/contact.html', popupTriggerReleased);
     };
     collidables.push(emailTrigger);
 
@@ -151,23 +108,8 @@ function initLibrary()
     var educationTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth + 8, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
     educationTrigger.type = "Teleporter";
     educationTrigger.fireTrigger = function fireTrigger() {
-        justFiredTrigger = true;
-        player.disableMovement = true;
-        player.clearPath();
-        player.clearTargetStack();
-        clearKeyBuffer();
-        $.fancybox.open({
-            padding: 0,
-            beforeClose: function () {
-                $(".fancybox-inner").unwrap();
-            },
-            afterClose: function () {
-                player.disableMovement = false;
-            },
-            afterShow: fitPopupToContent,
-            href: './pages/education.html',
-            type: 'iframe'
-        });
+        popupTriggerPressed();
+        openPagePopup('./pages/education.html', popupTriggerReleased);
     };
     collidables.push(educationTrigger);
 
@@ -187,23 +129,8 @@ function initLibrary()
     var skillsTrigger = new CollidableObject(teleInactive, WIDTH_HOUSE_LIB + xOffsetArmorSet - 82, yOffsetBookcase + bookcaseHeight + 40, 64, 32, 0, 0, true);
     skillsTrigger.type = "Teleporter";
     skillsTrigger.fireTrigger = function fireTrigger() {
-        justFiredTrigger = true;
-        player.disableMovement = true;
-        player.clearPath();
-        player.clearTargetStack();
-        clearKeyBuffer();
-        $.fancybox.open({
-            padding: 0,
-            beforeClose: function () {
-                $(".fancybox-inner").unwrap();
-            },
-            afterClose: function () {
-                player.disableMovement = false;
-            },
-            afterShow: fitPopupToContent,
-            href: './pages/skills.html',
-            type: 'iframe'
-        });
+        popupTriggerPressed();
+        openPagePopup('./pages/skills.html', popupTriggerReleased);
     };
     collidables.push(skillsTrigger);
 
@@ -230,23 +157,8 @@ function initLibrary()
     var workExpTrigger = new CollidableObject(teleInactive, xOffsetBookcase + bookcaseWidth * 2, HEIGHT_HOUSE_LIB - 140, 64, 32, 0, 0, true);
     workExpTrigger.type = "Teleporter";
     workExpTrigger.fireTrigger = function fireTrigger() {
-        justFiredTrigger = true;
-        player.disableMovement = true;
-        player.clearPath();
-        player.clearTargetStack();
-        clearKeyBuffer();
-        $.fancybox.open({
-            padding: 0,
-            beforeClose: function () {
-                $(".fancybox-inner").unwrap();
-            },
-            afterClose: function () {
-                player.disableMovement = false;
-            },
-            afterShow: fitPopupToContent,
-            href: './pages/workExperience.html',
-            type: 'iframe'
-        });
+        popupTriggerPressed();
+        openPagePopup('./pages/workExperience.html', popupTriggerReleased);
 
     };
     collidables.push(workExpTrigger);
@@ -275,33 +187,16 @@ function initLibrary()
     CVTrigger.type = "Teleporter";
     CVTrigger.fireTrigger = function fireTrigger() {
         //show CV in popup
-        justFiredTrigger = true;
-        player.disableMovement = true;
-        player.clearPath();
-        player.clearTargetStack();
-        clearKeyBuffer();
-        $.fancybox({
-            type: 'html',
-            content: '<div class="cvPopup">' +
-                         '<iframe class="cvPopupFrame" src="' + CV_EMBED_URL + '" title="CV"></iframe>' +
-                         '<p class="cvPopupLink"><a href="' + CV_OPEN_URL + '" target="_blank" rel="noopener">Open CV in Google Docs</a></p>' +
-                     '</div>',
-            autoSize: false,
-            fitToView: false,
-            width: '80%',
-            height: '90%',
-            beforeClose: function () {
-                $(".fancybox-inner").unwrap();
-            },
-            afterClose: function () {
-                player.disableMovement = false;
-            },
-            helpers: {
-                overlay: {
-                    opacity: 0.3
-                } // overlay
-            }
-        }); //fancybox
+        popupTriggerPressed();
+        //Sized by the sitePopupCv rules rather than measured: the frame is a Google
+        //Docs page on another origin, so there is nothing here that can read its
+        //height.
+        openHtmlPopup(
+            '<div class="cvPopup">' +
+                '<iframe class="cvPopupFrame" src="' + CV_EMBED_URL + '" title="CV"></iframe>' +
+                '<p class="cvPopupLink"><a href="' + CV_OPEN_URL + '" target="_blank" rel="noopener">Open CV in Google Docs</a></p>' +
+            '</div>',
+            "sitePopupCv", popupTriggerReleased);
     };
     collidables.push(CVTrigger);
 
