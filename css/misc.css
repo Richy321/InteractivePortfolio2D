@@ -36,9 +36,6 @@
     top: 4px;
     right: 4px;
     z-index: 2;
-    /* Flex centring rather than a line-height matching the height. That centres the
-       line box, and the cross does not sit in the middle of its own line box, so the
-       glyph rode high in the circle. */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,16 +45,45 @@
     border: 0 none;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.65);
-    color: #fff;
-    font-size: 22px;
-    line-height: 1;
     cursor: pointer;
 }
 
-.sitePopupClose:hover,
-.sitePopupClose:focus
+/* The cross is an SVG rather than a character, so it is centred by geometry instead
+   of by font metrics. */
+.sitePopupClose svg
+{
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: #fff;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.sitePopupClose:hover
 {
     background-color: #000;
+}
+
+/* No focus ring for a mouse click - that was the box appearing round the button -
+   but keep a clear one for anyone tabbing to it. */
+.sitePopupClose:focus
+{
+    outline: none;
+}
+
+.sitePopupClose:focus-visible
+{
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* The content is only focusable so that showModal() has somewhere to put the focus
+   other than the close button. It should never look focused. */
+.sitePopupContent:focus
+{
+    outline: none;
 }
 
 /* A page from ./pages. The height is a starting point only - openPagePopup measures
@@ -72,17 +98,33 @@
     background-color: #333;
 }
 
-.sitePopupVideoFrame
+/* The width lives on the container so the player and the write-up under it are the
+   same width and share their edges. It used to sit on the player alone, and the
+   write-up kept its own 620px maximum, so the two did not line up - and the wider
+   the window, the further out they were. */
+.sitePopupVideo .sitePopupContent
 {
-    display: block;
-    border: 0 none;
     /* Bounded by the window's height as well as its width, via the 16:9 ratio:
        92vh of width is roughly 52vh of height, which leaves room for the write-up
        underneath on a short screen. Capping the width rather than the height keeps
        the ratio exact, so the player never letterboxes itself. */
     width: min(880px, 92vw, 92vh);
+}
+
+.sitePopupVideoFrame
+{
+    display: block;
+    border: 0 none;
+    width: 100%;
     aspect-ratio: 16 / 9;
     background-color: #000;
+}
+
+/* Full width under the player rather than the reading measure a standalone write-up
+   gets, so the block lines up with the video above it. */
+.sitePopupVideo .signPopup
+{
+    max-width: none;
 }
 
 /* The CV frame takes a fixed slice of the window, since a Google Docs page cannot be

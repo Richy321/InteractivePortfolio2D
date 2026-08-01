@@ -28,11 +28,23 @@ function popupElement()
     closeButton.type = "button";
     closeButton.className = "sitePopupClose";
     closeButton.setAttribute("aria-label", "Close");
-    closeButton.innerHTML = "&times;";
+    //Drawn rather than typed. As the character "x" it sat off centre however it was
+    //aligned, because a glyph does not sit in the middle of its own line box and every
+    //font disagrees about by how much. Two lines in a square viewBox cannot.
+    closeButton.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+            '<path d="M6 6 L18 18 M18 6 L6 18" />' +
+        '</svg>';
     closeButton.addEventListener("click", function () { closePopup(); });
 
     var content = document.createElement("div");
     content.className = "sitePopupContent";
+    //showModal() focuses the first focusable thing it finds, which was the close
+    //button - so every popup opened with a focus ring drawn round it. Giving the
+    //content the autofocus sends it somewhere invisible instead. The button is still
+    //reachable by tab, and escape still closes.
+    content.tabIndex = -1;
+    content.setAttribute("autofocus", "");
 
     popupDialog.appendChild(closeButton);
     popupDialog.appendChild(content);
@@ -140,12 +152,27 @@ function openPagePopup(href, onClose)
         //empty. The width is untouched, so nothing rewraps.
         frame.style.height = "0px";
 
-        var needed = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
         var maxHeight = Math.floor(window.innerHeight * POPUP_MAX_HEIGHT_RATIO);
+        var needed = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
 
         //Two pixels of slack: the moment a scrollbar appears it takes width off the
         //page, which can rewrap text taller still and keep the bar there.
         frame.style.height = Math.min(needed + 2, maxHeight) + "px";
+
+        //Then check the answer. scrollHeight is rounded to whole pixels while the real
+        //layout is fractional, so on a display with scaling the content can be a
+        //fraction taller than the frame it was just given - enough for a scrollbar on
+        //a page that visibly has room to spare. A second pass settles it. Content that
+        //is genuinely longer than the window still stops at the cap and scrolls.
+        for (var pass = 0; pass < 2; pass++)
+        {
+            var shortfall = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight) - frame.clientHeight;
+
+            if (shortfall <= 0 || frame.clientHeight >= maxHeight)
+                break;
+
+            frame.style.height = Math.min(frame.clientHeight + shortfall + 1, maxHeight) + "px";
+        }
     });
 
     return openPopup(frame, "sitePopupPage", onClose);
